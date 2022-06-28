@@ -52,6 +52,9 @@ export default function MyListedItems({ marketplace, nft, account }) {
         }
         listedItems.push(item)
         // Add listed item to sold items array if sold
+
+
+        
         if (i.sold) soldItems.push(item)
       }
     }

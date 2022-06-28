@@ -15,14 +15,18 @@
     "chai": "^4.3.6",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.4",
+    "glightbox": "^3.2.0",
     "hardhat": "^2.8.4",
     "ipfs-http-client": "^56.0.1",
+    "jquery": "^3.6.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-dom": "^17.0.2",
+    "react-isotope": "^1.0.7",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "swiper": "^8.2.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

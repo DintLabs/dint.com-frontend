@@ -7,9 +7,6 @@ import $ from 'jquery'
 
 
 const Homepage = () =>{
-
-  
- 
     /**
      * Easy selector helper function
      */
@@ -189,15 +186,9 @@ const Homepage = () =>{
     }
   });
 
- 
-  
-  
-  
-  
     return(
         <>
-        <div>
-       
+        <div>       
         {/* ======= Header ======= */}
         <header id="header" className="fixed-top d-flex align-items-center header-transparent">
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
@@ -208,7 +199,6 @@ const Homepage = () =>{
               <ul>
                 <li className="mobile-logo"> <a href="https://dint.com"><img src="https://dint.com/assets/img/apple-touch-icon.png " alt="logo" /> </a></li>
                 {/* Authentication Links */}
-
                 <li><a href="https://dint.com/login">Login</a> </li>
                 <li><a className="nav-link" href="https://dint.com/register">Join</a></li>
                 <li id='no_effect_li'><Link id='no_effect' to="/marketplace"><button id="mp_btn">Marketplace</button></Link> </li>
@@ -323,6 +313,4 @@ const Homepage = () =>{
         </>
     )
 }
-
-
 export default Homepage

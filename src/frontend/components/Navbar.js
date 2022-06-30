@@ -1,18 +1,15 @@
 import {Link} from "react-router-dom";
-import { Navbar, Nav, Button, Container } from 'react-bootstrap'
+import { Navbar, Nav, Button, Container } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
 import mainlogo from '../material/white.png';
-import { MdOutlineAccountBalanceWallet } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
 import $ from 'jquery';
 
-import "../material/navbar.css";
+
 
 const Navigation = ({ web3Handler, account }) => {
   
-
     return (
         <Navbar expand="lg" bg="dark" variant="dark" id="navmain">
-           
             <Container>
                 <Link to="/">
                     <Navbar.Brand >
@@ -41,10 +38,6 @@ const Navigation = ({ web3Handler, account }) => {
                             </Nav.Link>
                         ) : (
                             <>
-                                {/* <Link as={Link} to="/marketplace/my-purchases" className="navlinks"><CgProfile size={35}/></Link> */}
-
-                                {/* <div className="navlinks"><button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button></div> */}
-
                                 <Button onClick={web3Handler} variant="outline-light">Connect Wallet</Button>
                             </>
                         )}

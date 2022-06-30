@@ -1,12 +1,36 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom"; 
-import './homepage.css';
+import '../material/homepage.css';
+import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import Bgvideo from "../material/home2.mp4"
 import $ from 'jquery'
 
 
 
 const Homepage = () =>{
+  
+  var back_to_top = $('#back_to_top');
+
+    $(window).scroll(function(){
+      var scroll = $(window).scrollTop();
+      if (scroll > 300) {
+        $("#header").css("background" , "rgba(26, 24, 22, 0.85)");
+        back_to_top.addClass('show')
+      }
+      else{
+        $("#header").css("background" , "transparent");  
+        back_to_top.removeClass('show')	
+      }
+    })
+
+    back_to_top.on('click', function(e) {
+      e.preventDefault();
+      $('html, body').animate({scrollTop:0}, '300');
+    });
+  
+
+
+
     /**
      * Easy selector helper function
      */
@@ -75,122 +99,40 @@ const Homepage = () =>{
     });
   };
 
-  /**
-   * Toggle .header-scrolled class to #header when page is scrolled
-   */
-  let selectHeader = select("#header");
-  let selectTopbar = select("#topbar");
-  if (selectHeader) {
-    const headerScrolled = () => {
-      if (window.scrollY > 100) {
-        selectHeader.classList.add("header-scrolled");
-        if (selectTopbar) {
-          selectTopbar.classList.add("topbar-scrolled");
-        }
-      } else {
-        selectHeader.classList.remove("header-scrolled");
-        if (selectTopbar) {
-          selectTopbar.classList.remove("topbar-scrolled");
-        }
-      }
-    };
-    window.addEventListener("load", headerScrolled);
-    onscroll(document, headerScrolled);
-  }
-
-  // header transparent class remove
-  window.onload = () => {
-    if (document.querySelector(".hero-section-pt")) {
-      document.querySelector("#header").classList.remove("header-transparent");
-    }
-  };
-
-  /**
-   * Back to top button
-   */
-  let backtotop = select(".back-to-top");
-  if (backtotop) {
-    const toggleBacktotop = () => {
-      if (window.scrollY > 100) {
-        backtotop.classList.add("active");
-      } else {
-        backtotop.classList.remove("active");
-      }
-    };
-    window.addEventListener("load", toggleBacktotop);
-    onscroll(document, toggleBacktotop);
-  }
-
-  /**
-   * Mobile nav toggle
-   */
-  // $(".mobile-nav-toggle").on("click", function (e) {
-  //   select("#navbar").classList.toggle("navbar-mobile");
-  //   this.classList.toggle("bi-list");
-  //   this.classList.toggle("bi-x");      
-  // });
+  
 
   const mobile_nav = () =>{
     select("#navbar").classList.toggle("navbar-mobile");
     $("#navbar_icon").classList.toggle("bi-list");
     $("#navbar_icon").classList.toggle("bi-x");
   }
-    
-  /**
-   * Mobile nav dropdowns activate
-   */
-  on(
-    "click",
-    ".navbar .dropdown > a",
-    function (e) {
-      if (select("#navbar").classList.contains("navbar-mobile")) {
-        e.preventDefault();
-        this.nextElementSibling.classList.toggle("dropdown-active");
-      }
-    },
-    true
-  );
-
-  /**
-   * Scrool with ofset on links with a class name .scrollto
-   */
-
-  on(
-    "click",
-    ".scrollto",
-    function (e) {
-      if (select(this.hash)) {
-        e.preventDefault();
-        let navbar = select("#navbar");
-        if (navbar.classList.contains("navbar-mobile")) {
-          navbar.classList.remove("navbar-mobile");
-          let navbarToggle = select(".mobile-nav-toggle");
-          navbarToggle.classList.toggle("bi-list");
-          navbarToggle.classList.toggle("bi-x");
-        }
-        scrollto(this.hash);
-      }
-    },
-    true
-  );
 
 
-  /**
-   * Scroll with ofset on page load with hash links in the url
-   */
-  window.addEventListener("load", () => {
-    if (window.location.hash) {
-      if (select(window.location.hash)) {
-        scrollto(window.location.hash);
-      }
+  const openNav = ()=> {
+    $('#mySidenav').css("width","350px");
+    $('#main').css("margin-left",'350px')
+    $('body').css("background-color",'rgba(0,0,0,0.4)')
     }
-  });
+    const closeNav = () => {
+        $('#mySidenav').css("width","0");
+        $('#main').css("margin-left",'0')
+        $('body').css("background-color",'white')
+    }
+
+ 
+
+
 
     return(
         <>
-        <div>       
+          <div id="mySidenav" className="sidenav">
+                <a href="javascript:void(0)" className="closebtn" onClick={closeNav}>×</a>
+                <h1>Hie</h1>
+            </div>
+        <div>
+
         {/* ======= Header ======= */}
-        <header id="header" className="fixed-top d-flex align-items-center header-transparent">
+        <header id="header" className="fixed-top d-flex align-items-center header-transparent" style={{height:"70px"}}>
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto">
               <h1><a href="https://dint.com"><img src="https://dint.com/assets/img/logos/logo.png" alt="logo" /> </a></h1>
@@ -201,12 +143,25 @@ const Homepage = () =>{
                 {/* Authentication Links */}
                 <li><a href="https://dint.com/login">Login</a> </li>
                 <li><a className="nav-link" href="https://dint.com/register">Join</a></li>
-                <li id='no_effect_li'><Link id='no_effect' to="/marketplace"><button id="mp_btn">Marketplace</button></Link> </li>
+
+                <div className="navlinks"><button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button></div>
+
+                <li id='no_effect_li'><Link id='no_effect' to="/marketplace"><button id="mp_btn">Marketplace</button></Link></li>
               </ul>
               <i className="bi bi-list mobile-nav-toggle" id='navbar_icon' onClick={mobile_nav} />
             </nav>{/* .navbar */}
           </div>
         </header>{/* End Header */}
+
+
+
+
+
+
+
+
+
+
         {/* ======= Hero Section ======= */}
         <section id="hero" className="card-video-banner">
           <div className="hero-container">
@@ -257,6 +212,12 @@ const Homepage = () =>{
               </div>
             </div>
           </div>
+
+
+
+          <a id="back_to_top"></a>
+
+
         </footer>{/* End Footer */}
         <div className="social-links animate__animated animate__fadeInUp">
           <a href="https://discord.gg/zk97Vf4YyX" className="discord" target="_blank"><i className="bi bi-discord"></i></a>

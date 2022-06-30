@@ -4,8 +4,8 @@ import {
     Route
   } from "react-router-dom";
   import Navigation from './Navbar';
+  import Footer from './Footer';
   import Home from './Home.js';
-  import Homepage from './Homepage.js';
   import Create from './Create.js';
   import MyListedItems from './MyListedItems.js';
   import MyPurchases from './MyPurchases.js';
@@ -73,6 +73,10 @@ import {
                 </Routes>
             }
           </div>
+
+
+            <Footer/>
+
         </div>
         </>
      

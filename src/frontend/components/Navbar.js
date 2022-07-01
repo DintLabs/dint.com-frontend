@@ -2,12 +2,11 @@ import {Link} from "react-router-dom";
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import mainlogo from '../material/white.png';
-import $ from 'jquery';
+
 
 
 
 const Navigation = ({ web3Handler, account }) => {
-  
     return (
         <Navbar expand="lg" bg="dark" variant="dark" id="navmain">
             <Container>

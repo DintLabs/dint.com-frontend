@@ -32,9 +32,6 @@ const Homepage = () => {
     $('html, body').animate({ scrollTop: 0 }, '300');
   });
 
-
-
-
   /**
    * Easy selector helper function
    */
@@ -47,16 +44,12 @@ const Homepage = () => {
     }
   };
 
-  
-
 
   const mobile_nav = () => {
     select("#navbar").classList.toggle("navbar-mobile");
     $("#navbar_icon").classList.toggle("bi-list");
     $("#navbar_icon").classList.toggle("bi-x");
   }
-
-
   const openNav = () => {
     $('#mySidenav').css("width", "350px");
     $('#main').css("margin-left", '350px')
@@ -147,6 +140,7 @@ const Homepage = () => {
                 <div className="navlinks"><button id="profile_btn" onClick={openProfile} > <CgProfile size={35} /></button></div>
                 <div className="navlinks"><button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button></div>
 
+                <li id='no_effect_li'><Link id='no_effect' to="/events"><button id="mp_btn">Events</button></Link></li>
                 <li id='no_effect_li'><Link id='no_effect' to="/marketplace"><button id="mp_btn">Marketplace</button></Link></li>
               </ul>
               <i className="bi bi-list mobile-nav-toggle" id='navbar_icon' onClick={mobile_nav} />
@@ -165,17 +159,9 @@ const Homepage = () => {
                   </div>
                 </div>
               </div>
-
-
             </nav>{/* .navbar */}
           </div>
         </header>{/* End Header */}
-
-
-
-
-
-
 
 
 

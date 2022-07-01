@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { ethers } from "ethers"
 import { Row, Col, Card, Button } from 'react-bootstrap'
 
-const Home = ({ marketplace, nft }) => {
+const Marketplace = ({ marketplace, nft }) => {
   const [loading, setLoading] = useState(true)
   const [items, setItems] = useState([])
   const loadMarketplaceItems = async () => {
@@ -83,4 +83,4 @@ const Home = ({ marketplace, nft }) => {
   );
 }
 
-export default Home;
+export default Marketplace;

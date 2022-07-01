@@ -59,15 +59,8 @@ function Marketplace_app() {
     }
   }
 
-
-
-
-
   // MetaMask Login/Connect
   const web3Handler = async () => {
-
-    
-  
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     setAccount(accounts[0])
     // Get provider from Metamask

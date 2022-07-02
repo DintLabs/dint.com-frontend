@@ -16,9 +16,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/marketplace/*" element={<Routes_Marketplace />} />
-
         {/* if You Want to Make Any Page Password Protacted with Login Then Do Routing Like This */}
+        <Route path="/marketplace/*" element={<Protected cmp={Routes_Marketplace} />} />
         <Route path="/events" element={<Protected  cmp={Events}/> } />
       </Routes>
     </BrowserRouter>

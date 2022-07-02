@@ -6,7 +6,7 @@
 }
 
 .navbar  a:hover{
-  background-color: transparent;
+  background-color: white;
 }
 
 .App-logo {
@@ -15,7 +15,8 @@
 }
 
 .navbar button:hover{
-  background-color: transparent;
+  color: black;
+  background-color: white;
 }
 
 @media (prefers-reduced-motion: no-preference) {

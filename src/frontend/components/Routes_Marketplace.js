@@ -32,7 +32,7 @@ function Marketplace_app() {
     checkConnection()
   },[])
 
-  function checkConnection() {
+  const checkConnection = () =>{
     window.ethereum.request({ method: 'eth_accounts' }).then(handleAccountsChanged).catch(console.error);
   }
 
@@ -50,13 +50,7 @@ function Marketplace_app() {
       const signer = provider.getSigner()
       loadContracts(signer)
     } 
-    else{
-      Swal.fire({
-        title: 'Metamask is not connected',
-        confirmButtonText: 'close',
-        icon:'warning',
-      })
-    }
+    
   }
 
   // MetaMask Login/Connect

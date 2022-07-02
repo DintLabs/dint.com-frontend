@@ -12,6 +12,11 @@
     background-color: black;    
     border: 1px solid black;
 }
+.no_effect:hover{
+    color: purple;
+    background: transparent;
+
+}
 
 #navbar_events_child{
     margin: auto;

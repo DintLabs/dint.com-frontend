@@ -140,6 +140,8 @@ const Homepage = () => {
 
                 <li id='no_effect_li'><Link id='no_effect' to="/events">Events</Link></li> 
                 <li id='no_effect_li'><Link id='no_effect' to="/marketplace">Marketplace</Link></li>
+                <li id='no_effect_li'><Link id='no_effect' to="/login">login</Link></li> 
+                <li id='no_effect_li'><Link id='no_effect' to="/signup">Signup</Link></li>
 
                 <div className="navlinks"><button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button></div>
                 

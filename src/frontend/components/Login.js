@@ -3,8 +3,17 @@ import '../material/login.css';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import $ from 'jquery';
+import Footer from './Footer'
+import NavbarEvents from './NavbarEvents';
+
+
+
+
+
+
+
 const Login = () => {
     let navigate = useNavigate();
     const [error_msg_login, setLoginErr] = useState('')
@@ -52,6 +61,9 @@ const Login = () => {
 
     return (
         <>
+
+        <NavbarEvents/>
+             <div className='login_divs'>
        <div className="container">
                 <div className="header">
                     <h2>Login</h2>
@@ -73,12 +85,14 @@ const Login = () => {
                 <p id='error_signup'>{error_msg_login}</p>
 
                 <button id='signup_btn' onClick={loginClicked}>Submit</button>
+                
 
+              <p id="signup_line">  Not registered Yet? <Link to="/signup"> <span id='signup_here'> SignUp Here</span></Link></p>
             </div>
 
 
-        
-     
+            </div>
+        <Footer/>
         </>
     )
 }

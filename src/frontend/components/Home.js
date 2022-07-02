@@ -18,11 +18,11 @@ const Homepage = () => {
   $(window).scroll(function () {
     var scroll = $(window).scrollTop();
     if (scroll > 300) {
-      $("#header").css("background", "rgba(26, 24, 22, 0.85)");
+      $(".header_home").css("background", "rgba(26, 24, 22, 0.85)");
       back_to_top.addClass('show')
     }
     else {
-      $("#header").css("background", "transparent");
+      $(".header_home").css("background", "transparent");
       back_to_top.removeClass('show')
     }
   })
@@ -61,7 +61,7 @@ const Homepage = () => {
     $('body').css("background-color", 'white')
   }
 
-  const openProfile = () =>{
+  const openProfile = () => {
     Swal.fire({
       title: 'Profile',
       text: 'Only for test',
@@ -70,7 +70,7 @@ const Homepage = () => {
     })
   }
 
-  const other_wallet_clicked = () =>{
+  const other_wallet_clicked = () => {
     Swal.fire({
       title: 'Sorry',
       text: 'Currently We Have Only Metamask, Other Wallets Are Coming Soon',
@@ -87,12 +87,12 @@ const Homepage = () => {
         Swal.fire({
           title: 'Metamask Connected Successfully',
           confirmButtonText: 'Go To Marketplace',
-          icon:'success',
+          icon: 'success',
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
             navigate("/marketplace");
-          } 
+          }
         })
       }
       else {
@@ -123,10 +123,10 @@ const Homepage = () => {
     <>
       <div>
         {/* ======= Header ======= */}
-        <header id="header" className="fixed-top d-flex align-items-center header-transparent" style={{ height: "70px" }}>
+        <header id="header" className="fixed-top d-flex align-items-center header-transparent header_home" style={{ height: "70px" }}>
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto">
-              <h1><a href="https://dint.com"><img src="https://dint.com/assets/img/logos/logo.png" alt="logo" /> </a></h1>
+              <h1><a href=""><img src="https://dint.com/assets/img/logos/logo.png" alt="logo" /> </a></h1>
             </div>
             <nav id="navbar" className="navbar order-lg-0">
               <ul>
@@ -137,11 +137,16 @@ const Homepage = () => {
                 <li><a className="nav-link" href="https://dint.com/register">Join</a></li> */}
 
 
-                <div className="navlinks"><button id="profile_btn" onClick={openProfile} > <CgProfile size={35} /></button></div>
-                <div className="navlinks"><button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button></div>
 
-                <li id='no_effect_li'><Link id='no_effect' to="/events"><button id="mp_btn">Events</button></Link></li>
-                <li id='no_effect_li'><Link id='no_effect' to="/marketplace"><button id="mp_btn">Marketplace</button></Link></li>
+                <li id='no_effect_li'><Link id='no_effect' to="/events">Events</Link></li> 
+                <li id='no_effect_li'><Link id='no_effect' to="/marketplace">Marketplace</Link></li>
+
+                <div className="navlinks"><button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button></div>
+                
+                <div className="navlinks"><button id="profile_btn" onClick={openProfile} > <CgProfile size={35} /></button></div>
+
+
+
               </ul>
               <i className="bi bi-list mobile-nav-toggle" id='navbar_icon' onClick={mobile_nav} />
 

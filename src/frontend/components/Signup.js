@@ -1,10 +1,16 @@
 import {useState} from 'react';
+import { Route, useNavigate } from 'react-router-dom';
 import '../material/signup.css';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import $ from 'jquery';
+import Footer from './Footer'
+import NavbarEvents from './NavbarEvents';
+
 
 const Signup = () => {
+
+    let navigate = useNavigate();
     
 const [error_msg,setSignErr] = useState('')
 
@@ -39,6 +45,8 @@ const [error_msg,setSignErr] = useState('')
                 .then((userCredential) => {
                     const user = userCredential.user;
                     console.log('Registration Success') 
+
+                    navigate('/login')
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -83,6 +91,8 @@ const [error_msg,setSignErr] = useState('')
 
     return (
         <>
+<NavbarEvents/>
+        <div className='login_divs'>
             <div className="container">
                 <div className="header">
                     <h2>Create Account</h2>
@@ -115,6 +125,8 @@ const [error_msg,setSignErr] = useState('')
                 <button id='signup_btn' onClick={signup_sub}>Submit</button>
 
             </div>
+            </div>
+            <Footer/>
         </>
     )
 }

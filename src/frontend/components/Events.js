@@ -1,5 +1,5 @@
 import Footer from './Footer'
-import Navbar from './Navbar'
+import Navbar from './MarketplaceNavbar'
 import { Link } from 'react-router-dom'
 import "../material/Event.css"
 import mainlogo from '../material/white.png';

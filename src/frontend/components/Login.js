@@ -8,13 +8,10 @@ import $ from 'jquery';
 import Footer from './Footer'
 import NavbarEvents from './NavbarEvents';
 
-
-
-
-
-
-
 const Login = () => {
+    
+   
+
     let navigate = useNavigate();
     const [error_msg_login, setLoginErr] = useState('')
     // // Your web app's Firebase configuration
@@ -38,8 +35,11 @@ const Login = () => {
         signInWithEmailAndPassword(auth, login_email, login_password)
             .then((userCredential) => {
                 console.log('success')
-                sessionStorage.setItem('logged', 'true');
-                navigate('/events')
+                sessionStorage.setItem('logged', true);
+                sessionStorage.setItem('user_email', login_email);
+                // change this for changing navigate path after login
+                navigate("/")
+                
             })
             .catch((error) => {
                 switch (error.code) {

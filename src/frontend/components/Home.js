@@ -2,6 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import '../material/homepage.css';
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { Dropdown } from 'react-bootstrap';
 import { CgProfile } from "react-icons/cg";
 import Bgvideo from "../material/home2.mp4"
 import Metamask_icon from "../material/metamask.svg"
@@ -13,6 +14,11 @@ const Swal = require('sweetalert2');
 
 const Homepage = () => {
   let navigate = useNavigate();
+
+  var isLoggedin = sessionStorage.getItem("logged");
+
+
+
 
   var back_to_top = $('#back_to_top');
   $(window).scroll(function () {
@@ -32,9 +38,6 @@ const Homepage = () => {
     $('html, body').animate({ scrollTop: 0 }, '300');
   });
 
-  /**
-   * Easy selector helper function
-   */
   const select = (el, all = false) => {
     el = el.trim();
     if (all) {
@@ -119,6 +122,17 @@ const Homepage = () => {
       })
     }
   }
+
+  const logout = () => {
+    sessionStorage.removeItem("logged");
+    window.location.reload()
+  }
+
+  const EditProfile = () =>{
+    navigate('/profile')
+  }
+
+
   return (
     <>
       <div>
@@ -132,22 +146,39 @@ const Homepage = () => {
               <ul>
                 <li className="mobile-logo"> <a href="https://dint.com"><img src="https://dint.com/assets/img/apple-touch-icon.png " alt="logo" /> </a></li>
 
-                {/* Authentication Links   login and signup buttons are there */}
-                {/* <li><a href="https://dint.com/login">Login</a> </li>
-                <li><a className="nav-link" href="https://dint.com/register">Join</a></li> */}
 
 
-
-                <li id='no_effect_li'><Link id='no_effect' to="/events">Events</Link></li> 
+                <li id='no_effect_li'><Link id='no_effect' to="/events">Events</Link></li>
                 <li id='no_effect_li'><Link id='no_effect' to="/marketplace">Marketplace</Link></li>
-                <li id='no_effect_li'><Link id='no_effect' to="/login">login</Link></li> 
-                <li id='no_effect_li'><Link id='no_effect' to="/signup">Signup</Link></li>
+                {isLoggedin ? <>
 
-                <div className="navlinks"><button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button></div>
-                
-                <div className="navlinks"><button id="profile_btn" onClick={openProfile} > <CgProfile size={35} /></button></div>
+                  {/* profile Btn */}
+                  {/* <div className="navlinks"></div> */}
+                  <Dropdown>
+                    <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent',border:0,marginLeft:'15px'}}>
+
+                  <button id="profile_btn">
+                    <CgProfile size={35} />
+                    </button>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                    <Dropdown.Item  style={{color:'black'}} onClick={EditProfile}>Edit Profile</Dropdown.Item>
+
+                      <Dropdown.Item  style={{color:'black'}} onClick={logout}>Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
 
 
+                  {/* wallet */}
+                  <div className="navlinks"><button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button></div>
+                 
+                </> :
+                  <>
+                    <li id='no_effect_li'><Link id='no_effect' to="/login">login</Link></li>
+                    <li id='no_effect_li'><Link id='no_effect' to="/signup">Signup</Link></li>
+                  </>
+                }
 
               </ul>
               <i className="bi bi-list mobile-nav-toggle" id='navbar_icon' onClick={mobile_nav} />
@@ -155,7 +186,6 @@ const Homepage = () => {
               {/*  Code of Sidebar */}
               <div id="mySidenav" className="sidenav">
                 <button className="closebtn" onClick={closeNav}>×</button>
-
                 <div id="sidenav_child">
                   <div id="sidenav_top_div">
                     <CgProfile size={35} /> <div > <p>Connect Wallet</p></div>
@@ -166,6 +196,11 @@ const Homepage = () => {
                   </div>
                 </div>
               </div>
+              {/* Code of slidebar ends */}
+
+
+
+
             </nav>{/* .navbar */}
           </div>
         </header>{/* End Header */}

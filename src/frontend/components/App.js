@@ -4,9 +4,12 @@ import Home from './Home.js';
 import Signup from './Signup.js';
 import Login from './Login.js';
 import Events from './Events.js';
+import Profile from './Profile.js';
 import Routes_Marketplace from './Routes_Marketplace.js';
 import Protected  from './Protected ';
 import './App.css';
+
+
 
 
 function App() {
@@ -17,8 +20,9 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         {/* if You Want to Make Any Page Password Protacted with Login Then Do Routing Like This */}
-        <Route path="/marketplace/*" element={<Protected cmp={Routes_Marketplace} />} />
-        <Route path="/events" element={<Protected  cmp={Events}/> } />
+        <Route path="/marketplace/*" element={<Protected cmp={Routes_Marketplace}/>} />
+        <Route path="/events" element={<Protected  cmp={Events} /> } />
+        <Route path="/profile" element={<Protected  cmp={Profile} /> } />
       </Routes>
     </BrowserRouter>
   );

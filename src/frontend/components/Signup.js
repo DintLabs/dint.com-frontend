@@ -5,7 +5,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 import $ from 'jquery';
 import Footer from './Footer'
-import NavbarEvents from './NavbarEvents';
+import NavbarHome from './NavbarHome';
 
 
 const Signup = () => {
@@ -93,7 +93,7 @@ const [error_msg,setSignErr] = useState('')
 
     return (
         <>
-<NavbarEvents/>
+<NavbarHome/>
         <div className='login_divs'>
             <div className="container">
                 <div className="header">

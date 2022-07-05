@@ -1,25 +1,20 @@
 
 import { Link, useNavigate } from "react-router-dom";
 import '../material/homepage.css';
-import { MdOutlineAccountBalanceWallet } from "react-icons/md";
-import { Dropdown } from 'react-bootstrap';
-import { CgProfile } from "react-icons/cg";
 import Bgvideo from "../material/home2.mp4"
-import Metamask_icon from "../material/metamask.svg"
+import NavbarHome from "./NavbarHome"
+
+
 import $ from 'jquery';
-import { ethers } from "ethers";
-const Swal = require('sweetalert2');
+
 
 
 
 const Homepage = () => {
   let navigate = useNavigate();
 
-  var isLoggedin = sessionStorage.getItem("logged");
-
-
-
-
+  
+ 
   var back_to_top = $('#back_to_top');
   $(window).scroll(function () {
     var scroll = $(window).scrollTop();
@@ -53,75 +48,56 @@ const Homepage = () => {
     $("#navbar_icon").classList.toggle("bi-list");
     $("#navbar_icon").classList.toggle("bi-x");
   }
-  const openNav = () => {
-    $('#mySidenav').css("width", "350px");
-    $('#main').css("margin-left", '350px')
-    $('body').css("background-color", 'rgba(0,0,0,0.4)')
-  }
-  const closeNav = () => {
-    $('#mySidenav').css("width", "0");
-    $('#main').css("margin-left", '0')
-    $('body').css("background-color", 'white')
-  }
+ 
+  // const other_wallet_clicked = () => {
+  //   Swal.fire({
+  //     title: 'Sorry',
+  //     text: 'Currently We Have Only Metamask, Other Wallets Are Coming Soon',
+  //     icon: 'warning',
+  //     confirmButtonText: 'Close',
+  //   })
+  // }
 
-  const openProfile = () => {
-    Swal.fire({
-      title: 'Profile',
-      text: 'Only for test',
-      icon: 'question',
-      confirmButtonText: 'Close',
-    })
-  }
-
-  const other_wallet_clicked = () => {
-    Swal.fire({
-      title: 'Sorry',
-      text: 'Currently We Have Only Metamask, Other Wallets Are Coming Soon',
-      icon: 'warning',
-      confirmButtonText: 'Close',
-    })
-  }
-
-  const connectMetamask = async () => {
-    if (typeof window.ethereum !== 'undefined') {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      if (accounts[0]) {
-        closeNav();
-        Swal.fire({
-          title: 'Metamask Connected Successfully',
-          confirmButtonText: 'Go To Marketplace',
-          icon: 'success',
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            navigate("/marketplace");
-          }
-        })
-      }
-      else {
-        alert('connection problem')
-      }
-      // Get provider from Metamask
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      // Set signer
-      const signer = provider.getSigner()
-      window.ethereum.on('chainChanged', (chainId) => {
-        window.location.reload();
-      })
-      window.ethereum.on('accountsChanged', async function (accounts) {
-        await connectMetamask()
-      })
-    }
-    else {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Metamask is not installed',
-        icon: 'error',
-        confirmButtonText: 'Close',
-        footer: '<a href="https://metamask.io/">Click Here to Install Metamask </a>'
-      })
-    }
-  }
+  // const connectMetamask = async () => {
+  //   if (typeof window.ethereum !== 'undefined') {
+  //     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+  //     if (accounts[0]) {
+  //       closeNav();
+  //       Swal.fire({
+  //         title: 'Metamask Connected Successfully',
+  //         confirmButtonText: 'Go To Marketplace',
+  //         icon: 'success',
+  //       }).then((result) => {
+  //         /* Read more about isConfirmed, isDenied below */
+  //         if (result.isConfirmed) {
+  //           navigate("/marketplace");
+  //         }
+  //       })
+  //     }
+  //     else {
+  //       alert('connection problem')
+  //     }
+  //     // Get provider from Metamask
+  //     const provider = new ethers.providers.Web3Provider(window.ethereum)
+  //     // Set signer
+  //     const signer = provider.getSigner()
+  //     window.ethereum.on('chainChanged', (chainId) => {
+  //       window.location.reload();
+  //     })
+  //     window.ethereum.on('accountsChanged', async function (accounts) {
+  //       await connectMetamask()
+  //     })
+  //   }
+  //   else {
+  //     Swal.fire({
+  //       title: 'Error!',
+  //       text: 'Metamask is not installed',
+  //       icon: 'error',
+  //       confirmButtonText: 'Close',
+  //       footer: '<a href="https://metamask.io/">Click Here to Install Metamask </a>'
+  //     })
+  //   }
+  // }
 
   const logout = () => {
     sessionStorage.removeItem("logged");
@@ -132,79 +108,12 @@ const Homepage = () => {
     navigate('/profile')
   }
 
-
   return (
     <>
       <div>
         {/* ======= Header ======= */}
-        <header id="header" className="fixed-top d-flex align-items-center header-transparent header_home" style={{ height: "70px" }}>
-          <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-            <div className="logo me-auto">
-              <h1><a href=""><img src="https://dint.com/assets/img/logos/logo.png" alt="logo" /> </a></h1>
-            </div>
-            <nav id="navbar" className="navbar order-lg-0">
-              <ul>
-                <li className="mobile-logo"> <a href="https://dint.com"><img src="https://dint.com/assets/img/apple-touch-icon.png " alt="logo" /> </a></li>
-
-
-
-                <li id='no_effect_li'><Link id='no_effect' to="/events">Events</Link></li>
-                <li id='no_effect_li'><Link id='no_effect' to="/marketplace">Marketplace</Link></li>
-                {isLoggedin ? <>
-
-                  {/* profile Btn */}
-                  {/* <div className="navlinks"></div> */}
-                  <Dropdown>
-                    <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent',border:0,marginLeft:'15px'}}>
-
-                  <button id="profile_btn">
-                    <CgProfile size={35} />
-                    </button>
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                    <Dropdown.Item  style={{color:'black'}} onClick={EditProfile}>Edit Profile</Dropdown.Item>
-
-                      <Dropdown.Item  style={{color:'black'}} onClick={logout}>Logout</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-
-
-                  {/* wallet */}
-                  <div className="navlinks"><button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button></div>
-                 
-                </> :
-                  <>
-                    <li id='no_effect_li'><Link id='no_effect' to="/login">login</Link></li>
-                    <li id='no_effect_li'><Link id='no_effect' to="/signup">Signup</Link></li>
-                  </>
-                }
-
-              </ul>
-              <i className="bi bi-list mobile-nav-toggle" id='navbar_icon' onClick={mobile_nav} />
-
-              {/*  Code of Sidebar */}
-              <div id="mySidenav" className="sidenav">
-                <button className="closebtn" onClick={closeNav}>×</button>
-                <div id="sidenav_child">
-                  <div id="sidenav_top_div">
-                    <CgProfile size={35} /> <div > <p>Connect Wallet</p></div>
-                  </div>
-                  <div id="wallets_parent_div">
-                    <div className="wallets_div" onClick={connectMetamask}><img src={Metamask_icon}></img>  <p>Metamask</p></div>
-                    <div className="wallets_div last_wallet" onClick={other_wallet_clicked}> <p>Other Wallets</p></div>
-                  </div>
-                </div>
-              </div>
-              {/* Code of slidebar ends */}
-
-
-
-
-            </nav>{/* .navbar */}
-          </div>
-        </header>{/* End Header */}
-
+        
+<NavbarHome/>
 
 
 

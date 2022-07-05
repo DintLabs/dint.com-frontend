@@ -36,6 +36,7 @@ function Marketplace_app() {
     window.ethereum.request({ method: 'eth_accounts' }).then(handleAccountsChanged).catch(console.error);
   }
 
+
   function handleAccountsChanged(accounts) {
     setAccount(accounts[0])
     if (accounts.length !== 0) {
@@ -50,7 +51,6 @@ function Marketplace_app() {
       const signer = provider.getSigner()
       loadContracts(signer)
     } 
-    
   }
 
   // MetaMask Login/Connect
@@ -69,9 +69,9 @@ function Marketplace_app() {
       await web3Handler()
     })
     loadContracts(signer)
-  
-  
   }
+
+
   const loadContracts = async (signer) => {
     // Get deployed copies of contracts
     const marketplace = new ethers.Contract(MarketplaceAddress.address, MarketplaceAbi.abi, signer)
@@ -80,6 +80,7 @@ function Marketplace_app() {
     setNFT(nft)
     setLoading(false)
   }
+
 
   return (
     <>

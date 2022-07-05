@@ -6,15 +6,19 @@ import { useState } from 'react';
 import { useNavigate,Link } from 'react-router-dom';
 import $ from 'jquery';
 import Footer from './Footer'
-import NavbarEvents from './NavbarEvents';
+import NavbarHome from './NavbarHome';
 
 const Login = () => {
+ 
+   
+    var previousPage = window.location.pathname.split('/');
     
+   
    
 
     let navigate = useNavigate();
     const [error_msg_login, setLoginErr] = useState('')
-    // // Your web app's Firebase configuration
+    // Your web app's Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyAEeo_gs2YjZb_2SVCowrA0y_WHSoqg71E",
         authDomain: "dint-3d4ac.firebaseapp.com",
@@ -34,12 +38,13 @@ const Login = () => {
 
         signInWithEmailAndPassword(auth, login_email, login_password)
             .then((userCredential) => {
-                console.log('success')
+                console.log(userCredential)
                 sessionStorage.setItem('logged', true);
                 sessionStorage.setItem('user_email', login_email);
                 // change this for changing navigate path after login
-                navigate("/")
-                
+              
+                    navigate("/"+previousPage[2])
+              
             })
             .catch((error) => {
                 switch (error.code) {
@@ -62,7 +67,7 @@ const Login = () => {
     return (
         <>
 
-        <NavbarEvents/>
+        <NavbarHome/>
              <div className='login_divs'>
        <div className="container">
                 <div className="header">

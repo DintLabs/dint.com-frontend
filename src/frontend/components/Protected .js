@@ -7,7 +7,9 @@ const Swal = require('sweetalert2');
 const Protected = props => {
     let navigate = useNavigate();
     var Page_req = props.cmp;
-    var pagename = props.pathname;
+    var pagename = props.pagename;
+    
+
     var isLoggedin = sessionStorage.getItem("logged");
 
     if (!isLoggedin) {
@@ -22,7 +24,7 @@ const Protected = props => {
             cancelButtonText: 'Back'
         }).then((result) => {
             if (result.isConfirmed) {
-                navigate('/login')
+                navigate('/login/'+pagename )
             }
             else {
                 navigate('/', { replace: true })

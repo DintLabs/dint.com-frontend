@@ -1,44 +1,27 @@
-import { Link } from "react-router-dom";
-import { Navbar, Nav, Button, Container } from 'react-bootstrap';
+import { Link,useNavigate } from "react-router-dom";
+import { Navbar, Nav, Button, Container,Dropdown } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import mainlogo from '../material/white.png';
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import $ from 'jquery';
-import Metamask_icon from "../material/metamask.svg"
+import Metamask_icon from "../material/metamask.svg";
+import MetamaskLogin from './MetamaskLogin'
 const Swal = require('sweetalert2');
 
 
 const Navigation = ({ web3Handler, account }) => {
-    const openNav = () => {
-        $('#mySidenav').css("width", "350px");
-        $('#main').css("margin-left", '350px')
-       
-    }
-    const closeNav = () => {
-        $('#mySidenav').css("width", "0");
-        $('#main').css("margin-left", '0')
-        $('body').css("background-color", 'white')
-    }
+    let navigate = useNavigate();     
+  var isLoggedin = sessionStorage.getItem("logged");
 
-    const other_wallet_clicked = () => {
-        Swal.fire({
-            title: 'Sorry',
-            text: 'Currently We Have Only Metamask, Other Wallets Are Coming Soon',
-            icon: 'warning',
-            confirmButtonText: 'Close',
-        })
-    }
-
-    const openProfile = () => {
-        Swal.fire({
-          title: 'Profile',
-          text: 'Only for test',
-          icon: 'question',
-          confirmButtonText: 'Close',
-        })
+     const logout = () => {
+        sessionStorage.clear();  
+        window.location.reload()
       }
-
+    
+      const EditProfile = () =>{
+        navigate('/profile')
+      }
 
     return (
         <Navbar expand="lg" bg="dark" variant="dark" id="navmain">
@@ -58,7 +41,49 @@ const Navigation = ({ web3Handler, account }) => {
                         <Nav.Link as={Link} to="/marketplace/my-purchases" className="navlinks">My Purchases</Nav.Link>
                     </Nav>
                     <div id="nav_last_part">
-                        {account ? (
+                        {isLoggedin ? <>
+                            {/* <div className="navlinks"></div> */}
+                            <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic" style={{ backgroundColor: 'transparent', border: 0, marginLeft: '15px' }}>
+
+                                    <button id="profile_btn">
+                                        <CgProfile size={35} />
+                                    </button>
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item style={{ color: 'black' }} onClick={EditProfile}>Edit Profile</Dropdown.Item>
+                                    <Dropdown.Item style={{ color: 'black' }} onClick={logout}>Logout</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+
+
+                            {/* wallet */}
+                            <MetamaskLogin/>
+                            {/* <div className="navlinks"><button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button></div>
+                            <div id="mySidenav" className="sidenav">
+                                    <button className="closebtn" onClick={closeNav}>×</button>
+                                    <div id="sidenav_child">
+                                        <div id="sidenav_top_div">
+                                            <CgProfile size={35} /> <div > <p>Connect Wallet</p></div>
+                                        </div>
+                                        <div id="wallets_parent_div">
+                                            <div className="wallets_div" onClick={web3Handler}><img src={Metamask_icon}></img>  <p>Metamask</p></div>
+                                            <div className="wallets_div last_wallet" onClick={other_wallet_clicked}> <p>Other Wallets</p></div>
+                                        </div>
+                                    </div>
+                                </div> */}
+
+                        </> :
+                            <>
+        <div> <Link id='no_effect' to="/login/marketplace" >login</Link></div>
+
+                               <div>
+                                <Link id='no_effect' to="/signup" style={{marginLeft:'15px'}}>Signup</Link>
+                                </div>
+                            </>
+                        }
+                        {/* {account ? (
                             <>
                                 <Nav.Link
                                     href={`https://etherscan.io/address/${account}`}
@@ -90,9 +115,9 @@ const Navigation = ({ web3Handler, account }) => {
                                         </div>
                                     </div>
                                 </div>
-                                {/* <Button onClick={web3Handler} variant="outline-light">Connect Wallet</Button> */}
+                                
                             </>
-                        )}
+                        )} */}
                     </div>
                 </Navbar.Collapse>
             </Container>

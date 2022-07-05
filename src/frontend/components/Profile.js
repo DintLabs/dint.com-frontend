@@ -1,31 +1,22 @@
-import NavbarEvents from './NavbarEvents'
+import NavbarHome from './NavbarHome'
 import '../material/Profile.css'
 import { Tabs, Tab, Form, Button } from 'react-bootstrap'
-// import { getAuth, reauthenticateWithCredential } from "firebase/auth";
+// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
-import { getAuth } from "firebase/auth";
+import { getAuth, updatePassword ,signInWithEmailAndPassword} from "firebase/auth";
+import $ from 'jquery';
+import { useState } from 'react';
+const Swal = require('sweetalert2');
+
+
 
 
 
 const Profile = () => {
 
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAEeo_gs2YjZb_2SVCowrA0y_WHSoqg71E",
-        authDomain: "dint-3d4ac.firebaseapp.com",
-        databaseURL: "https://dint-3d4ac-default-rtdb.firebaseio.com",
-        projectId: "dint-3d4ac",
-        storageBucket: "dint-3d4ac.appspot.com",
-        messagingSenderId: "249686432294",
-        appId: "1:249686432294:web:6a939362861134f09264e7"
-      };
-    
-        
-    
+    const [passErr, setPassErr] = useState('');
 
     const passwordUpdate = () => {
-        
-        // Initialize Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAEeo_gs2YjZb_2SVCowrA0y_WHSoqg71E",
             authDomain: "dint-3d4ac.firebaseapp.com",
@@ -35,25 +26,70 @@ const Profile = () => {
             messagingSenderId: "249686432294",
             appId: "1:249686432294:web:6a939362861134f09264e7"
         };
-    
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
 
-        const auth = getAuth(app);
-        const user = auth.currentUser;
+        var current_password = $('#current_password').val();
+        var new_password = $('#new_password').val();
+        var confirm_new_password = $('#confirm_new_password').val();
 
-        if(user !== null){
-            user.providerData.forEach((profile) =>{
-                console.log(profile.email)
-            });
+
+        if(current_password !== "" && new_password !== "" && confirm_new_password !== "")
+        {
+
+            if(current_password !== new_password )
+            {
+                    if(new_password == confirm_new_password)
+                    {
+                        signInWithEmailAndPassword(auth, sessionStorage.getItem('user_email'), current_password)
+                            .then((userCredential) => {
+                                    const user = auth.currentUser;
+
+                                    // update password function
+                                    updatePassword(user, new_password).then(() => {
+                                        setPassErr('')
+                                        Swal.fire({
+                                            title: 'Success',
+                                            text: 'Your Password Is Updated Successfully',
+                                            icon: 'success',
+                                            confirmButtonText: 'Close',
+                                        })
+
+                                    }).catch((error) => {
+                                        console.log(error)
+                                        setPassErr(error)
+                                    });
+                            })
+                            .catch(function (e) {
+                                switch (e.code) {
+                                case 'auth/user-not-found':
+                                    console.log(`User is Not Found`);
+                                    setPassErr('User Not Found')
+                                    break;
+                                case 'auth/wrong-password':
+                                    console.log(`Wrong Password`);
+                                    setPassErr("Wrong Current Password")
+                                    break;
+                                default:
+                                    console.log(e.message);
+                                    setPassErr('Something Went Wrong')
+                                    break;
+                            }
+                            })
+                    }
+                    else{
+                        setPassErr("Password and Confirm Password Not Matching")
+                        console.log('password and confirm password is not matching')
+                    }
+                }
+                else{
+                    setPassErr('Cannot set current Password to New Password')
+                }
         }
         else{
-            alert('pass null')
+            setPassErr('Fill All Fields')
         }
 
-
-
-     
     }
 
     const informationUpdate = () => {
@@ -63,11 +99,21 @@ const Profile = () => {
         alert('Social Media Update')
     }
 
+
+
+
+    const passInputChange = () =>{
+        setPassErr('')
+    }
+
+
+
+
     return (
         <>
-            <NavbarEvents />
+            <NavbarHome />
 
-           
+
 
             <div className="profile_form_parent">
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
@@ -108,9 +154,6 @@ const Profile = () => {
                         </div>
                     </Tab>
 
-
-
-
                     <Tab eventKey="socialMedia" title="Social Media" >
                         <div className="social_media_div">
                             <h5>Add Social Media Links</h5>
@@ -143,19 +186,22 @@ const Profile = () => {
                             <Form style={{ marginTop: '25px' }}>
                                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                     <Form.Label>Current password</Form.Label>
-                                    <Form.Control type="text" placeholder='Current Password' />
+                                    <Form.Control type="text"  placeholder='Current Password' id="current_password" onChange={passInputChange} />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                     <Form.Label>New Password</Form.Label>
-                                    <Form.Control type="text" placeholder='Enter Password' />
+                                    <Form.Control type="text" placeholder='Enter Password' id="new_password" onChange={passInputChange} />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                     <Form.Label>Confirm New Password</Form.Label>
-                                    <Form.Control type="text" placeholder='Confirm Password' />
+                                    <Form.Control type="text" placeholder='Confirm Password' id="confirm_new_password" onChange={passInputChange}  />
                                 </Form.Group>
+
                                 <Button variant="primary" onClick={passwordUpdate}>Save</Button>
+                                <p style={{color:'red',marginTop:"20px"}}>{passErr}</p>
+                                
                             </Form>
                         </div>
                     </Tab>

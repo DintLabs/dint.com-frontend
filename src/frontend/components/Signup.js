@@ -1,8 +1,10 @@
 import {useState} from 'react';
-import { Route, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../material/signup.css';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getDatabase,ref,set } from "firebase/database";
 import { initializeApp } from 'firebase/app';
+import "firebase/database";
 import $ from 'jquery';
 import Footer from './Footer'
 import NavbarHome from './NavbarHome';
@@ -31,7 +33,7 @@ const [error_msg,setSignErr] = useState('')
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-
+ 
 
 
     const signup_sub = () => {
@@ -45,10 +47,27 @@ const [error_msg,setSignErr] = useState('')
                 // email and password matched Successfully
                 createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    const user = userCredential.user;
                     console.log('Registration Success') 
-
-                    navigate('/login')
+                    const user = auth.currentUser;
+                    
+                    const database = getDatabase();
+                    var userData ={
+                        email:email,
+                        type:'simple',
+                        name:'user',
+                        biography:'no biography yet',
+                        city:'null',
+                        profileImage:'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
+                        twitter:'null',
+                        instagram:'null',
+                        discord:'null'
+                    }
+                    set(ref(database, 'users/' + user.uid),userData).then(()=>{
+                        console.log('profile detail saved')
+                    }).catch((e)=>{
+                        console.log(e)
+                    })
+                    navigate('/login/ ')
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -72,7 +91,6 @@ const [error_msg,setSignErr] = useState('')
                           break;
                         default:
                           alert(error.message);
-   
                           break;
                       }
                 });

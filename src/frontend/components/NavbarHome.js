@@ -22,7 +22,7 @@ const NavbarHome = () =>{
 
      const logout = () => {
     sessionStorage.removeItem("logged");
-    window.location.reload()
+    navigate('/')
   }
 
   const EditProfile = () =>{
@@ -76,46 +76,46 @@ const NavbarHome = () =>{
       })
     }
   
-    const connectMetamask = async () => {
-      if (typeof window.ethereum !== 'undefined') {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        if (accounts[0]) {
-          closeNav();
-          Swal.fire({
-            title: 'Metamask Connected Successfully',
-            confirmButtonText: 'Go To Marketplace',
-            icon:'success',
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              navigate("/marketplace");
-            } 
-          })
-        }
-        else {
-          alert('connection problem')
-        }
-        // Get provider from Metamask
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        // Set signer
-        const signer = provider.getSigner()
-        window.ethereum.on('chainChanged', (chainId) => {
-          window.location.reload();
-        })
-        window.ethereum.on('accountsChanged', async function (accounts) {
-          await connectMetamask()
-        })
-      }
-      else {
-        Swal.fire({
-          title: 'Error!',
-          text: 'Metamask is not installed',
-          icon: 'error',
-          confirmButtonText: 'Close',
-          footer: '<a href="https://metamask.io/">Click Here to Install Metamask </a>'
-        })
-      }
-    }
+    // const connectMetamask = async () => {
+    //   if (typeof window.ethereum !== 'undefined') {
+    //     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    //     if (accounts[0]) {
+    //       closeNav();
+    //       Swal.fire({
+    //         title: 'Metamask Connected Successfully',
+    //         confirmButtonText: 'Go To Marketplace',
+    //         icon:'success',
+    //       }).then((result) => {
+    //         /* Read more about isConfirmed, isDenied below */
+    //         if (result.isConfirmed) {
+    //           navigate("/marketplace");
+    //         } 
+    //       })
+    //     }
+    //     else {
+    //       alert('connection problem')
+    //     }
+    //     // Get provider from Metamask
+    //     const provider = new ethers.providers.Web3Provider(window.ethereum)
+    //     // Set signer
+    //     const signer = provider.getSigner()
+    //     window.ethereum.on('chainChanged', (chainId) => {
+    //       window.location.reload();
+    //     })
+    //     window.ethereum.on('accountsChanged', async function (accounts) {
+    //       await connectMetamask()
+    //     })
+    //   }
+    //   else {
+    //     Swal.fire({
+    //       title: 'Error!',
+    //       text: 'Metamask is not installed',
+    //       icon: 'error',
+    //       confirmButtonText: 'Close',
+    //       footer: '<a href="https://metamask.io/">Click Here to Install Metamask </a>'
+    //     })
+    //   }
+    // }
 
     return (
         <>
@@ -158,7 +158,7 @@ const NavbarHome = () =>{
                  
                 </> :
                   <>
-                    <li id='no_effect_li'><Link id='no_effect' to="/login">login</Link></li>
+                    <li id='no_effect_li'><Link id='no_effect' to="/login/ ">login</Link></li>
                     <li id='no_effect_li'><Link id='no_effect' to="/signup">Signup</Link></li>
                   </>
                 }

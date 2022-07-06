@@ -57,9 +57,9 @@ const MetamaskLogin = () =>{
       if (accounts[0]) {
           const provider = new ethers.providers.Web3Provider(window.ethereum);
         const balance = await provider.getBalance(accounts[0]);
-        const balanceInEth = ethers.utils.formatEther(balance);        
+        const balanceInEth = parseFloat(ethers.utils.formatEther(balance));
         SetWallet(accounts[0])
-        setBalance(balanceInEth)
+        setBalance(balanceInEth.toFixed(6))
         window.isWallet = true;
 
       }
@@ -102,7 +102,7 @@ const MetamaskLogin = () =>{
                     </div>
                     <div className="wallets_parent_div" id='balance_parent'>
                         <small>Account Balance</small>
-                        <h1>{balance}</h1>
+                        <h4>{balance}</h4>
                     </div>
                     </div>
                 </>

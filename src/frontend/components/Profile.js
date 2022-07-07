@@ -115,7 +115,6 @@ const Profile = () => {
     // get values from database
     const getdatavalues =(uid)=>{
       
-
         get(child(ref(db), `users/${uid}`)).then((snapshot) => {
             if (snapshot.exists()) {
                 $('#profileName').val(snapshot.val().name)

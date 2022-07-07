@@ -9,7 +9,7 @@ import $ from 'jquery';
 import { ethers } from "ethers";
 import { Dropdown } from 'react-bootstrap';
 import MetamaskLogin from "./MetamaskLogin";
-
+import {auth} from './Firebase'
 const Swal = require('sweetalert2');
 
 const NavbarHome = () =>{
@@ -21,6 +21,11 @@ const NavbarHome = () =>{
   let navigate = useNavigate();
 
      const logout = () => {
+      auth.signOut().then(()=>{
+        alert('logout success')
+      }).catch((e)=>{
+        console.log(e)
+      })
     sessionStorage.removeItem("logged");
     navigate('/')
   }

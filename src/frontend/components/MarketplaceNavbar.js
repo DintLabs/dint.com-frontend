@@ -7,6 +7,7 @@ import { CgProfile } from "react-icons/cg";
 import $ from 'jquery';
 import Metamask_icon from "../material/metamask.svg";
 import MetamaskLogin from './MetamaskLogin'
+import {auth} from './Firebase'
 const Swal = require('sweetalert2');
 
 
@@ -15,6 +16,11 @@ const Navigation = ({ web3Handler, account }) => {
   var isLoggedin = sessionStorage.getItem("logged");
 
      const logout = () => {
+        auth.signOut().then(()=>{
+            alert('logout success')
+          }).catch((e)=>{
+            console.log(e)
+          })
         sessionStorage.clear();  
         window.location.reload()
       }

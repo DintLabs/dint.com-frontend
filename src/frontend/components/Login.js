@@ -1,40 +1,31 @@
 
 import '../material/login.css';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword,setPersistence,browserSessionPersistence  } from "firebase/auth";
 import { useState } from 'react';
 import { useNavigate,Link } from 'react-router-dom';
 import $ from 'jquery';
 import Footer from './Footer'
 import NavbarHome from './NavbarHome';
+import {auth} from './Firebase'
+
 
 const Login = () => {
  
    
     var previousPage = window.location.pathname.split('/');
-    
-   
-   
 
     let navigate = useNavigate();
     const [error_msg_login, setLoginErr] = useState('')
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyAEeo_gs2YjZb_2SVCowrA0y_WHSoqg71E",
-        authDomain: "dint-3d4ac.firebaseapp.com",
-        databaseURL: "https://dint-3d4ac-default-rtdb.firebaseio.com",
-        projectId: "dint-3d4ac",
-        storageBucket: "dint-3d4ac.appspot.com",
-        messagingSenderId: "249686432294",
-        appId: "1:249686432294:web:6a939362861134f09264e7"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
+  
     const loginClicked = () => {
         var login_email = $('#login_email').val();
         var login_password = $('#login_password').val();
+
+
+        setPersistence(auth, browserSessionPersistence).then(() =>{
+
+       
 
         signInWithEmailAndPassword(auth, login_email, login_password)
             .then((userCredential) => {
@@ -42,9 +33,7 @@ const Login = () => {
                 sessionStorage.setItem('logged', true);
                 sessionStorage.setItem('user_email', login_email);
                 // change this for changing navigate path after login
-              
                     navigate("/"+previousPage[2])
-              
             })
             .catch((error) => {
                 switch (error.code) {
@@ -62,6 +51,9 @@ const Login = () => {
                         break;
                 }
             });
+        }).catch((e)=>{
+            alert(e.message)
+        })
     }
 
     return (

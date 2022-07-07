@@ -10,6 +10,7 @@ import Protected  from './Protected ';
 import './App.css';
 
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -17,10 +18,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login/*" element={<Login />} />
+
+        
         {/* if You Want to Make Any Page Password Protacted with Login Then Do Routing Like This */}
         <Route path="/marketplace/*" element={<Routes_Marketplace/>} />
         <Route path="/events" element={<Protected  cmp={Events} pagename={"events"} /> } />
-        <Route path="/profile" element={<Protected  cmp={Profile} /> } />
+        <Route path="/profile" element={<Protected  cmp={Profile}  /> } />
       </Routes>
     </BrowserRouter>
   );

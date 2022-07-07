@@ -1,41 +1,20 @@
 import NavbarHome from './NavbarHome'
-import '../material/Profile.css'
 import { Tabs, Tab, Form, Button } from 'react-bootstrap'
-import { initializeApp } from 'firebase/app';
-import { getAuth, updatePassword, signInWithEmailAndPassword } from "firebase/auth";
+import {  updatePassword, signInWithEmailAndPassword } from "firebase/auth";
 import $ from 'jquery';
 import { useState } from 'react';
-import { getDatabase, set,onValue ,get,child} from "firebase/database";
+import {  set ,get,child} from "firebase/database";
 import { ref} from "firebase/database";
+import {auth,db} from './Firebase'
+import '../material/Profile.css'
 import { useEffect } from 'react';
+import { getAuth ,onAuthStateChanged } from "firebase/auth";
+
+
 const Swal = require('sweetalert2');
-
-
-
-
-
 const Profile = () => {
-
     const [passErr, setPassErr] = useState('');
 
-    useEffect(()=>{
-        getdatavalues()
-    },[])
-   
-    const firebaseConfig = {
-        apiKey: "AIzaSyAEeo_gs2YjZb_2SVCowrA0y_WHSoqg71E",
-        authDomain: "dint-3d4ac.firebaseapp.com",
-        databaseURL: "https://dint-3d4ac-default-rtdb.firebaseio.com",
-        projectId: "dint-3d4ac",
-        storageBucket: "dint-3d4ac.appspot.com",
-        messagingSenderId: "249686432294",
-        appId: "1:249686432294:web:6a939362861134f09264e7"
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
-    const userId = auth.currentUser.uid;
-   
 
 
     // function for updating password
@@ -107,7 +86,7 @@ const Profile = () => {
           var uinsta = $('#instaLink').val()
              var discord = $('#discordLink').val()
    
-            set(ref(db, 'users/' + userId), {
+            set(ref(db, 'users/' + auth.currentUser.uid), {
                 name: uname,
                 biography: ubio,
                 type:'simple',
@@ -133,13 +112,11 @@ const Profile = () => {
 
     const passInputChange = () => { setPassErr('') }
 
-
-
     // get values from database
-    const getdatavalues =()=>{
+    const getdatavalues =(uid)=>{
+      
 
-
-        get(child(ref(db), `users/${userId}`)).then((snapshot) => {
+        get(child(ref(db), `users/${uid}`)).then((snapshot) => {
             if (snapshot.exists()) {
                 $('#profileName').val(snapshot.val().name)
                 $('#biography').val(snapshot.val().biography)
@@ -154,17 +131,26 @@ const Profile = () => {
           }).catch((error) => {
             console.error(error);
           });
-
-
     }
 
-
-
+    useEffect(()=>{
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+              const uid = user.uid;
+              getdatavalues(uid)
+            } else {
+            console.log('logout user')
+            }
+          });
+    },[])
 
     return (
         <>
             <NavbarHome />
             <div className="profile_form_parent">
+
+                {/* <button onClick={getdatavalues} id="getvalue_btn" >Click</button> */}
+
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
                     <Tab eventKey="home" title="Wallets">
                         <div className="wallet_info_div">

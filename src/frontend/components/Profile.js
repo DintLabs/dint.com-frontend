@@ -8,7 +8,7 @@ import { ref} from "firebase/database";
 import {auth,db} from './Firebase'
 import '../material/Profile.css'
 import { useEffect } from 'react';
-import { getAuth ,onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 
 
 const Swal = require('sweetalert2');
@@ -141,15 +141,12 @@ const Profile = () => {
             console.log('logout user')
             }
           });
-    },[])
+         },[])
 
     return (
         <>
             <NavbarHome />
             <div className="profile_form_parent">
-
-                {/* <button onClick={getdatavalues} id="getvalue_btn" >Click</button> */}
-
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
                     <Tab eventKey="home" title="Wallets">
                         <div className="wallet_info_div">

@@ -1,8 +1,9 @@
 import { Route, useNavigate } from 'react-router-dom';
-import {auth, db } from "./Firebase";
-import {ref,get,child} from "firebase/database";
+import { auth, db } from "./Firebase";
+import { ref, get, child } from "firebase/database";
 import $ from 'jquery';
 import Admin from './Admin';
+import { onAuthStateChanged } from "firebase/auth";
 const Swal = require('sweetalert2');
 
 
@@ -12,17 +13,6 @@ const Protected = props => {
     var Page_req = props.cmp;
     var pagename = props.pagename;
     var isLoggedin = sessionStorage.getItem("logged");
-
-
-    // get(child(ref(db), `users/${auth.currentUser.uid}`)).then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //       alert(snapshot.val().role)
-    //     } else {
-    //       console.log("No data available");
-    //     }
-    //   }).catch((error) => {
-    //     console.error(error);
-    //   });
 
 
 
@@ -36,21 +26,27 @@ const Protected = props => {
             cancelButtonColor: '#CBC9C9',
             confirmButtonText: 'Login',
             cancelButtonText: 'Back'
-        }).then((result) =>{
+        }).then((result) => {
             if (result.isConfirmed) {
-                navigate('/login/'+pagename )
+                navigate('/login/' + pagename)
             }
             else {
                 navigate('/', { replace: true })
             }
         })
     }
+    
+     
 
-    return (
-        <>
-            <Page_req  />
-        </>
-    )
+            return (
+                <>
+                    <Page_req />
+                </>
+            )
+      
+
+    
+
 }
 
 

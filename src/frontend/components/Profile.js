@@ -83,7 +83,7 @@ const Profile = () => {
             var ubio = $('#biography').val()
             var ucity = $('#city').val()
             var utwitter = $('#twitterLink').val()
-          var uinsta = $('#instaLink').val()
+            var uinsta = $('#instaLink').val()
              var discord = $('#discordLink').val()
    
             set(ref(db, 'users/' + auth.currentUser.uid), {

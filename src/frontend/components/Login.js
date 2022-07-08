@@ -12,10 +12,10 @@ import {auth} from './Firebase'
 
 const Login = () => {
  
-   
     var previousPage = window.location.pathname.split('/');
 
     let navigate = useNavigate();
+    
     const [error_msg_login, setLoginErr] = useState('')
   
     const loginClicked = () => {

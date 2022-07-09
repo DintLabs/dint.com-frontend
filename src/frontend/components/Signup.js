@@ -53,7 +53,7 @@ const [error_msg,setSignErr] = useState('')
                     const database = getDatabase();
                     var userData ={
                         email:email,
-                        type:'simple',
+                        role:'simple',
                         name:'user',
                         biography:'no biography yet',
                         city:'null',

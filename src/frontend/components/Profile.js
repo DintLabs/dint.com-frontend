@@ -3,8 +3,7 @@ import { Tabs, Tab, Form, Button } from 'react-bootstrap'
 import {  updatePassword, signInWithEmailAndPassword } from "firebase/auth";
 import $ from 'jquery';
 import { useState } from 'react';
-import {  set ,get,child} from "firebase/database";
-import { ref} from "firebase/database";
+import {  set ,get,child,ref,update} from "firebase/database";
 import {auth,db} from './Firebase'
 import '../material/Profile.css'
 import { useEffect } from 'react';
@@ -14,8 +13,6 @@ import { onAuthStateChanged } from "firebase/auth";
 const Swal = require('sweetalert2');
 const Profile = () => {
     const [passErr, setPassErr] = useState('');
-
-
 
     // function for updating password
     const passwordUpdate = () => {
@@ -86,10 +83,10 @@ const Profile = () => {
             var uinsta = $('#instaLink').val()
              var discord = $('#discordLink').val()
    
-            set(ref(db, 'users/' + auth.currentUser.uid), {
+            update(ref(db, 'users/' + auth.currentUser.uid), {
                 name: uname,
                 biography: ubio,
-                type:'simple',
+                role:'simple',
                 city: ucity,
                 discord: discord,
                 instagram: uinsta,

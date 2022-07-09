@@ -9,6 +9,7 @@ import Admin from './Admin.js';
 import TicketCreate from './TicketCreate.js';
 import Routes_Marketplace from './Routes_Marketplace.js';
 import Protected  from './Protected ';
+import AdminProtaction  from './AdminProtaction';
 import './App.css';
 
 
@@ -23,8 +24,13 @@ function App() {
         <Route path="/marketplace/*" element={<Routes_Marketplace/>} />
         <Route path="/events" element={<Events/> } />
         <Route path="/profile" element={<Protected  cmp={Profile} pagename="profile" /> } />
-        <Route path="/admin" element={<Protected  cmp={Admin}  pagename="admin" /> } />
         <Route path="/ticketcreate" element={<Protected  cmp={TicketCreate}  pagename="ticketcreate" /> } />
+
+
+
+        {/* Admin Login Route */}
+        {/* <Route path="/admin" element={<Protected  cmp={Admin}  pagename="admin" /> } /> */}
+        <Route path="/admin" element={<AdminProtaction/> } />
       </Routes>
     </BrowserRouter>
   );

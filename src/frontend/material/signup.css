@@ -10,6 +10,20 @@
     text-decoration: underline;
   }
 
+  #forgotPassText{
+    color: rgba(25, 25, 236, 0.596);
+  }
+  #forgotPassText:hover{
+    color: blue;
+    text-decoration: underline;
+  }
+
+  #forgotpassBtn{
+    margin-top: 10px;
+    border:none;
+    background-color: transparent;
+  }
+
   #signup_line{
     margin-top: 10px;
   }
@@ -100,3 +114,4 @@
     display: flex;
     align-items: center;
   }
+

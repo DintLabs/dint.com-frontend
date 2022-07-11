@@ -208,18 +208,13 @@ const Login = (props) => {
 
                     <button id='signup_btn' onClick={loginClicked}>Submit</button>
 
-
                     <p id="signup_line">  Not registered Yet? <Link to="/signup"> <span id='signup_here'> SignUp Here</span></Link></p>
-
                 <center>
                     <h4>or</h4>
-
                     <button onClick={googleSignin} className="authbtnsocial" style={{backgroundColor:'red'}}>Google</button>
                     <button onClick={fbSignin} className="authbtnsocial" style={{backgroundColor:'blue'}}>Facebook</button>
                     <button onClick={appleSignin} className="authbtnsocial" style={{backgroundColor:'black'}}>Iphone</button>
-
                     </center>
-
                 </div>
             </div>
             <Footer />

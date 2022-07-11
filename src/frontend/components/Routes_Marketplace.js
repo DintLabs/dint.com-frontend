@@ -19,7 +19,7 @@ import { Spinner } from 'react-bootstrap';
 import './App.css';
 const Swal = require('sweetalert2');
 
-function Marketplace_app() {
+function Marketplace_app(props) {
 
   const [loading, setLoading] = useState(true)
   const [account, setAccount] = useState(null)
@@ -35,7 +35,6 @@ function Marketplace_app() {
   const checkConnection = () =>{
     window.ethereum.request({ method: 'eth_accounts' }).then(handleAccountsChanged).catch(console.error);
   }
-
 
   function handleAccountsChanged(accounts) {
     setAccount(accounts[0])
@@ -86,7 +85,7 @@ function Marketplace_app() {
     <>
       <div className="App">
         <>
-          <Navigation web3Handler={web3Handler} account={account} />
+          <Navigation web3Handler={web3Handler} account={account} islogin={props.islogin} />
         </>
         <div>
           {loading ? (

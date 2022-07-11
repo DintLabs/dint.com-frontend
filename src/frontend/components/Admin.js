@@ -4,11 +4,12 @@ import { get, getDatabase, ref, set, child, collection } from "firebase/database
 import { db } from "./Firebase";
 import { useEffect, useState } from 'react';
 import { Tabs, Tab, Form, Button, Table, Modal, Card } from 'react-bootstrap';
-
+import mainlogo from '../material/white.png';
+import { useNavigate } from 'react-router-dom';
 
 const Admin = () => {
 
-
+    let navigate = useNavigate(); 
     const [eventslist, setEventsData] = useState([])
     const [SelectedeventNameFirebase, setSelectedEventNameFirebase] = useState('')
     const [show, setShow] = useState(false);
@@ -177,6 +178,17 @@ const Admin = () => {
 
 
 
+
+    const adminLogout = () =>{
+        navigate('/')
+        window.location.reload()
+    }
+
+
+    const adminLogoClicked = () =>{
+        navigate('/')
+    }
+
     useEffect(() => {
         getEvents()
         getVanues()
@@ -185,6 +197,12 @@ const Admin = () => {
 
     return (
         <>
+        <div id="navbarAdmin">
+            <div id="navbarAdminChild">
+                <div><img id="admin_logo_img" src={mainlogo} height={"50px"} onClick={adminLogoClicked}></img></div>
+                <div><button id='adminLogoutBtn' onClick={adminLogout}>Logout</button></div>
+                </div>
+        </div>
 
             <div id="admin_form_parent">
                 <div id='admin_form_child'>

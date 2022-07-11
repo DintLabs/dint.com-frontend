@@ -11,8 +11,10 @@ import { onAuthStateChanged } from "firebase/auth";
 
 
 const Swal = require('sweetalert2');
-const Profile = () => {
+const Profile = (props) => {
+
     const [passErr, setPassErr] = useState('');
+    const [userrole, setUserRole] = useState('');
 
     // function for updating password
     const passwordUpdate = () => {
@@ -23,7 +25,7 @@ const Profile = () => {
         if (current_password !== "" && new_password !== "" && confirm_new_password !== "") {
             if (current_password !== new_password) {
                 if (new_password == confirm_new_password) {
-                    signInWithEmailAndPassword(auth, sessionStorage.getItem('user_email'), current_password)
+                    signInWithEmailAndPassword(auth, auth.currentUser.uid , current_password)
                         .then((userCredential) => {
                             const user = auth.currentUser;
                             // update password function
@@ -86,7 +88,7 @@ const Profile = () => {
             update(ref(db, 'users/' + auth.currentUser.uid), {
                 name: uname,
                 biography: ubio,
-                role:'simple',
+                role:userrole,
                 city: ucity,
                 discord: discord,
                 instagram: uinsta,
@@ -114,6 +116,14 @@ const Profile = () => {
       
         get(child(ref(db), `users/${uid}`)).then((snapshot) => {
             if (snapshot.exists()) {
+
+                if(snapshot.val() == '' || snapshot.val()==undefined)
+                {
+                    setUserRole('simple')
+                }
+                else{
+                    setUserRole(snapshot.val().role)
+                }
                 $('#profileName').val(snapshot.val().name)
                 $('#biography').val(snapshot.val().biography)
                 $('#city').val(snapshot.val().city)
@@ -142,7 +152,7 @@ const Profile = () => {
 
     return (
         <>
-            <NavbarHome />
+            <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin}/>
             <div className="profile_form_parent">
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
                     <Tab eventKey="home" title="Wallets">

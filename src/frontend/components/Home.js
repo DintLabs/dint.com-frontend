@@ -10,7 +10,7 @@ import $ from 'jquery';
 
 
 
-const Homepage = () => {
+const Homepage = (props) => {
   let navigate = useNavigate();
 
   
@@ -100,7 +100,8 @@ const Homepage = () => {
   // }
 
   const logout = () => {
-    sessionStorage.removeItem("logged");
+    props.logout()
+    // sessionStorage.removeItem("logged");
     window.location.reload()
   }
 
@@ -113,7 +114,7 @@ const Homepage = () => {
       <div>
         {/* ======= Header ======= */}
         
-<NavbarHome/>
+    <NavbarHome isadmin={props.isAdmin} isloggedin={props.islogin} logout={props.logout}/>
 
 
 

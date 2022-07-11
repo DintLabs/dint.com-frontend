@@ -1,14 +1,14 @@
-import { getAuth, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, sendPasswordResetEmail, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, sendPasswordResetEmail, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider } from "firebase/auth";
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import {  set ,get,child,ref} from "firebase/database";
+import { get, child, ref } from "firebase/database";
 import $ from 'jquery';
 import Footer from './Footer'
 import NavbarHome from './NavbarHome';
-import { auth,db } from './Firebase'
+import { auth, db } from './Firebase'
 
 
-const Login = () => {
+const Login = (props) => {
 
     var previousPage = window.location.pathname.split('/');
 
@@ -24,15 +24,21 @@ const Login = () => {
         setPersistence(auth, browserSessionPersistence).then(() => {
             signInWithEmailAndPassword(auth, login_email, login_password)
                 .then((userCredential) => {
-                    sessionStorage.setItem('logged', true);
-                    sessionStorage.setItem('user_email', login_email);
-                    // change this for changing navigate path after login
 
+
+                    // sessionStorage.setItem('logged', true);
+                    // sessionStorage.setItem('user_email', login_email);
+                    props.loginStateChange()
+                    props.setemail(login_email)
+
+
+                    // for get role of loggedin user
                     get(child(ref(db), `users/${userCredential.user.uid}/role`)).then((snapshot) => {
-                        console.log(snapshot.val())
-                        sessionStorage.setItem('role',snapshot.val())
-                        console.log('session saved')
-                    }).catch((e)=>{
+                        // sessionStorage.setItem('role',snapshot.val())
+                        if (snapshot.val() == 'admin') {
+                            props.isadmin()
+                        }
+                    }).catch((e) => {
                         alert(e)
                         console.log(e)
                     })
@@ -89,41 +95,102 @@ const Login = () => {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
         setPersistence(auth, browserSessionPersistence).then(() => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                sessionStorage.setItem('logged', true);
-                sessionStorage.setItem('user_email', user.email);
-                navigate("/" + previousPage[2])
-                // ...
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                const email = error.customData.email;
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                alert.log(errorMessage)
-                
-            });
-        }).catch((e)=>{alert(e)})
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    // This gives you a Google Access Token. You can use it to access the Google API.
+                    const credential = GoogleAuthProvider.credentialFromResult(result);
+                    const token = credential.accessToken;
+                    // The signed-in user info.
+                    const user = result.user;
+                    props.loginStateChange()
+                    props.setemail(user.email)
+                    // sessionStorage.setItem('logged', true);
+                    // sessionStorage.setItem('user_email', user.email);
+                    navigate("/" + previousPage[2])
+
+                }).catch((error) => {
+                    // Handle Errors here.
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    const email = error.customData.email;
+                    const credential = GoogleAuthProvider.credentialFromError(error);
+                    alert.log(errorMessage)
+
+                });
+        }).catch((e) => { alert(e) })
     }
 
 
+
+    const fbSignin = () => {
+        const provider = new FacebookAuthProvider();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // The signed-in user info.
+                const user = result.user;
+                console.log(user)
+                props.loginStateChange()
+                props.setemail(user.email)
+                // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                const credential = FacebookAuthProvider.credentialFromResult(result);
+                const accessToken = credential.accessToken;
+
+                // ...
+            })
+            .catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = FacebookAuthProvider.credentialFromError(error);
+
+                // ...
+            });
+    }
+
+    const appleSignin = () => {
+        const provider = new OAuthProvider('apple.com');
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // The signed-in user info.
+                const user = result.user;
+
+                console.log(user)
+                props.loginStateChange()
+                props.setemail(user.email)
+                // Apple credential
+                const credential = OAuthProvider.credentialFromResult(result);
+                const accessToken = credential.accessToken;
+                const idToken = credential.idToken;
+
+                // ...
+            })
+            .catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The credential that was used.
+                const credential = OAuthProvider.credentialFromError(error);
+
+                // ...
+            });
+
+    }
 
 
 
     return (
         <>
-
             <NavbarHome />
             <div className='login_divs'>
                 <div className="container">
                     <div className="header">
                         <h2>Login</h2>
+                        <h1>{props.islogin}</h1>
                     </div>
 
                     <div className="form-control">
@@ -144,7 +211,15 @@ const Login = () => {
 
                     <p id="signup_line">  Not registered Yet? <Link to="/signup"> <span id='signup_here'> SignUp Here</span></Link></p>
 
-                    <button onClick={googleSignin}>Google</button>
+                <center>
+                    <h4>or</h4>
+
+                    <button onClick={googleSignin} className="authbtnsocial" style={{backgroundColor:'red'}}>Google</button>
+                    <button onClick={fbSignin} className="authbtnsocial" style={{backgroundColor:'blue'}}>Facebook</button>
+                    <button onClick={appleSignin} className="authbtnsocial" style={{backgroundColor:'black'}}>Iphone</button>
+
+                    </center>
+
                 </div>
             </div>
             <Footer />

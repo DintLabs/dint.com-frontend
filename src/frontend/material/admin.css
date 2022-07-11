@@ -1,6 +1,5 @@
 #admin_form_parent{
     min-height: 100vh;
-    width: 70%;
     margin: auto;
     display: flex;
     align-items: center;
@@ -11,7 +10,36 @@
     border-radius: 15px;
     min-height: 900px;
     width: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.256);
+    
     box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
 
+#navbarAdmin{
+    height: 70px;
+    background-color:black;
+}
+#navbarAdminChild{
+    height: 100%;
+    width: 70%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+#adminLogoutBtn{
+    padding: 10px;
+    background-color: rgb(164, 20, 20);
+    color: aliceblue;
+    border-radius: 10px;
+}
+
+#adminLogoutBtn:hover{
+    background-color: red;
+}
+
+
+#admin_logo_img:hover{
+    cursor: pointer;
+}

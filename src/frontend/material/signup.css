@@ -115,3 +115,10 @@
     align-items: center;
   }
 
+  .authbtnsocial{
+    padding: 10px;
+    margin-left: 25px;
+    border-radius: 15px;
+    border: 0;
+    color: white;
+  }

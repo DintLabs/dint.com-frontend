@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 import $ from 'jquery';
 import { Card, Button, CardGroup, Row, Col, Container } from 'react-bootstrap';
 
-const Events = () => {
+const Events = (props) => {
     let navigate = useNavigate();
 
     const [eventsdata, setEventdata] = useState([])
@@ -43,14 +43,13 @@ const Events = () => {
     return (
         <>
 
-            <NavbarHome />
-
+            <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
             <div id="events">
 
 
-<br/><br/>
+            <br/><br/>
 
-                <center> <h1>Events</h1></center>
+                <center> <h1>Events </h1></center>
                 <br/><br/>
                 <Container>
                     <Row xs={1} md={3} className="g-4">

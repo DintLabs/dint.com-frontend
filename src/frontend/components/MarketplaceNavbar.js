@@ -11,18 +11,17 @@ import {auth} from './Firebase'
 const Swal = require('sweetalert2');
 
 
-const Navigation = ({ web3Handler, account }) => {
+const Navigation = ({ web3Handler, account,islogin }) => {
     let navigate = useNavigate();     
-  var isLoggedin = sessionStorage.getItem("logged");
+ 
 
      const logout = () => {
         auth.signOut().then(()=>{
             alert('logout success')
+            window.location.reload()
           }).catch((e)=>{
             console.log(e)
-          })
-        sessionStorage.clear();  
-        window.location.reload()
+          }) 
       }
     
       const EditProfile = () =>{
@@ -47,7 +46,7 @@ const Navigation = ({ web3Handler, account }) => {
                         <Nav.Link as={Link} to="/marketplace/my-purchases" className="navlinks">My Purchases</Nav.Link>
                     </Nav>
                     <div id="nav_last_part">
-                        {isLoggedin ? <>
+                        {islogin ? <>
                             {/* <div className="navlinks"></div> */}
                             <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic" style={{ backgroundColor: 'transparent', border: 0, marginLeft: '15px' }}>

@@ -2,20 +2,19 @@ import { Route, useNavigate } from 'react-router-dom';
 import { auth, db } from "./Firebase";
 import { ref, get, child } from "firebase/database";
 import $ from 'jquery';
-
 import { onAuthStateChanged } from "firebase/auth";
 const Swal = require('sweetalert2');
 
 
 
-const Protected = props => {
+const Protected = (props) => {
    
 
     let navigate = useNavigate();
 
     var Page_req = props.cmp;
     var pagename = props.pagename;
-    var isLoggedin = sessionStorage.getItem("logged");
+    var isLoggedin = props.islogin;
 
     if (!isLoggedin) {
         Swal.fire({
@@ -37,11 +36,9 @@ const Protected = props => {
         })
     }
     
-     
-
             return (
                 <>
-                    <Page_req />
+                    <Page_req userEmail={props.userEmail} logout={props.logout} isAdmin={props.isAdmin} islogin={props.islogin} />
                 </>
             )
       

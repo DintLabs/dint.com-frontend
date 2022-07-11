@@ -12,21 +12,22 @@ import MetamaskLogin from "./MetamaskLogin";
 import {auth} from './Firebase'
 const Swal = require('sweetalert2');
 
-const NavbarHome = () =>{
+const NavbarHome = (props) =>{
 
-
-
-
-  var isLoggedin = sessionStorage.getItem("logged");
+  var isLoggedin = props.isloggedin;
   let navigate = useNavigate();
+
 
      const logout = () => {
       auth.signOut().then(()=>{
         alert('logout success')
+        props.logout()
+        window.location.reload()
       }).catch((e)=>{
         console.log(e)
       })
-    sessionStorage.removeItem("logged");
+      
+    // sessionStorage.removeItem("logged");
     navigate('/')
   }
 
@@ -134,6 +135,8 @@ const NavbarHome = () =>{
               <ul>
                 <li className="mobile-logo"> <a href="https://dint.com"><img src="https://dint.com/assets/img/apple-touch-icon.png " alt="logo" /> </a></li>
 
+
+              {props.isadmin ? <Link to="/admin">Admin</Link> : '' }
 
 
                 <li id='no_effect_li'><Link id='no_effect' to="/events" state={{ from: "events" }}>Events</Link></li>

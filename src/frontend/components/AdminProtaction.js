@@ -4,7 +4,7 @@ import AdminerrorSvg  from '../material/adminerr.svg'
 import {  useNavigate } from 'react-router-dom';
 
 
-const AdminProtaction =() =>{
+const AdminProtaction =(props) =>{
        
     var adminBtnCss ={
         padding:"10px",
@@ -17,9 +17,14 @@ const AdminProtaction =() =>{
 
     let navigate = useNavigate();
 
-        var isLoggedin = sessionStorage.getItem("logged");
-        var role = sessionStorage.getItem("role");
+        // var isLoggedin = sessionStorage.getItem("logged");
+        // var role = sessionStorage.getItem("role");
           
+
+            var isLoggedin = props.loggedin;
+            var isadmin = props.isAdmin;
+
+
         if(!isLoggedin)
         {
             return(
@@ -32,7 +37,7 @@ const AdminProtaction =() =>{
         }
         else{
 
-            if(role == 'admin')
+            if(isadmin)
             {
                 return (
                     <>

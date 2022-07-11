@@ -48,7 +48,7 @@ function App() {
         
         <Route path="/events" element={<Events logout={setLoginfalse} isAdmin={isadmin}  islogin={loggedin}/>} />
 
-        <Route path="/profile" element={<Protected cmp={Profile} pagename="profile" logout={setLoginfalse} isAdmin={isadmin}  islogin={loggedin} />}   />
+        <Route path="/profile" element={<Protected cmp={Profile} pagename="profile" logout={setLoginfalse} isAdmin={isadmin}  islogin={loggedin} />}  />
 
         <Route path="/ticketcreate" element={<Protected cmp={TicketCreate} pagename="ticketcreate"  logout={setLoginfalse} isAdmin={isadmin}  islogin={loggedin} />} />
 

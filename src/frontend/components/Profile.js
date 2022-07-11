@@ -1,10 +1,10 @@
 import NavbarHome from './NavbarHome'
 import { Tabs, Tab, Form, Button } from 'react-bootstrap'
-import {  updatePassword, signInWithEmailAndPassword } from "firebase/auth";
+import { updatePassword, signInWithEmailAndPassword } from "firebase/auth";
 import $ from 'jquery';
 import { useState } from 'react';
-import {  set ,get,child,ref,update} from "firebase/database";
-import {auth,db} from './Firebase'
+import { set, get, child, ref, update } from "firebase/database";
+import { auth, db } from './Firebase'
 import '../material/Profile.css'
 import { useEffect } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
@@ -25,7 +25,7 @@ const Profile = (props) => {
         if (current_password !== "" && new_password !== "" && confirm_new_password !== "") {
             if (current_password !== new_password) {
                 if (new_password == confirm_new_password) {
-                    signInWithEmailAndPassword(auth, auth.currentUser.uid , current_password)
+                    signInWithEmailAndPassword(auth, auth.currentUser.uid, current_password)
                         .then((userCredential) => {
                             const user = auth.currentUser;
                             // update password function
@@ -78,17 +78,16 @@ const Profile = (props) => {
     // function of updating user's profile information 
     const informationUpdate = () => {
         try {
-             var uname = $('#profileName').val()
+            var uname = $('#profileName').val()
             var ubio = $('#biography').val()
             var ucity = $('#city').val()
             var utwitter = $('#twitterLink').val()
             var uinsta = $('#instaLink').val()
-             var discord = $('#discordLink').val()
-   
+            var discord = $('#discordLink').val()
+
             update(ref(db, 'users/' + auth.currentUser.uid), {
                 name: uname,
                 biography: ubio,
-                role:userrole,
                 city: ucity,
                 discord: discord,
                 instagram: uinsta,
@@ -100,8 +99,6 @@ const Profile = (props) => {
                 .catch((error) => {
                     alert('error in update' + error)
                 });
-
-          
         }
         catch (e) {
             alert(e)
@@ -111,17 +108,17 @@ const Profile = (props) => {
 
     const passInputChange = () => { setPassErr('') }
 
+    
     // get values from database
-    const getdatavalues =(uid)=>{
-      
+    const getdatavalues = (uid) => {
+
         get(child(ref(db), `users/${uid}`)).then((snapshot) => {
             if (snapshot.exists()) {
 
-                if(snapshot.val() == '' || snapshot.val()==undefined)
-                {
+                if (snapshot.val() == '' || snapshot.val() == undefined) {
                     setUserRole('simple')
                 }
-                else{
+                else {
                     setUserRole(snapshot.val().role)
                 }
                 $('#profileName').val(snapshot.val().name)
@@ -130,29 +127,29 @@ const Profile = (props) => {
                 $('#twitterLink').val(snapshot.val().twitter)
                 $('#instaLink').val(snapshot.val().instagram)
                 $('#discordLink').val(snapshot.val().discord)
-                $('#profile_image_edit').attr('src',snapshot.val().profileImage)
+                $('#profile_image_edit').attr('src', snapshot.val().profileImage)
             } else {
-              console.log("No data available");
+                console.log("No data available");
             }
-          }).catch((error) => {
+        }).catch((error) => {
             console.error(error);
-          });
+        });
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-              const uid = user.uid;
-              getdatavalues(uid)
+                const uid = user.uid;
+                getdatavalues(uid)
             } else {
-            console.log('logout user')
+                console.log('logout user')
             }
-          });
-         },[])
+        });
+    }, [])
 
     return (
         <>
-            <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin}/>
+            <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
             <div className="profile_form_parent">
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
                     <Tab eventKey="home" title="Wallets">
@@ -168,7 +165,7 @@ const Profile = (props) => {
                                 <Form>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Name</Form.Label>
-                                        <Form.Control type="text" placeholder='Name'  id="profileName" />
+                                        <Form.Control type="text" placeholder='Name' id="profileName" />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                                         <Form.Label>Biography</Form.Label>
@@ -176,35 +173,35 @@ const Profile = (props) => {
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>City</Form.Label>
-                                        <Form.Control  type="text" id="city" placeholder='city' />
+                                        <Form.Control type="text" id="city" placeholder='city' />
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
-                                    <Form.Label>Twitter</Form.Label>
-                                    <Form.Control type="text"  placeholder='URL' id="twitterLink" />
-                                </Form.Group>
+                                        <Form.Label>Twitter</Form.Label>
+                                        <Form.Control type="text" placeholder='URL' id="twitterLink" />
+                                    </Form.Group>
 
-                                <Form.Group className="mb-3" >
-                                    <Form.Label>Instagram</Form.Label>
-                                    <Form.Control type="text" id="instaLink" placeholder='URL' />
-                                </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Instagram</Form.Label>
+                                        <Form.Control type="text" id="instaLink" placeholder='URL' />
+                                    </Form.Group>
 
-                                <Form.Group className="mb-3" >
-                                    <Form.Label>Discord</Form.Label>
-                                    <Form.Control type="text" id="discordLink" placeholder='URL' />
-                                </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Discord</Form.Label>
+                                        <Form.Control type="text" id="discordLink" placeholder='URL' />
+                                    </Form.Group>
                                     <Button variant="primary" onClick={informationUpdate}>Save</Button>
                                 </Form>
                             </div>
                             <div className="profile_div_child profile_img_div">
                                 <div id="edit_image_print">
-                                   <img  id='profile_image_edit'></img>
+                                    <img id='profile_image_edit'></img>
                                 </div>
 
                             </div>
                         </div>
                     </Tab>
 
-            
+
                     <Tab eventKey="account" title="Account" >
                         <div className="forgot_password_div">
                             <h5>Change Your Password</h5>

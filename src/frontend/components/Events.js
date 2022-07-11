@@ -1,12 +1,10 @@
 import Footer from './Footer'
-import Navbar from './MarketplaceNavbar'
-import { Link } from 'react-router-dom'
 import "../material/Event.css"
 import mainlogo from '../material/white.png';
 import NavbarHome from './NavbarHome'
 import { useNavigate } from 'react-router-dom';
 import { get, getDatabase, ref, set, child, collection } from "firebase/database";
-import { db } from "./Firebase";
+import {auth, db } from "./Firebase";
 import { useState, useEffect } from 'react';
 import $ from 'jquery';
 import { Card, Button, CardGroup, Row, Col, Container } from 'react-bootstrap';
@@ -38,11 +36,8 @@ const Events = (props) => {
         getEventsfirebase()
     }, [])
 
-
-
     return (
         <>
-
             <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
             <div id="events">
 
@@ -61,7 +56,7 @@ const Events = (props) => {
                                         <Card.Body>
                                             <Card.Title><b>{ev.eventName}</b></Card.Title>
                                             <Card.Text>
-                                                {ev.eventDescription}
+                                            {ev.eventDescription}
                                             </Card.Text>
                                             <hr></hr>
                                             <h6>Date  : {ev.eventDate} </h6>
@@ -69,33 +64,10 @@ const Events = (props) => {
                                             <h6>End Time    :  {ev.eventEndTime} </h6>
                                             <h6>Vanue Name : {ev.venueName} </h6>
                                             <br />
-                                            <Button variant="primary" onClick={()=>navigate('/ticketcreate')}>Get Ticket</Button>
+                                            <Button variant="primary" onClick={()=>navigate('/ticketcreate', {state:{eventid: ev.eventId, userid: auth.currentUser.uid}})}>Get Ticket</Button>
                                         </Card.Body>
                                     </Card>
                                 </Col>
-
-                                {/* <Card style={{ width: '18rem' }} key={index}>
-                            <Card.Img variant="top" src={ev.eventPhoto} style={{height:'150px'},{width:'200px'}}/>
-                            <Card.Body>
-                                <Card.Title>{ev.eventName}</Card.Title>
-                                <Card.Text>
-                                    {ev.eventDescription}
-                                </Card.Text>
-                                <Card.Text>
-                                    {ev.eventStartTime}
-                                </Card.Text>
-                                <Card.Text>
-                                    {ev.eventEndTime}
-                                </Card.Text>
-                                <Card.Text>
-                                    {ev.eventDate}
-                                </Card.Text>
-                                <Card.Text>
-                                    {ev.venueName}
-                                </Card.Text>
-                                <Button variant="primary">Get Ticket</Button>
-                            </Card.Body>
-                        </Card> */}
                             </>
 
                         ))

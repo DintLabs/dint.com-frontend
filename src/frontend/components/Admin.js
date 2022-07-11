@@ -1,6 +1,6 @@
 import '../material/admin.css';
 import $ from 'jquery';
-import { get, getDatabase, ref, set, child, collection } from "firebase/database";
+import { get, getDatabase, ref, set,update, child, collection } from "firebase/database";
 import { db } from "./Firebase";
 import { useEffect, useState } from 'react';
 import { Tabs, Tab, Form, Button, Table, Modal, Card } from 'react-bootstrap';
@@ -29,11 +29,16 @@ const Admin = () => {
         const edate = $('#eventDate').val();
         const starttime = $('#startTime').val();
         const endtime = $('#endTime').val();
-        
+        const network = $('#network').val();
+        const address = $('#address').val();
+        const balanceRequired = $('#balanceRequired').val();
+        const eventType = $('#eventType').val();
+        const eventid = Math.floor((Math.random() * 100000) + 999999)
 
         if (ename !== "" || vanueDropdown !== "" || edesc !== "" || edate !== "" || starttime !== "" || endtime !== "") {
 
             var eventData = {
+                eventId:eventid,
                 eventName: ename,
                 venueName: vanueDropdown,
                 eventDescription: edesc,
@@ -41,7 +46,11 @@ const Admin = () => {
                 eventStartTime: starttime,
                 eventEndTime: endtime,
                 eventPhoto: 'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                eventdateCreated: yyyy+'-'+mm+'-'+dd
+                eventdateCreated: yyyy+'-'+mm+'-'+dd,
+                network:network,
+                tokenaddress:address,
+                balanceRequired:balanceRequired,
+                eventType:eventType
             }
 
 
@@ -154,14 +163,14 @@ const Admin = () => {
         const updatededate = $('#eventDateedit').val();
         const updatedstarttime = $('#startTimeedit').val();
         const updatedendtime = $('#endTimeedit').val();
-        set(ref(db, 'events/' + SelectedeventNameFirebase), {
+        update(ref(db, 'events/' + SelectedeventNameFirebase), {
             eventName: updatedename,
             venueName: updatedvanue,
             eventDescription: updatededesc,
             eventDate: updatededate,
             eventStartTime: updatedstarttime,
             eventEndTime: updatedendtime,
-            eventPhoto: 'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+           
         }).then(() => {
             alert('update success')
             getEvents()
@@ -309,13 +318,37 @@ const Admin = () => {
                                 <Form.Control id="eventDate" type="date" />
                             </Form.Group>
                             <Form.Group className="mb-3" >
-                                <Form.Label>Start Time</Form.Label>
-                                <Form.Control type="time" id="startTime" />
+                                <Form.Label>Event</Form.Label>
+                                <Form.Select className="mb-3" aria-label="Default select example" id="vanueDropdownedit" >
+                                        </Form.Select>
+                            </Form.Group>
+
+                                <h4>Settings</h4>
+                    
+                            {/* settings */}
+                            <Form.Group className="mb-3" >
+                                <Form.Label>Network</Form.Label>
+                                <Form.Control type="text" id="network" />
                             </Form.Group>
                             <Form.Group className="mb-3" >
-                                <Form.Label>End Time</Form.Label>
-                                <Form.Control type="time" id="endTime" />
+                                <Form.Label>Address</Form.Label>
+                                <Form.Control type="text" id="address" />
                             </Form.Group>
+                            <Form.Group className="mb-3" >
+                                <Form.Label>Balance Required</Form.Label>
+                                <Form.Control type="text" id="balanceRequired" />
+                            </Form.Group>
+                            <Form.Group className="mb-3" >
+                                <Form.Label>Event Type</Form.Label>
+                                <Form.Select className="mb-3" aria-label="Default select example" id="eventType" >
+                                            <option>Once</option>
+                                            <option>Year</option>
+                                            <option>Monthly</option>
+                                            <option>Weekly</option>
+                                            <option>Quarterly</option>
+                                </Form.Select>
+                            </Form.Group>
+                          
 
                             <Button variant="primary" onClick={createEvent}>
                                 Submit

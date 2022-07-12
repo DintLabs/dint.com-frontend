@@ -30,13 +30,14 @@
 
 #adminLogoutBtn{
     padding: 10px;
-    background-color: rgb(164, 20, 20);
+    background-color: rgb(1, 4, 11);
     color: aliceblue;
     border-radius: 10px;
+    border: 1px solid white;
 }
 
 #adminLogoutBtn:hover{
-    background-color: red;
+    background-color: rgba(255, 255, 255, 0.203);
 }
 
 

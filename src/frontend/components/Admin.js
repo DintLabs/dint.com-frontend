@@ -1,9 +1,9 @@
 import '../material/admin.css';
 import $ from 'jquery';
-import { get, getDatabase, ref, set, update, child, collection } from "firebase/database";
+import { get, getDatabase, ref, set, update, child} from "firebase/database";
 import { db } from "./Firebase";
 import { useEffect, useState } from 'react';
-import { Tabs, Tab, Form, Button, Table, Modal, Card } from 'react-bootstrap';
+import { Tabs, Tab, Form, Button, Table } from 'react-bootstrap';
 import mainlogo from '../material/white.png';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ const Admin = () => {
         const network = $('#network').val();
         const address = $('#address').val();
         const balanceRequired = $('#balanceRequired').val();
-        const eventType = $('#eventType').val();
+        const EventFrequency = $('#EventFrequency').val();
         const eventid = Math.floor((Math.random() * 100000) + 999999)
 
         if (ename !== "" || vanueDropdown !== "" || edesc !== "" || edate !== "" || starttime !== "" || endtime !== "") {
@@ -50,7 +50,7 @@ const Admin = () => {
                 network: network,
                 tokenaddress: address,
                 balanceRequired: balanceRequired,
-                eventType: eventType
+                EventFrequency: EventFrequency
             }
 
 
@@ -155,7 +155,7 @@ const Admin = () => {
         $('#endTimeedit').val(data.eventEndTime);
         $('#networkedit').val(data.network);
         $('#addressedit').val(data.tokenaddress);
-        $('#eventTypeedit').val(data.eventType);
+        $('#EventFrequencyedit').val(data.EventFrequency);
         $('#balanceRequirededit').val(data.balanceRequired);
 
         setShow(true)
@@ -171,7 +171,7 @@ const Admin = () => {
         const updatenetwork = $('#networkdit').val();
         const updateaddress = $('#addressedit').val();
         const updatebalancerequired = $('#balanceRequirededit').val();
-        const updateeventtype = $('#eventTypeedit').val();
+        const updateEventFrequency = $('#EventFrequencyedit').val();
 
 
         update(ref(db, 'events/' + SelectedeventNameFirebase), {
@@ -184,7 +184,7 @@ const Admin = () => {
             network: updatenetwork,
             tokenaddress: updateaddress,
             balanceRequired: updatebalancerequired,
-            eventType: updateeventtype
+            EventFrequency: updateEventFrequency
 
         }).then(() => {
             alert('update success')
@@ -223,7 +223,7 @@ const Admin = () => {
         <>
             <div id="navbarAdmin">
                 <div id="navbarAdminChild">
-                    <div><img id="admin_logo_img" src={mainlogo} height={"50px"} onClick={adminLogoClicked}></img></div>
+                    <div><img id="admin_logo_img" src={mainlogo} height={"40px"} onClick={adminLogoClicked}></img></div>
                     <div><button id='adminLogoutBtn' onClick={adminLogout}>Logout</button></div>
                 </div>
             </div>
@@ -321,8 +321,8 @@ const Admin = () => {
                                             <Form.Control type="text" id="balanceRequirededit" />
                                         </Form.Group>
                                         <Form.Group className="mb-3" >
-                                            <Form.Label>Event Type</Form.Label>
-                                            <Form.Select className="mb-3" aria-label="Default select example" id="eventTypeedit" >
+                                            <Form.Label>Event Frequency</Form.Label>
+                                            <Form.Select className="mb-3" aria-label="Default select example" id="EventFrequencyedit" >
                                                 <option>Once</option>
                                                 <option>Year</option>
                                                 <option>Monthly</option>
@@ -382,17 +382,17 @@ const Admin = () => {
                                     <option>Polygon</option>
                                 </Form.Select>
                             </Form.Group>
-                            <Form.Group className="mb-3" >
+                            <Form.Group className="mb-3">
                                 <Form.Label>Address</Form.Label>
                                 <Form.Control type="text" id="address" />
                             </Form.Group>
-                            <Form.Group className="mb-3" >
+                            <Form.Group className="mb-3">
                                 <Form.Label>Balance Required</Form.Label>
                                 <Form.Control type="text" id="balanceRequired" />
                             </Form.Group>
-                            <Form.Group className="mb-3" >
-                                <Form.Label>Event Type</Form.Label>
-                                <Form.Select className="mb-3" aria-label="Default select example" id="eventType" >
+                            <Form.Group className="mb-3">
+                                <Form.Label>Event Frequency</Form.Label>
+                                <Form.Select className="mb-3" aria-label="Default select example" id="EventFrequency" >
                                     <option>Once</option>
                                     <option>Year</option>
                                     <option>Monthly</option>
@@ -423,18 +423,12 @@ const Admin = () => {
                                 <Form.Label>Address Link (Optional)</Form.Label>
                                 <Form.Control type="text" id="addvanueGmap" placeholder="Add Google map Link Here" />
                             </Form.Group>
-
                             <Button variant="primary" onClick={createVanue}>
                                 Submit
                             </Button>
-
-
-
                         </Tab>
-
                         <Tab eventKey="vanueshow" title="Vanue List">
                             <h1>Show vanue</h1>
-
                             <Table striped bordered hover>
                                 <thead>
                                     <tr>
@@ -442,16 +436,13 @@ const Admin = () => {
                                         <th> Vanue Name</th>
                                         <th> Vanue Address</th>
                                         <th> Google Map</th>
-
                                     </tr>
                                 </thead>
                                 <tbody id="vanuetable_body">
                                 </tbody>
                             </Table>
                         </Tab>
-
                     </Tabs>
-
                 </div>
             </div>
         </>

@@ -114,7 +114,7 @@ const Homepage = (props) => {
       <div>
         {/* ======= Header ======= */}
         
-    <NavbarHome isadmin={props.isAdmin} isloggedin={props.islogin} logout={props.logout}/>
+    <NavbarHome isadmin={props.isAdmin} isloggedin={props.islogin} logout={props.logout}  />
 
 
 

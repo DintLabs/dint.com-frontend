@@ -1,5 +1,4 @@
 import {
-  BrowserRouter,
   Routes,
   Route
 } from "react-router-dom";
@@ -39,9 +38,7 @@ function Marketplace_app(props) {
   function handleAccountsChanged(accounts) {
     setAccount(accounts[0])
     if (accounts.length !== 0) {
-      window.ethereum.on('chainChanged', (chainId) => {
-        window.location.reload();
-      })
+     
       window.ethereum.on('accountsChanged', async function (accounts) {
         setAccount(accounts[0])
         await web3Handler()
@@ -60,9 +57,7 @@ function Marketplace_app(props) {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     // Set signer
     const signer = provider.getSigner()
-    window.ethereum.on('chainChanged', (chainId) => {
-      window.location.reload();
-    })
+  
     window.ethereum.on('accountsChanged', async function (accounts) {
       setAccount(accounts[0])
       await web3Handler()

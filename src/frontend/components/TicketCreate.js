@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavbarHome from './NavbarHome'
 import '../material/tickets.css'
-import { get, getDatabase, ref, set,update, child, collection } from "firebase/database";
+import {ref, set,update } from "firebase/database";
 import { db } from "./Firebase";
 
 
@@ -13,12 +13,12 @@ const TicketCreate = (props) =>{
     const [randomNum,setRandomNum] = useState(Math.floor((Math.random() * 100000) + 999999))
     let location = useLocation()
 
-    
    var ticketData = {
-        userid: location.state.userid ,
-        eventid:location.state.eventid,
-        authid:randomNum
+        Userid: location.state.userid ,
+        Eventid:location.state.eventid,
+        Authid: randomNum
     }
+
     useEffect(()=>{
         intervalfunc()
         set(ref(db, `tickets/${location.state.userid}`), ticketData).then(() => {
@@ -29,25 +29,17 @@ const TicketCreate = (props) =>{
          })
     },[])
 
-    
-
     const intervalfunc = () =>{
        let n=0;
-      
         setInterval(function() {
             n++;
             let rand = Math.floor((Math.random() * 100000) + 999999)
             setRandomNum(rand)
             updateAuthid(rand)
-            console.log(n)
         }, 60000);
     }
 
-   
-
     const updateAuthid =(rand) =>{
-        
-
         update(ref(db, 'tickets/'+ location.state.userid), {authid:rand}).then(() => {
             console.log('authid update success')
         })
@@ -56,11 +48,9 @@ const TicketCreate = (props) =>{
             });
     }
 
-   
-
     return(
         <>
-        <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
+        <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} setaddress={props.setaddress} setchain={props.setchain} />
         <div id='ticket_parent_div'>
         <h1>Ticket Create </h1>
         <br></br>
@@ -68,10 +58,12 @@ const TicketCreate = (props) =>{
         <br></br>
         <br></br>
        <center> <h1>{randomNum}</h1></center>
-      
         </div>
         </>
     )
 }
+
+
+
 
 export default TicketCreate

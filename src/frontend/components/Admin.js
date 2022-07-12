@@ -1,6 +1,6 @@
 import '../material/admin.css';
 import $ from 'jquery';
-import { get, getDatabase, ref, set,update, child, collection } from "firebase/database";
+import { get, getDatabase, ref, set, update, child, collection } from "firebase/database";
 import { db } from "./Firebase";
 import { useEffect, useState } from 'react';
 import { Tabs, Tab, Form, Button, Table, Modal, Card } from 'react-bootstrap';
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Admin = () => {
 
-    let navigate = useNavigate(); 
+    let navigate = useNavigate();
     const [eventslist, setEventsData] = useState([])
     const [SelectedeventNameFirebase, setSelectedEventNameFirebase] = useState('')
     const [show, setShow] = useState(false);
@@ -38,7 +38,7 @@ const Admin = () => {
         if (ename !== "" || vanueDropdown !== "" || edesc !== "" || edate !== "" || starttime !== "" || endtime !== "") {
 
             var eventData = {
-                eventId:eventid,
+                eventId: eventid,
                 eventName: ename,
                 venueName: vanueDropdown,
                 eventDescription: edesc,
@@ -46,11 +46,11 @@ const Admin = () => {
                 eventStartTime: starttime,
                 eventEndTime: endtime,
                 eventPhoto: 'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                eventdateCreated: yyyy+'-'+mm+'-'+dd,
-                network:network,
-                tokenaddress:address,
-                balanceRequired:balanceRequired,
-                eventType:eventType
+                eventdateCreated: yyyy + '-' + mm + '-' + dd,
+                network: network,
+                tokenaddress: address,
+                balanceRequired: balanceRequired,
+                eventType: eventType
             }
 
 
@@ -92,12 +92,12 @@ const Admin = () => {
         const addvanueaddress = $('#addvanueAddress').val()
         const addvanuegmap = $('#addvanueGmap').val()
 
-        if (addvenuename !== "" || addvanueaddress !== "" ) {
+        if (addvenuename !== "" || addvanueaddress !== "") {
             var venueData = {
                 venueName: addvenuename,
                 venueAddress: addvanueaddress,
-                venueGmap:addvanuegmap,
-                venuedateCreated: yyyy+'-'+mm+'-'+dd
+                venueGmap: addvanuegmap,
+                venuedateCreated: yyyy + '-' + mm + '-' + dd
             }
             set(ref(db, `venues/${addvenuename}`), venueData).then(() => {
                 alert("Vanue Saved Success");
@@ -153,6 +153,11 @@ const Admin = () => {
         $('#eventDateedit').val(data.eventDate);
         $('#startTimeedit').val(data.eventStartTime);
         $('#endTimeedit').val(data.eventEndTime);
+        $('#networkedit').val(data.network);
+        $('#addressedit').val(data.tokenaddress);
+        $('#eventTypeedit').val(data.eventType);
+        $('#balanceRequirededit').val(data.balanceRequired);
+
         setShow(true)
     }
 
@@ -163,6 +168,12 @@ const Admin = () => {
         const updatededate = $('#eventDateedit').val();
         const updatedstarttime = $('#startTimeedit').val();
         const updatedendtime = $('#endTimeedit').val();
+        const updatenetwork = $('#networkdit').val();
+        const updateaddress = $('#addressedit').val();
+        const updatebalancerequired = $('#balanceRequirededit').val();
+        const updateeventtype = $('#eventTypeedit').val();
+
+
         update(ref(db, 'events/' + SelectedeventNameFirebase), {
             eventName: updatedename,
             venueName: updatedvanue,
@@ -170,7 +181,11 @@ const Admin = () => {
             eventDate: updatededate,
             eventStartTime: updatedstarttime,
             eventEndTime: updatedendtime,
-           
+            network: updatenetwork,
+            tokenaddress: updateaddress,
+            balanceRequired: updatebalancerequired,
+            eventType: updateeventtype
+
         }).then(() => {
             alert('update success')
             getEvents()
@@ -188,13 +203,13 @@ const Admin = () => {
 
 
 
-    const adminLogout = () =>{
+    const adminLogout = () => {
         navigate('/')
         window.location.reload()
     }
 
 
-    const adminLogoClicked = () =>{
+    const adminLogoClicked = () => {
         navigate('/')
     }
 
@@ -206,12 +221,12 @@ const Admin = () => {
 
     return (
         <>
-        <div id="navbarAdmin">
-            <div id="navbarAdminChild">
-                <div><img id="admin_logo_img" src={mainlogo} height={"50px"} onClick={adminLogoClicked}></img></div>
-                <div><button id='adminLogoutBtn' onClick={adminLogout}>Logout</button></div>
+            <div id="navbarAdmin">
+                <div id="navbarAdminChild">
+                    <div><img id="admin_logo_img" src={mainlogo} height={"50px"} onClick={adminLogoClicked}></img></div>
+                    <div><button id='adminLogoutBtn' onClick={adminLogout}>Logout</button></div>
                 </div>
-        </div>
+            </div>
 
             <div id="admin_form_parent">
                 <div id='admin_form_child'>
@@ -247,10 +262,10 @@ const Admin = () => {
                                                     <td> {data.eventStartTime}</td>
                                                     <td> {data.eventEndTime}</td>
                                                     <td> {data.eventdateCreated}</td>
-                                                    <td><img src={data.eventPhoto} style={{height:'80px',width:'80px'}} /></td>
+                                                    <td><img src={data.eventPhoto} style={{ height: '80px', width: '80px' }} /></td>
                                                     <td>
                                                         <Button variant="primary" onClick={() => editEventShow(data)}>Edit</Button>
-                                                        </td>
+                                                    </td>
                                                 </tr>
                                             </>
                                         ))}
@@ -260,7 +275,7 @@ const Admin = () => {
                                 {/* Edit Event Page */}
                                 <div style={{ display: 'none', marginTop: '50px' }} id="event_edit_div">
 
-                                    <Button variant="danger" onClick={closeEventEdit}className="mb-3">Close</Button> 
+                                    <Button variant="danger" onClick={closeEventEdit} className="mb-3">Close</Button>
                                     <div >
                                         <Form.Group className="mb-3" >
                                             <Form.Label>Event Name</Form.Label>
@@ -286,6 +301,34 @@ const Admin = () => {
                                         <Form.Group className="mb-3" >
                                             <Form.Label>End Time</Form.Label>
                                             <Form.Control type="time" id="endTimeedit" />
+                                        </Form.Group>
+
+                                        <h4>Settings</h4>
+                                        <Form.Group className="mb-3" >
+                                            <Form.Label>Network</Form.Label>
+                                            <Form.Select className="mb-3" aria-label="Default select example" id="networkdit" >
+                                                <option>Solana</option>
+                                                <option>Ethereum</option>
+                                                <option>Polygon</option>
+                                            </Form.Select>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" >
+                                            <Form.Label>Address</Form.Label>
+                                            <Form.Control type="text" id="addressedit" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" >
+                                            <Form.Label>Balance Required</Form.Label>
+                                            <Form.Control type="text" id="balanceRequirededit" />
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" >
+                                            <Form.Label>Event Type</Form.Label>
+                                            <Form.Select className="mb-3" aria-label="Default select example" id="eventTypeedit" >
+                                                <option>Once</option>
+                                                <option>Year</option>
+                                                <option>Monthly</option>
+                                                <option>Weekly</option>
+                                                <option>Quarterly</option>
+                                            </Form.Select>
                                         </Form.Group>
 
                                         <Button variant="primary" onClick={eventEdit}>
@@ -317,18 +360,27 @@ const Admin = () => {
                                 <Form.Label>Event Date</Form.Label>
                                 <Form.Control id="eventDate" type="date" />
                             </Form.Group>
+
                             <Form.Group className="mb-3" >
-                                <Form.Label>Event</Form.Label>
-                                <Form.Select className="mb-3" aria-label="Default select example" id="vanueDropdownedit" >
-                                        </Form.Select>
+                                <Form.Label>Start Time</Form.Label>
+                                <Form.Control type="time" id="startTime" />
+                            </Form.Group>
+                            <Form.Group className="mb-3" >
+                                <Form.Label>End Time</Form.Label>
+                                <Form.Control type="time" id="endTime" />
                             </Form.Group>
 
-                                <h4>Settings</h4>
-                    
+
+                            <h4>Settings</h4>
+
                             {/* settings */}
                             <Form.Group className="mb-3" >
                                 <Form.Label>Network</Form.Label>
-                                <Form.Control type="text" id="network" />
+                                <Form.Select className="mb-3" aria-label="Default select example" id="network" >
+                                    <option>Solana</option>
+                                    <option>Ethereum</option>
+                                    <option>Polygon</option>
+                                </Form.Select>
                             </Form.Group>
                             <Form.Group className="mb-3" >
                                 <Form.Label>Address</Form.Label>
@@ -341,14 +393,14 @@ const Admin = () => {
                             <Form.Group className="mb-3" >
                                 <Form.Label>Event Type</Form.Label>
                                 <Form.Select className="mb-3" aria-label="Default select example" id="eventType" >
-                                            <option>Once</option>
-                                            <option>Year</option>
-                                            <option>Monthly</option>
-                                            <option>Weekly</option>
-                                            <option>Quarterly</option>
+                                    <option>Once</option>
+                                    <option>Year</option>
+                                    <option>Monthly</option>
+                                    <option>Weekly</option>
+                                    <option>Quarterly</option>
                                 </Form.Select>
                             </Form.Group>
-                          
+
 
                             <Button variant="primary" onClick={createEvent}>
                                 Submit

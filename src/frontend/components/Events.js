@@ -7,11 +7,11 @@ import { auth, db } from "./Firebase";
 import { useState, useEffect } from 'react';
 import { Card, Button, Row, Col, Container } from 'react-bootstrap';
 import { ethers } from "ethers";
-
+import polygonlogo from "../material/polygon_logo.svg"
+import solanalogo from "../material/solana_logo.svg"
 
 const ShowTicketBtn = (props) => {
     let navigate = useNavigate();
-
     if (parseFloat(props.balance) > parseFloat(props.required)) {
         return (
             <>
@@ -25,6 +25,27 @@ const ShowTicketBtn = (props) => {
             </>)
     }
 }
+
+
+const DisplaycryptoLogo =(props) =>{
+    if(props.networkName == "Polygon")
+    {
+        return(<>
+            <img src={polygonlogo} alt="" height={"17px"} style={{marginBottom:"2px"}} />
+        </>)
+    }
+    else if(props.networkName == "Solana")
+    {
+        return(<>
+            <img src={solanalogo} alt="" height={"17px"} style={{marginBottom:"2px"}} />
+        </>)
+    }else{
+        return(<>
+        <p>token</p>
+        </>)
+    }
+}
+
 
 
 const Events = (props) => {
@@ -100,7 +121,8 @@ const Events = (props) => {
                                             <h6>Start Time  : {ev.eventStartTime} </h6>
                                             <h6>End Time    :  {ev.eventEndTime} </h6>
                                             <h6>Vanue Name : {ev.venueName} </h6>
-                                            <h6>required : {ev.balanceRequired} Tokens  </h6>
+                                            <br></br>
+                                            <h6>required : <b>{ev.balanceRequired} </b> &nbsp; <DisplaycryptoLogo networkName={ev.network}/>  </h6>
                                             <br />
                                             <ShowTicketBtn balance={userBalanceEvent} required={ev.balanceRequired} detail={ev} />
                                         </Card.Body>

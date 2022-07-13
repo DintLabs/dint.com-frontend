@@ -9,13 +9,16 @@ import { Card, Button, Row, Col, Container } from 'react-bootstrap';
 import { ethers } from "ethers";
 import polygonlogo from "../material/polygon_logo.svg"
 import solanalogo from "../material/solana_logo.svg"
+import dint from "../material/dintcoin_logo.png"
 
 const ShowTicketBtn = (props) => {
     let navigate = useNavigate();
     if (parseFloat(props.balance) > parseFloat(props.required)) {
         return (
             <>
+
                 <Button variant="primary" onClick={() => navigate('/ticketcreate', { state: { eventid: props.detail.eventId, userid: auth.currentUser.uid } })}>Get Ticket</Button>
+
             </>)
     }
     else {
@@ -27,7 +30,7 @@ const ShowTicketBtn = (props) => {
 }
 
 
-const DisplaycryptoLogo =(props) =>{
+const DisplaynetworkLogo =(props) =>{
     if(props.networkName == "Polygon")
     {
         return(<>
@@ -44,6 +47,14 @@ const DisplaycryptoLogo =(props) =>{
         <p>token</p>
         </>)
     }
+}
+
+
+
+const DisplaycryptoLogo =(props) =>{
+    return(<>
+     <img src={dint} alt="" height={"22px"} style={{marginBottom:"2px"}} />
+    </>)
 }
 
 
@@ -121,8 +132,8 @@ const Events = (props) => {
                                             <h6>Start Time  : {ev.eventStartTime} </h6>
                                             <h6>End Time    :  {ev.eventEndTime} </h6>
                                             <h6>Vanue Name : {ev.venueName} </h6>
-                                            <br></br>
-                                            <h6>required : <b>{ev.balanceRequired} </b> &nbsp; <DisplaycryptoLogo networkName={ev.network}/>  </h6>
+                                            <h6>chain : <DisplaynetworkLogo networkName={ev.network} />  </h6>
+                                            <h6>required : <b>{ev.balanceRequired} </b> &nbsp; <DisplaycryptoLogo  tokenname={ev.tokenName}/>  </h6>
                                             <br />
                                             <ShowTicketBtn balance={userBalanceEvent} required={ev.balanceRequired} detail={ev} />
                                         </Card.Body>

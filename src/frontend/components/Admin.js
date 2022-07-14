@@ -429,7 +429,7 @@ const Admin = () => {
                                         <Form.Group className="mb-3" >
                                             <Form.Label>Network</Form.Label>
                                             <Form.Select className="mb-3" aria-label="Default select example" id="networkedit" >
-                                                <option>Solana</option>
+                                                {/* <option>Solana</option> */}
                                                 <option>Polygon</option>
                                             </Form.Select>
                                         </Form.Group>
@@ -514,7 +514,7 @@ const Admin = () => {
                             <Form.Group className="mb-3" >
                                 <Form.Label>Network</Form.Label>
                                 <Form.Select className="mb-3" aria-label="Default select example" id="network" >
-                                    <option>Solana</option>
+                                    {/* <option>Solana</option> */}
                                     <option>Polygon</option>
                                 </Form.Select>
                             </Form.Group>

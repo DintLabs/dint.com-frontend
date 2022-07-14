@@ -9,7 +9,7 @@ const Footer = () => {
     return (
         <>
         <div>
-            <footer>
+            <footer style={{marginTop:"200px"}}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                     <path fill="#000000" fill-opacity="1" d="M0,128L120,154.7C240,181,480,235,720,224C960,213,1200,139,1320,101.3L1440,64L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
                 </svg>

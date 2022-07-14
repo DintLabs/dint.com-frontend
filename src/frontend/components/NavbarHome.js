@@ -88,7 +88,7 @@ const NavbarHome = (props) => {
                   <li id='no_effect_li'><Link id='no_effect' to="/event" state={{ from: "events" }}>Events</Link></li>
 
                 }
-                <li id='no_effect_li'><Link id='no_effect' to="/marketplace">Marketplace</Link></li>
+           {/* <li id='no_effect_li'><Link id='no_effect' to="/marketplace">Marketplace</Link></li> */}    
 
 
 
@@ -116,8 +116,8 @@ const NavbarHome = (props) => {
 
                 </> :
                   <>
-                    <li id='no_effect_li'><Link id='no_effect' to="/login/ ">login</Link></li>
-                    <li id='no_effect_li'><Link id='no_effect' to="/signup">Signup</Link></li>
+                    <li id='no_effect_li'><Link id='no_effect' to="/login/ ">Login</Link></li>
+                    <li id='no_effect_li'><Link id='no_effect' to="/signup">Sign Up</Link></li>
                   </>
                 }
 

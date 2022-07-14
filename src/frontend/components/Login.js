@@ -202,18 +202,17 @@ const Login = (props) => {
                     <div className="form-control">
                         <label htmlFor="username">Password</label>
                         <input type="password" placeholder="Password" id="login_password" />
-                        <button id="forgotpassBtn" onClick={forgotPassClicked}> <span id="forgotPassText">forgot Password?</span>  </button>
+                        <button id="forgotpassBtn" onClick={forgotPassClicked}> <span id="forgotPassText">Forgot Password?</span>  </button>
                     </div>
 
                     <p id='error_signup'>{error_msg_login}</p>
                     <button id='signup_btn' onClick={loginClicked}>Submit</button>
 
-                    <p id="signup_line">  Not registered Yet? <Link to="/signup"> <span id='signup_here'> SignUp Here</span></Link></p>
+                    <p id="signup_line">  Not registered Yet? <Link to="/signup"> <span id='signup_here'> Sign Up</span></Link></p>
                     <center>
-                        <h4>or</h4>
+                       
                         <button onClick={googleSignin} className="authbtnsocial" style={{ backgroundColor: 'red' }}>Google</button>
-                        <button onClick={fbSignin} className="authbtnsocial" style={{ backgroundColor: 'blue' }}>Facebook</button>
-                        <button onClick={appleSignin} className="authbtnsocial" style={{ backgroundColor: 'black' }}>Iphone</button>
+                      
                     </center>
                 </div>
             </div>

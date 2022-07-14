@@ -16,23 +16,14 @@ const Footer = () => {
                 <div className="footer">
                     <section >
                         <h4 className="footer_link_title" style={{ marginBottom: '30px' }}><img src={mainlogo} id="footer_logo"></img> Dint  </h4>
-                        <p id="company_desc_footer">Marketplace for crypto collectibles and non-fungible tokens (NFTs). Buy, sell, and discover exclusive digital items.</p>
+                        <p id="company_desc_footer">Revolutionizing The World of Entertainment Through NFTs and Membership Tokens</p>
+                    </section>
+                 
+                    <section className="middle_on_mobile">
+                      
                     </section>
                     <section className="middle_on_mobile">
-                        <h4 className="footer_link_title">Company</h4>
-                        <a href="#"><GoTriangleRight /> &nbsp; About</a>
-                    </section>
-                    <section className="middle_on_mobile">
-                        <h4 className="footer_link_title">My Account</h4>
-                        <a href="#"><GoTriangleRight /> &nbsp; Profile</a>
-                        <a href="#"><GoTriangleRight /> &nbsp; Favorites </a>
-                        <a href="#"><GoTriangleRight /> &nbsp; Watchlist</a>
-                        <a href="#"><GoTriangleRight /> &nbsp; My Collections</a>
-                        <a href="#"><GoTriangleRight /> &nbsp; Settings</a>
-                    </section>
-                    <section className="middle_on_mobile">
-                        <h4 className="footer_link_title">Resources</h4>
-                        <a href="#"><GoTriangleRight /> &nbsp; Help Center</a>
+                    
                      
                     </section>
                     <section className="middle_on_mobile hide_on_leptop">

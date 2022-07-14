@@ -129,7 +129,7 @@ const Homepage = (props) => {
 
                 <h1>Dint Club Society</h1>
                 <center> <p>Revolutionizing The World of Entertainment Through NFTs and Membership Tokens</p></center>
-                <a href="https://dint.com/register">  <button className="submit-form btn btn-primary">Join Us</button></a>
+                <a href="/signup">  <button className="submit-form btn btn-primary">Join Us</button></a>
               </div>
             </div>
           </div>
@@ -158,11 +158,12 @@ const Homepage = (props) => {
                 <h3 />
               </div>
               <div className="col-md-3">
-                <h3>About Us</h3>
+              {/* <h3>About Us</h3> */   } 
                 <ul>
-                  <li>
-                    <a href="https://dint.com/contact">Contact</a>
-                  </li>
+                      {/*   <li> 
+                  <a href="https://dint.com/contact">Contact</a> 
+                    
+                  </li>*/}  
                 </ul>
               </div>
               <div className="col-md-3">
@@ -182,7 +183,7 @@ const Homepage = (props) => {
           <a href="https://www.instagram.com/dint" className="instagram" target="_blank"><i className="bi bi-instagram"></i></a>
           <a href="https://www.youtube.com/channel/UCGXYFkXyYYIZIjOyjDQ6S7w" className="youtube" target="_blank"><i className="bi bi-youtube"></i></a>
           <div className="copyright">
-            © Copyright <strong><span>Dint Club Society</span></strong>. All Rights Reserved
+          Copyright ©2022 All rights reserved | dint.com
           </div>
         </div>
         <a href="#" className="back-to-top d-flex align-items-center justify-content-center"><i className="bi bi-arrow-up-short" /></a>

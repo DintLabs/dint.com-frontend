@@ -112,6 +112,10 @@ const [error_msg,setSignErr] = useState('')
     return (
         <>
 <NavbarHome/>
+<br></br>
+<br></br>
+<br></br>
+
         <div className='login_divs'>
             <div className="container">
                 <div className="header">

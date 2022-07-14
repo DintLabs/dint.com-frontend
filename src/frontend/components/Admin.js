@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { ethers } from "ethers";
 import polygonlogo from "../material/polygon_logo.svg"
 import solanalogo from "../material/solana_logo.svg"
-
+import { auth } from './Firebase'
 
 
 const DisplaynetworkLogo =(props) =>{
@@ -270,10 +270,23 @@ const Admin = () => {
         $("#event_edit_div").css('display', 'none')
     }
 
+    
+
     const adminLogout = () => {
-        navigate('/')
-        window.location.reload()
+        auth.signOut().then(()=>{
+          alert('logout success')
+          window.location.reload()
+        }).catch((e)=>{
+          console.log(e)
+        })
     }
+
+
+
+
+
+
+    
 
     const geteditTokenName = async () => {
         if ($('#networkedit').val() == "Polygon") {
@@ -509,7 +522,6 @@ const Admin = () => {
 
                             <br />
                             <h4>Settings</h4>
-
                             {/* settings */}
                             <Form.Group className="mb-3" >
                                 <Form.Label>Network</Form.Label>

@@ -20,17 +20,16 @@ const Login = (props) => {
         var login_email = $('#login_email').val();
         var login_password = $('#login_password').val();
 
-
         setPersistence(auth, browserSessionPersistence).then(() => {
             signInWithEmailAndPassword(auth, login_email, login_password)
                 .then((userCredential) => {
 
-
+                    
                     // sessionStorage.setItem('logged', true);
                     // sessionStorage.setItem('user_email', login_email);
+
                     props.loginStateChange()
                     props.setemail(login_email)
-
 
                     // for get role of loggedin user
                     get(child(ref(db), `users/${userCredential.user.uid}/role`)).then((snapshot) => {
@@ -43,7 +42,12 @@ const Login = (props) => {
                         console.log(e)
                     })
 
-                    navigate("/" + previousPage[2])
+                    if (previousPage[2] == "undefined") {
+                        navigate("/")
+                    }
+                    else {
+                        navigate("/" + previousPage[2])
+                    }
                 })
                 .catch((error) => {
                     switch (error.code) {
@@ -180,6 +184,9 @@ const Login = (props) => {
     return (
         <>
             <NavbarHome />
+            <br></br>
+            <br></br>
+            <br></br>
             <div className='login_divs'>
                 <div className="container">
                     <div className="header">

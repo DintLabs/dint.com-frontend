@@ -8,12 +8,17 @@ import $ from 'jquery';
 import Metamask_icon from "../material/metamask.svg";
 import MetamaskLogin from './MetamaskLogin'
 import {auth} from './Firebase'
+import { onAuthStateChanged } from "firebase/auth";
+import { FaLaptopHouse } from "react-icons/fa";
+
 const Swal = require('sweetalert2');
 
 
-const Navigation = ({ web3Handler, account,islogin }) => {
+const Navigation = ({ web3Handler, account }) => {
+    const [islogin,setLogin] = useState(false)
     let navigate = useNavigate();     
- 
+
+
 
      const logout = () => {
         auth.signOut().then(()=>{
@@ -27,6 +32,18 @@ const Navigation = ({ web3Handler, account,islogin }) => {
       const EditProfile = () =>{
         navigate('/profile')
       }
+
+
+      useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            const uid = user.uid;
+            setLogin(true)
+          } else { }
+        })
+      })
+
+
 
     return (
         <Navbar expand="lg" bg="dark" variant="dark" id="navmain">

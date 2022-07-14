@@ -5,9 +5,9 @@ import $ from 'jquery';
 import { useState } from 'react';
 import { set, get, child, ref, update } from "firebase/database";
 import { auth, db } from './Firebase'
+import { onAuthStateChanged } from "firebase/auth";
 import '../material/Profile.css'
 import { useEffect } from 'react';
-import { onAuthStateChanged } from "firebase/auth";
 
 
 const Swal = require('sweetalert2');

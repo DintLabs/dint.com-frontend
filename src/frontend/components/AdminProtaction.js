@@ -2,10 +2,15 @@
 import Admin from './Admin';
 import AdminerrorSvg  from '../material/adminerr.svg'
 import {  useNavigate } from 'react-router-dom';
-
-
+import {  useEffect ,useState } from 'react';
+import { auth, db } from './Firebase'
+import { onAuthStateChanged } from "firebase/auth";
+import { get, child, ref } from "firebase/database";
 const AdminProtaction =(props) =>{
        
+    const [isAdmin, setIsAdmin] = useState(false)
+    const [isloggedin, setIsloggedin] = useState(false)
+
     var adminBtnCss ={
         padding:"10px",
         borderRadius:"15px",
@@ -15,17 +20,77 @@ const AdminProtaction =(props) =>{
     }
 
 
+
+    const checkusertype = async(uid) =>{
+       await get(child(ref(db), `users/${uid}/role`)).then((snapshot) => {
+            // sessionStorage.setItem('role',snapshot.val())
+            console.log(snapshot.val())
+            if (snapshot.val() == 'admin') {
+                setIsAdmin(true)
+            }
+            else{
+                console.log('false')
+            }
+        }).catch((e) => {
+            alert(e)
+            console.log(e)
+        })
+    }
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setIsloggedin(true)
+                console.log(user)
+                const uid = user.uid;
+
+                checkusertype(uid)
+            } else {
+                console.log('logout user')
+            }
+        });
+    }, [])
+
+
+
+
     let navigate = useNavigate();
 
         // var isLoggedin = sessionStorage.getItem("logged");
         // var role = sessionStorage.getItem("role");
           
 
-            var isLoggedin = props.loggedin;
-            var isadmin = props.isAdmin;
+          
+    
 
 
-        if(!isLoggedin)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if(!isloggedin)
         {
             return(
                 <>
@@ -37,7 +102,7 @@ const AdminProtaction =(props) =>{
         }
         else{
 
-            if(isadmin)
+            if(isAdmin)
             {
                 return (
                     <>
@@ -54,6 +119,7 @@ const AdminProtaction =(props) =>{
                     </>
                 )
             }
+            
         }
     
 }

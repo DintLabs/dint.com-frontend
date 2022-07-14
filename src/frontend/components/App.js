@@ -24,22 +24,15 @@ function App() {
 
   const setLogintrue = () => { setLoggedin(true) }
 
-  const setLoginfalse = () => {
-    setLoggedin(false)
-  }
-  const setAdmin = () => {
-    setisAdmin(true)
-  }
-  const setEmail = (email) => {
-    setuserEmail(email)
-  }
+  const setLoginfalse = () => {setLoggedin(false)}
 
-  const setmychainId =(chainId) =>{
-    serChainId(chainId)
-  }
-  const setmywalletaddress =(address) =>{
-    setWalletAddress(address)
-  }
+  const setAdmin = () => {setisAdmin(true)}
+
+  const setEmail = (email) => {setuserEmail(email)}
+
+  const setmychainId =(chainId) =>{serChainId(chainId)}
+
+  const setmywalletaddress =(address) =>{setWalletAddress(address)}
 
 
   return (

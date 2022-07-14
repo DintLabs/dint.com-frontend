@@ -31,8 +31,7 @@
     "react-scripts": "5.0.0",
     "sweetalert2": "^11.4.19",
     "swiper": "^8.2.5",
-    "web-vitals": "^2.1.4",
-    "web3": "^1.7.4"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",

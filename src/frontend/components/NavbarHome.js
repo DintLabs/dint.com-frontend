@@ -51,8 +51,15 @@ const NavbarHome = (props) =>{
         <div id="event_nav" style={{marginTop:'60px'}}>
         <header id="header" className="fixed-top d-flex align-items-center " style={{height:'80px'}} >
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-            <div className="logo me-auto">
+            <div className="logo me-auto" style={{display:'flex'}}>
             <Link to={'/'}><h1><img src="https://dint.com/assets/img/logos/logo.png" alt="logo" id="logo_homepage" /> </h1></Link>
+            {props.iseventpage ?
+            <>
+            &nbsp; &nbsp; <h2 style={{color:"white",margin:"0"}}>Dint Events</h2>
+            </>
+            :  
+            <></>
+          }
             </div>
             <nav id="navbar" className="navbar order-lg-0">
               <ul>

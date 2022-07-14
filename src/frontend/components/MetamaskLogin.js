@@ -7,6 +7,8 @@ import { ethers } from "ethers";
 import { useState } from 'react';
 import '../material//walletsSidebar.css'
 import { useEffect } from 'react';
+import { resolveProperties } from 'ethers/lib/utils';
+
 const Swal = require('sweetalert2');
 
 
@@ -52,6 +54,8 @@ const MetamaskLogin = () =>{
 
   const connectMetamask = async () => {
     if (typeof window.ethereum !== 'undefined') {
+
+
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       if (accounts[0]) {
           const provider = new ethers.providers.Web3Provider(window.ethereum);

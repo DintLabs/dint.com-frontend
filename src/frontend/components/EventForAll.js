@@ -65,13 +65,12 @@ const EventForAll = (props) =>{
 
     return(
         <>
-        <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
+        <NavbarHome iseventpage={true} isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
         <div id="events">
                 <br /><br />
-
-                <center> <h1>Events for Genral Users</h1></center>
-                
                 <br /><br />
+                
+                
                 <Container>
                     <Row xs={1} md={3} className="g-4">
                         {eventsdata.map((ev, index) => (

@@ -134,7 +134,7 @@ const Events = (props) => {
 
         return (
             <>
-                <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
+                <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} iseventpage={true} />
                 <div id="events">
                     <br /><br />
                     <center> <h1>Events </h1>

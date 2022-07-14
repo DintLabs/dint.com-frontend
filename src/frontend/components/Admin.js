@@ -7,13 +7,33 @@ import { Tabs, Tab, Form, Button, Table } from 'react-bootstrap';
 import mainlogo from '../material/white.png';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from "ethers";
+import polygonlogo from "../material/polygon_logo.svg"
+import solanalogo from "../material/solana_logo.svg"
 
+
+
+const DisplaynetworkLogo =(props) =>{
+    if(props.networkName == "Polygon")
+    {
+        return(<>
+            <img src={polygonlogo} alt="" height={"17px"} style={{marginBottom:"2px"}} />
+        </>)
+    }
+    else if(props.networkName == "Solana")
+    {
+        return(<>
+            <img src={solanalogo} alt="" height={"17px"} style={{marginBottom:"2px"}} />
+        </>)
+    }else{
+        return(<>
+        <p>token</p>
+        </>)
+    }
+}
 
 
 
 const Admin = () => {
-
-
 
     let navigate = useNavigate();
     const [eventslist, setEventsData] = useState([])
@@ -334,6 +354,7 @@ const Admin = () => {
                                             <th> Start Time </th>
                                             <th> End Time</th>
                                             <th> Created At</th>
+                                            <th> Tokens</th>
                                             <th> Image</th>
                                             <th> Edit </th>
                                         </tr>
@@ -350,6 +371,7 @@ const Admin = () => {
                                                     <td> {data.eventStartTime}</td>
                                                     <td> {data.eventEndTime}</td>
                                                     <td> {data.eventdateCreated}</td>
+                                                    <td> {data.balanceRequired}&nbsp;{data.tokenName} <DisplaynetworkLogo networkName={data.network} /></td>
                                                     <td><img src={data.eventPhoto} style={{ height: '80px', width: '80px' }} /></td>
                                                     <td>
                                                         <Button variant="primary" onClick={() => editEventShow(data)}>Edit</Button>
@@ -391,30 +413,6 @@ const Admin = () => {
                                             <Form.Control type="time" id="endTimeedit" />
                                         </Form.Group>
 
-                                        <h4>Settings</h4>
-                                        <Form.Group className="mb-3" >
-                                            <Form.Label>Network</Form.Label>
-                                            <Form.Select className="mb-3" aria-label="Default select example" id="networkedit" >
-                                                <option>Solana</option>
-                                                <option>Polygon</option>
-                                            </Form.Select>
-                                        </Form.Group>
-
-                                        <Form.Group className="mb-3">
-                                            <Form.Label>Address</Form.Label>
-                                            <Form.Control type="text" id="addressedit" onChange={geteditTokenName} />
-                                        </Form.Group>
-
-                                        <Form.Group className="mb-3">
-                                            <Form.Label>Token Name</Form.Label>
-                                            <Form.Control type="text" disabled value={edittokenName} id="tokennameedit" />
-                                        </Form.Group>
-
-
-                                        <Form.Group className="mb-3" >
-                                            <Form.Label>Balance Required</Form.Label>
-                                            <Form.Control type="text" id="balanceRequirededit" />
-                                        </Form.Group>
                                         <Form.Group className="mb-3" >
                                             <Form.Label>Event Frequency</Form.Label>
                                             <Form.Select className="mb-3" aria-label="Default select example" id="EventFrequencyedit" >
@@ -426,6 +424,33 @@ const Admin = () => {
                                             </Form.Select>
                                         </Form.Group>
 
+
+                                        <h4>Settings</h4>
+                                        <Form.Group className="mb-3" >
+                                            <Form.Label>Network</Form.Label>
+                                            <Form.Select className="mb-3" aria-label="Default select example" id="networkedit" >
+                                                <option>Solana</option>
+                                                <option>Polygon</option>
+                                            </Form.Select>
+                                        </Form.Group>
+
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>Token Address</Form.Label>
+                                            <Form.Control type="text" id="addressedit" onChange={geteditTokenName} />
+                                        </Form.Group>
+
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>Token Name</Form.Label>
+                                            <Form.Control type="text" disabled value={edittokenName} id="tokennameedit" />
+                                        </Form.Group>
+
+
+                                        <Form.Group className="mb-3" >
+                                            <Form.Label>Token Required</Form.Label>
+                                            <Form.Control type="text" id="balanceRequirededit" />
+                                        </Form.Group>
+                                      
+
                                         <Button variant="primary" onClick={eventEdit}>
                                             Update event
                                         </Button>
@@ -434,14 +459,6 @@ const Admin = () => {
 
                             </div>
                         </Tab>
-
-
-
-
-
-
-
-
 
 
 
@@ -478,8 +495,19 @@ const Admin = () => {
                                 <Form.Label>End Time</Form.Label>
                                 <Form.Control type="time" id="endTime" />
                             </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Event Frequency</Form.Label>
+                                <Form.Select className="mb-3" aria-label="Default select example" id="EventFrequency" >
+                                    <option>Once</option>
+                                    <option>Year</option>
+                                    <option>Monthly</option>
+                                    <option>Weekly</option>
+                                    <option>Quarterly</option>
+                                </Form.Select>
+                            </Form.Group>
 
 
+                            <br />
                             <h4>Settings</h4>
 
                             {/* settings */}
@@ -491,7 +519,7 @@ const Admin = () => {
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Address</Form.Label>
+                                <Form.Label>Token Address</Form.Label>
                                 <Form.Control type="text" id="address" onChange={getpolygontokenname} />
                             </Form.Group>
                             <Form.Group className="mb-3">
@@ -499,19 +527,10 @@ const Admin = () => {
                                 <Form.Control type="text" disabled value={tokenName} id="tokenname" />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Balance Required</Form.Label>
+                                <Form.Label>Token Required</Form.Label>
                                 <Form.Control type="text" id="balanceRequired" />
                             </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Event Frequency</Form.Label>
-                                <Form.Select className="mb-3" aria-label="Default select example" id="EventFrequency" >
-                                    <option>Once</option>
-                                    <option>Year</option>
-                                    <option>Monthly</option>
-                                    <option>Weekly</option>
-                                    <option>Quarterly</option>
-                                </Form.Select>
-                            </Form.Group>
+                           
 
 
                             <Button variant="primary" onClick={createEvent}>

@@ -88,9 +88,6 @@ const Login = (props) => {
         }
 
     }
-
-
-
     const googleSignin = () => {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
@@ -119,9 +116,6 @@ const Login = (props) => {
                 });
         }).catch((e) => { alert(e) })
     }
-
-
-
     const fbSignin = () => {
         const provider = new FacebookAuthProvider();
         signInWithPopup(auth, provider)

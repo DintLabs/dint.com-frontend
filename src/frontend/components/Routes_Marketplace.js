@@ -16,10 +16,11 @@ import { useState, useEffect } from 'react';
 import { ethers } from "ethers";
 import { Spinner } from 'react-bootstrap';
 import './App.css';
+import { useNavigate, Link } from 'react-router-dom';
 const Swal = require('sweetalert2');
 
 function Marketplace_app(props) {
-
+  let navigate = useNavigate();
   const [loading, setLoading] = useState(true)
   const [account, setAccount] = useState(null)
   const [nft, setNFT] = useState({})
@@ -32,7 +33,29 @@ function Marketplace_app(props) {
   },[])
 
   const checkConnection = () =>{
+
+    if (typeof window.ethereum !== 'undefined') {
+    
     window.ethereum.request({ method: 'eth_accounts' }).then(handleAccountsChanged).catch(console.error);
+    }
+    else{
+      Swal.fire({
+        title: 'It will required a web3 wallet to use this area of our application',
+        text: "Click Here to Install ",
+        html:'<a href="https://metamask.io" target="_blank">Click here to install</a>',
+        icon: 'error',
+        showCancelButton: true,
+        cancelButtonColor: '#CBC9C9',
+        cancelButtonText: 'Back'
+    }).then((result) => {
+        if (result.isConfirmed) {
+          
+        }
+        else {
+            navigate('/', { replace: true })
+        }
+    })
+    }
   }
 
   function handleAccountsChanged(accounts) {

@@ -10,6 +10,8 @@ import { ethers } from "ethers";
 import polygonlogo from "../material/polygon_logo.svg"
 import solanalogo from "../material/solana_logo.svg"
 import dint from "../material/dintcoin_logo.png"
+const Swal = require('sweetalert2');
+
 
 const ShowTicketBtn = (props) => {
     let navigate = useNavigate();
@@ -30,30 +32,28 @@ const ShowTicketBtn = (props) => {
 }
 
 
-const DisplaynetworkLogo =(props) =>{
-    if(props.networkName == "Polygon")
-    {
-        return(<>
-            <img src={polygonlogo} alt="" height={"17px"} style={{marginBottom:"2px"}} />
+const DisplaynetworkLogo = (props) => {
+    if (props.networkName == "Polygon") {
+        return (<>
+            <img src={polygonlogo} alt="" height={"17px"} style={{ marginBottom: "2px" }} />
         </>)
     }
-    else if(props.networkName == "Solana")
-    {
-        return(<>
-            <img src={solanalogo} alt="" height={"17px"} style={{marginBottom:"2px"}} />
+    else if (props.networkName == "Solana") {
+        return (<>
+            <img src={solanalogo} alt="" height={"17px"} style={{ marginBottom: "2px" }} />
         </>)
-    }else{
-        return(<>
-        <p>token</p>
+    } else {
+        return (<>
+            <p>token</p>
         </>)
     }
 }
 
 
 
-const DisplaycryptoLogo =(props) =>{
-    return(<>
-     <img src={dint} alt="" height={"22px"} style={{marginBottom:"2px"}} />
+const DisplaycryptoLogo = (props) => {
+    return (<>
+        <img src={dint} alt="" height={"22px"} style={{ marginBottom: "2px" }} />
     </>)
 }
 
@@ -63,7 +63,7 @@ const Events = (props) => {
     let navigate = useNavigate();
 
     const [eventsdata, setEventdata] = useState([])
-    const [userBalanceEvent, setUserBalanceEvent] = useState('')
+    const [userBalanceEvent, setUserBalanceEvent] = useState('not connected')
 
     const getEventsfirebase = () => {
         const dbRef = ref(getDatabase());
@@ -85,70 +85,95 @@ const Events = (props) => {
     }
 
     const getmetamaskBalance = async () => {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        if (accounts[0]) {
-            console.log(accounts[0])
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const balance = await provider.getBalance(accounts[0]);
-            const balanceInEth = parseFloat(ethers.utils.formatEther(balance));
-            setUserBalanceEvent(balanceInEth.toFixed(4))
-            window.isWallet = true;
+
+        if (typeof window.ethereum !== 'undefined') {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            if (accounts[0]) {
+                console.log(accounts[0])
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                const balance = await provider.getBalance(accounts[0]);
+                const balanceInEth = parseFloat(ethers.utils.formatEther(balance));
+                setUserBalanceEvent(balanceInEth.toFixed(4))
+                window.isWallet = true;
+            }
+            window.ethereum.on('chainChanged', async function (chainId) {
+                await getmetamaskBalance()
+            })
+
         }
+        else{
+            Swal.fire({
+                title: 'It will required a web3 wallet to use this area of our application',
+                text: "Click Here to Install ",
+                html:'<a href="https://metamask.io" target="_blank">Click here to install</a>',
+                icon: 'error',
+                showCancelButton: true,
+                cancelButtonColor: '#CBC9C9',
+                cancelButtonText: 'Back'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                  
+                }
+                else {
+                    navigate('/', { replace: true })
+                }
+            })
+        }
+
+       
     }
 
-    window.ethereum.on('chainChanged', async function (chainId) {
-        await getmetamaskBalance()
-      })
+        
 
 
-    useEffect(() => {
-        getmetamaskBalance()
-        getEventsfirebase()
-    }, [])
+        useEffect(() => {
+            getmetamaskBalance()
+            getEventsfirebase()
+        }, [])
 
 
-    return (
-        <>
-            <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
-            <div id="events">
-                <br /><br />
-                <center> <h1>Events </h1>
-                <h2>User Balance : {userBalanceEvent}</h2></center>
-                <br /><br />
-                <Container>
-                    <Row xs={1} md={3} className="g-4">
-                        {eventsdata.map((ev, index) => (
-                            <>
-                                <Col>
-                                    <Card>
-                                        <Card.Img variant="top" src={ev.eventPhoto} style={{ height: '200px' }} />
-                                        <Card.Body>
-                                            <Card.Title><b>{ev.eventName}</b></Card.Title>
-                                            <Card.Text>
-                                                {ev.eventDescription}
-                                            </Card.Text>
-                                            <hr></hr>
-                                            <h6>Date  : {ev.eventDate} </h6>
-                                            <h6>Start Time  : {ev.eventStartTime} </h6>
-                                            <h6>End Time    :  {ev.eventEndTime} </h6>
-                                            <h6>Vanue Name : {ev.venueName} </h6>
-                                            <h6>chain : <DisplaynetworkLogo networkName={ev.network} />  </h6>
-                                            <h6>required : <b>{ev.balanceRequired} </b> &nbsp; <DisplaycryptoLogo  tokenname={ev.tokenName}/>  </h6>
-                                            <br />
-                                            <ShowTicketBtn balance={userBalanceEvent} required={ev.balanceRequired} detail={ev} />
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </>
-                        ))
-                        }
-                    </Row>
-                </Container>
-            </div>
-            <Footer />
-        </>
-    )
-}
+        return (
+            <>
+                <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
+                <div id="events">
+                    <br /><br />
+                    <center> <h1>Events </h1>
+                        <h4>User Balance : {userBalanceEvent}</h4></center>
+                    <br /><br />
+                    <Container>
+                        <Row xs={1} md={3} className="g-4">
+                            {eventsdata.map((ev, index) => (
+                                <>
+                                    <Col>
+                                        <Card>
+                                            <Card.Img variant="top" src={ev.eventPhoto} style={{ height: '200px' }} />
+                                            <Card.Body>
+                                                <Card.Title><b>{ev.eventName}</b></Card.Title>
+                                                <Card.Text>
+                                                    {ev.eventDescription}
+                                                </Card.Text>
+                                                <hr></hr>
+                                                <h6>Date  : {ev.eventDate} </h6>
+                                                <h6>Start Time  : {ev.eventStartTime} </h6>
+                                                <h6>End Time    :  {ev.eventEndTime} </h6>
+                                                <h6>Vanue : {ev.venueName} </h6>
+                                                <h6>Network : <DisplaynetworkLogo networkName={ev.network} />  </h6>
+                                                <h6>required : <b>{ev.balanceRequired} </b> {ev.tokenName} <DisplaycryptoLogo /> </h6>
+                                                <br />
+                                                <ShowTicketBtn balance={userBalanceEvent} required={ev.balanceRequired} detail={ev} />
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </>
+                            ))
+                            }
+                        </Row>
+                    </Container>
+                </div>
+                <Footer />
+            </>
+        )
+    }
 
 
-export default Events;
+    export default Events;

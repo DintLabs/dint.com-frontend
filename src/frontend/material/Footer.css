@@ -8,6 +8,7 @@
     height      : 45px;
     margin-right: 5px;
 }
+
 #leptop_social{
     height: 60px;
     width: 100%;
@@ -19,6 +20,7 @@
 .social_parent {
     display: flex;
 }
+
 
 .social_box {
     border-radius   : 10px;

@@ -5,6 +5,37 @@ import { auth, db } from "./Firebase";
 import { useState, useEffect, } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from './Footer'
+import polygonlogo from "../material/polygon_logo.svg"
+import solanalogo from "../material/solana_logo.svg"
+import dint from "../material/dintcoin_logo.png"
+
+
+const DisplaynetworkLogo =(props) =>{
+    if(props.networkName == "Polygon")
+    {
+        return(<>
+            <img src={polygonlogo} alt="" height={"17px"} style={{marginBottom:"2px"}} />
+        </>)
+    }
+    else if(props.networkName == "Solana")
+    {
+        return(<>
+            <img src={solanalogo} alt="" height={"17px"} style={{marginBottom:"2px"}} />
+        </>)
+    }else{
+        return(<>
+        <p>token</p>
+        </>)
+    }
+}
+
+
+const DisplaycryptoLogo =(props) =>{
+    return(<>
+     <img src={dint} alt="" height={"22px"} style={{marginBottom:"2px"}} />
+    </>)
+}
+
 
 const EventForAll = (props) =>{
 
@@ -53,13 +84,13 @@ const EventForAll = (props) =>{
                                             <Card.Text>
                                                 {ev.eventDescription}
                                             </Card.Text>
-
                                             <hr></hr>
                                             <h6>Date  : {ev.eventDate} </h6>
                                             <h6>Start Time  : {ev.eventStartTime} </h6>
                                             <h6>End Time    :  {ev.eventEndTime} </h6>
-                                            <h6>Vanue Name : {ev.venueName} </h6>
-                                            <h6>required : {ev.balanceRequired} Tokens </h6>
+                                            <h6>Vanue : {ev.venueName} </h6>
+                                            <h6>Network : {ev.network}&nbsp; <DisplaynetworkLogo networkName={ev.network}/> </h6>
+                                            <h6>required : <b> {ev.balanceRequired} </b> {ev.tokenName} <DisplaycryptoLogo /> </h6>
                                             <br />
 
                                             <Link to="/login/events"> <Button>Get Tickets</Button> </Link>

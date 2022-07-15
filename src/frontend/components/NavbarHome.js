@@ -7,6 +7,8 @@ import MetamaskLogin from "./MetamaskLogin";
 import { useEffect, useState } from 'react';
 import { auth } from './Firebase'
 import { onAuthStateChanged } from "firebase/auth";
+import mainlogo from '../material/white.png';
+
 const NavbarHome = (props) => {
   // var isLoggedin = props.isloggedin;
 
@@ -65,7 +67,7 @@ const NavbarHome = (props) => {
         <header id="header" className="fixed-top d-flex align-items-center " style={{ height: '80px' }} >
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto" style={{ display: 'flex' }}>
-              <Link to={'/'}><h1><img src="https://dint.com/assets/img/logos/logo.png" alt="logo" id="logo_homepage" /> </h1></Link>
+              <Link to={'/'}><h1><img src={mainlogo} width="40" height="40" className="" alt="" /></h1></Link>
               {props.iseventpage ?
                 <>
                   &nbsp; &nbsp; <h2 style={{ color: "white", margin: "0" }} >Dint Events</h2>

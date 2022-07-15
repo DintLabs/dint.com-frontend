@@ -13,7 +13,7 @@ const Navigation = ({ web3Handler, account }) => {
                 <Link to="/">
                     <Navbar.Brand >
                         <img src={mainlogo} width="40" height="40" className="" alt="" />
-                        &nbsp; Dint Marketplace
+                        &nbsp; Dint 
                     </Navbar.Brand>
                 </Link>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

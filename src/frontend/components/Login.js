@@ -190,7 +190,7 @@ const Login = (props) => {
             <div className='login_divs'>
                 <div className="container">
                     <div className="header">
-                        <h2>Login</h2>
+                        <h1>Login</h1>
                         <h1>{props.islogin}</h1>
                     </div>
 

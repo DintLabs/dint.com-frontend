@@ -8,7 +8,7 @@ import Footer from './Footer'
 import polygonlogo from "../material/polygon_logo.svg"
 import solanalogo from "../material/solana_logo.svg"
 import dint from "../material/dintcoin_logo.png"
-
+import { Helmet } from "react-helmet"
 
 const DisplaynetworkLogo =(props) =>{
     if(props.networkName == "Polygon")
@@ -65,6 +65,11 @@ const EventForAll = (props) =>{
 
     return(
         <>
+
+<Helmet>
+            <title>Events</title>
+            <meta name="description" content="Buy Event Tickets"/>
+        </Helmet>
         <NavbarHome iseventpage={true} isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
        
         <div id="events">

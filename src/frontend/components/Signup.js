@@ -8,7 +8,7 @@ import "firebase/database";
 import $ from 'jquery';
 import Footer from './Footer'
 import NavbarHome from './NavbarHome';
-
+import { Helmet } from "react-helmet"
 
 const Signup = () => {
 
@@ -111,6 +111,11 @@ const [error_msg,setSignErr] = useState('')
 
     return (
         <>
+
+<Helmet>
+            <title>Sign Up</title>
+            <meta name="description" content="Sign Up to Dint"/>
+        </Helmet>
 <NavbarHome/>
 
 

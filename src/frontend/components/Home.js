@@ -4,6 +4,7 @@ import '../material/homepage.css';
 import Bgvideo from "../material/home2.mp4"
 import NavbarHome from "./NavbarHome"
 import blacklogo from '../material/black.png';
+import { Helmet } from "react-helmet"
 
 import $ from 'jquery';
 
@@ -111,6 +112,10 @@ const Homepage = (props) => {
 
   return (
     <>
+    <Helmet>
+            <title>Dint Club</title>
+            <meta name="description" content="Dint Club"/>
+        </Helmet>
       <div>
         {/* ======= Header ======= */}
         

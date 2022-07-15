@@ -172,7 +172,7 @@ const Homepage = () =>{
               <div className="caption-video">
                 <h1>Dint Club Society</h1>
                <center> <p>Revolutionizing The World of Entertainment Through NFTs and Membership Tokens</p></center>
-                <a href="https://dint.com/register">  <button className="submit-form btn btn-primary">Join Us</button></a>
+                <a href="/signup">  <button className="submit-form btn btn-primary">Join Us</button></a>
               </div>
             </div>
           </div>

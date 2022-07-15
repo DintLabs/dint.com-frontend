@@ -109,7 +109,7 @@ const NavbarEvents = () =>{
         <header id="header" className="fixed-top d-flex align-items-center " style={{ height: "70px" }}>
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto">
-              <h1><Link to='/'><img src="https://dint.com/assets/img/logos/logo.png" alt="logo" /> </Link></h1>
+              <h1><Link to='/'><img src="images/logo.png" alt="logo" /> </Link></h1>
             </div>
             <nav id="navbar" className="navbar order-lg-0">
               <ul>

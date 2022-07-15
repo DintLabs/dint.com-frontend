@@ -151,7 +151,7 @@ const Homepage = (props) => {
           <div className="container">
             <div className="row">
               <div className="col-md-3">
-                <a href="https://dint.com"> <img src="https://dint.com/assets/img/logos/logo.png" alt="logo" /></a>
+                <a href="https://dint.com"> <img src="images/logo.png" alt="logo" width="40" height="40"/></a>
                 <p />
               </div>
               <div className="col-md-3">

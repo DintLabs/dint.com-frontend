@@ -10,6 +10,7 @@ import { ethers } from "ethers";
 import polygonlogo from "../material/polygon_logo.svg"
 import solanalogo from "../material/solana_logo.svg"
 import dint from "../material/dintcoin_logo.png"
+import { Helmet } from "react-helmet"
 const Swal = require('sweetalert2');
 
 
@@ -162,6 +163,10 @@ const Events = (props) => {
 
     return (
         <>
+        <Helmet>
+            <title>Events</title>
+            <meta name="description" content="Dint Events, buy event tickets. Use your digital assets to create event tickets"/>
+        </Helmet>
             <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} iseventpage={true} />
             <div id="events">
                 <br /><br />

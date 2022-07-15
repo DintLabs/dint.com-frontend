@@ -66,9 +66,9 @@ const EventForAll = (props) =>{
     return(
         <>
 
-<Helmet>
+        <Helmet>
             <title>Events</title>
-            <meta name="description" content="Buy Event Tickets"/>
+            <meta name="description" content="Dint Events, buy event tickets. Use your digital assets to create event tickets"/>
         </Helmet>
         <NavbarHome iseventpage={true} isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
        

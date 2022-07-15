@@ -135,11 +135,11 @@ const Homepage = () =>{
         <header id="header" className="fixed-top d-flex align-items-center header-transparent" style={{height:"70px"}}>
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto">
-              <h1><a href="https://dint.com"><img src="https://dint.com/assets/img/logos/logo.png" alt="logo" /> </a></h1>
+              <h1><a href="https://dint.com"><img src={blacklogo} width="20" height="20" className="" alt="" /> </a></h1>
             </div>
             <nav id="navbar" className="navbar order-lg-0">
               <ul>
-                <li className="mobile-logo"> <a href="https://dint.com"> <img src={blacklogo} width="100" height="100" className="" alt="" />  </a></li>
+                <li className="mobile-logo"> <a href="https://dint.com"> <img src={blacklogo} width="20" height="20" className="" alt="" />  </a></li>
                 {/* Authentication Links */}
                 <li><a href="https://dint.com/login">Login</a> </li>
                 <li><a className="nav-link" href="https://dint.com/register">Join</a></li>

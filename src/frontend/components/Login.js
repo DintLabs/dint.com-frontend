@@ -6,6 +6,7 @@ import $ from 'jquery';
 import Footer from './Footer'
 import NavbarHome from './NavbarHome';
 import { auth, db } from './Firebase'
+import { Helmet } from "react-helmet"
 
 
 const Login = (props) => {
@@ -183,6 +184,9 @@ const Login = (props) => {
 
     return (
         <>
+        <Helmet>
+            <title>Login</title>
+        </Helmet>
             <NavbarHome />
           
             <div className='login_divs'>

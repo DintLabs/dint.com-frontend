@@ -114,7 +114,7 @@ const NavbarEvents = () =>{
             </div>
             <nav id="navbar" className="navbar order-lg-0">
               <ul>
-                <li className="mobile-logo"> <a href="https://dint.com"><img src={blacklogo} width="100" height="100" className="" alt="" /></a></li>
+                <li className="mobile-logo"> <a href="https://dint.com"><img src={blacklogo} width="20" height="20" className="" alt="" /></a></li>
 
                 {/* Authentication Links   login and signup buttons are there */}
                 {/* <li><a href="https://dint.com/login">Login</a> </li>

@@ -186,6 +186,7 @@ const Login = (props) => {
         <>
         <Helmet>
             <title>Login</title>
+            <meta name="description" content="Login to Dint"/>
         </Helmet>
             <NavbarHome />
           

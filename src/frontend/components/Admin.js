@@ -405,7 +405,7 @@ const Admin = () => {
                                             <Form.Control type="text" id="eventNameedit" placeholder="Event Name Here" />
                                         </Form.Group>
 
-                                        <Form.Label>Select Vanue</Form.Label>
+                                        <Form.Label>Select Venue</Form.Label>
                                         <Form.Select className="mb-3" aria-label="Default select example" id="vanueDropdownedit" >
                                         </Form.Select>
 
@@ -459,7 +459,7 @@ const Admin = () => {
 
 
                                         <Form.Group className="mb-3" >
-                                            <Form.Label>Token Required</Form.Label>
+                                            <Form.Label>Token Balance Required</Form.Label>
                                             <Form.Control type="text" id="balanceRequirededit" />
                                         </Form.Group>
                                       
@@ -486,7 +486,7 @@ const Admin = () => {
                                 <Form.Control type="text" id="eventName" placeholder="Event Name Here" />
                             </Form.Group>
 
-                            <Form.Label>Select Vanue</Form.Label>
+                            <Form.Label>Select Venue</Form.Label>
                             <Form.Select className="mb-3" aria-label="Default select example" id="vanueDropdown" >
 
                             </Form.Select>
@@ -557,11 +557,11 @@ const Admin = () => {
 
 
 
-                        <Tab eventKey="vanueadd" title="Add vanue">
-                            <h1>Add vanue</h1>
+                        <Tab eventKey="vanueadd" title="Add Venue">
+                            <h1>Add Venue</h1>
                             <Form.Group className="mb-3" >
-                                <Form.Label>Vanue Name</Form.Label>
-                                <Form.Control type="text" id="addvenuename" placeholder="Vanue Name Here" />
+                                <Form.Label>Venue Name</Form.Label>
+                                <Form.Control type="text" id="addvenuename" placeholder="Venue Name Here" />
                             </Form.Group>
 
                             <Form.Group className="mb-3" >
@@ -589,14 +589,14 @@ const Admin = () => {
 
 
 
-                        <Tab eventKey="vanueshow" title="Vanue List">
-                            <h1>Show vanue</h1>
+                        <Tab eventKey="vanueshow" title="Venue List">
+                            <h1>Show Venue</h1>
                             <Table striped bordered hover>
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th> Vanue Name</th>
-                                        <th> Vanue Address</th>
+                                        <th> Venue Name</th>
+                                        <th> Venue Address</th>
                                         <th> Google Map</th>
                                     </tr>
                                 </thead>

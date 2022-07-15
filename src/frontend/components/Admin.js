@@ -361,7 +361,7 @@ const Admin = () => {
                                         <tr>
                                             <th>#</th>
                                             <th> Name</th>
-                                            <th> Vanue</th>
+                                            <th> Venue</th>
                                             <th> Description</th>
                                             <th> Date</th>
                                             <th> Start Time </th>
@@ -539,7 +539,7 @@ const Admin = () => {
                                 <Form.Control type="text" disabled value={tokenName} id="tokenname" />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Token Required</Form.Label>
+                                <Form.Label>Token Balance Required</Form.Label>
                                 <Form.Control type="text" id="balanceRequired" />
                             </Form.Group>
                            

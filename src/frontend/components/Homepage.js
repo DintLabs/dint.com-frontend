@@ -4,8 +4,8 @@ import '../material/homepage.css';
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import Bgvideo from "../material/home2.mp4"
 import $ from 'jquery'
-
-
+import mainlogo from '../material/white.png';
+import blacklogo from '../material/black.png';
 
 const Homepage = () =>{
   
@@ -139,7 +139,7 @@ const Homepage = () =>{
             </div>
             <nav id="navbar" className="navbar order-lg-0">
               <ul>
-                <li className="mobile-logo"> <a href="https://dint.com"><img src="https://dint.com/assets/img/apple-touch-icon.png " alt="logo" /> </a></li>
+                <li className="mobile-logo"> <a href="https://dint.com"> <img src={blacklogo} width="100" height="100" className="" alt="" />  </a></li>
                 {/* Authentication Links */}
                 <li><a href="https://dint.com/login">Login</a> </li>
                 <li><a className="nav-link" href="https://dint.com/register">Join</a></li>
@@ -194,7 +194,7 @@ const Homepage = () =>{
           <div className="container">
             <div className="row">
               <div className="col-md-3">
-                <a href="https://dint.com"> <img src="https://dint.com/assets/img/logos/logo.png" alt="logo" /></a>
+                <a href="https://dint.com"> <img src={mainlogo} width="40" height="40" className="" alt="" /></a>
                 <p />
               </div>
               <div className="col-md-3">
@@ -234,7 +234,7 @@ const Homepage = () =>{
         <div className="modal animate__animated animate__fadeInUp" id="myModal">
           <div className="modal-dialog model-waitlist">
             <div className="modal-content">
-              <img src="https://dint.com/assets/img/apple-touch-icon.png " alt="Dint Logo" className="model-logo" />
+            <img src={blacklogo} width="40" height="40" className="" alt="" />
               {/* Modal Header */}
               <div className="modal-header">
                 <h4 className="modal-title">At last, a debit card worth waiting for!</h4>

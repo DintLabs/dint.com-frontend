@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import '../material/homepage.css';
 import Bgvideo from "../material/home2.mp4"
 import NavbarHome from "./NavbarHome"
-
+import blacklogo from '../material/black.png';
 
 import $ from 'jquery';
 
@@ -191,7 +191,7 @@ const Homepage = (props) => {
         <div className="modal animate__animated animate__fadeInUp" id="myModal">
           <div className="modal-dialog model-waitlist">
             <div className="modal-content">
-              <img src="https://dint.com/assets/img/apple-touch-icon.png " alt="Dint Logo" className="model-logo" />
+            <img src={blacklogo} width="40" height="40" className="" alt="" />
               {/* Modal Header */}
               <div className="modal-header">
                 <h4 className="modal-title">At last, a debit card worth waiting for!</h4>

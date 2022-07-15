@@ -7,6 +7,7 @@ import { CgProfile } from "react-icons/cg";
 import Metamask_icon from "../material/metamask.svg"
 import $ from 'jquery';
 import { ethers } from "ethers";
+import blacklogo from '../material/black.png';
 const Swal = require('sweetalert2');
 
 const NavbarEvents = () =>{
@@ -109,11 +110,11 @@ const NavbarEvents = () =>{
         <header id="header" className="fixed-top d-flex align-items-center " style={{ height: "70px" }}>
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto">
-              <h1><Link to='/'><img src="images/logo.png" alt="logo" /> </Link></h1>
+              <h1><Link to='/'><img src={mainlogo} width="40" height="40" className="" alt="" /> </Link></h1>
             </div>
             <nav id="navbar" className="navbar order-lg-0">
               <ul>
-                <li className="mobile-logo"> <a href="https://dint.com"><img src="https://dint.com/assets/img/apple-touch-icon.png " alt="logo" /> </a></li>
+                <li className="mobile-logo"> <a href="https://dint.com"><img src={blacklogo} width="100" height="100" className="" alt="" /></a></li>
 
                 {/* Authentication Links   login and signup buttons are there */}
                 {/* <li><a href="https://dint.com/login">Login</a> </li>

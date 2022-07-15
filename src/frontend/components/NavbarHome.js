@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { auth } from './Firebase'
 import { onAuthStateChanged } from "firebase/auth";
 import mainlogo from '../material/white.png';
+import blacklogo from '../material/black.png';
 
 const NavbarHome = (props) => {
   // var isLoggedin = props.isloggedin;
@@ -78,7 +79,7 @@ const NavbarHome = (props) => {
             </div>
             <nav id="navbar" className="navbar order-lg-0">
               <ul>
-                <li className="mobile-logo"> <a href="https://dint.com"><img src="https://dint.com/assets/img/apple-touch-icon.png " alt="logo" /> </a></li>
+                <li className="mobile-logo"> <a href="https://dint.com"><img src={blacklogo} width="40" height="40" className="" alt="" /> </a></li>
 
 
                 {props.isadmin ? <Link to="/admin">Admin</Link> : ''}

@@ -84,12 +84,12 @@ const EventForAll = (props) =>{
                                                 {ev.eventDescription}
                                             </Card.Text>
                                             <hr></hr>
-                                            <h6>Date  : {ev.eventDate} </h6>
-                                            <h6>Start Time  : {ev.eventStartTime} </h6>
-                                            <h6>End Time    :  {ev.eventEndTime} </h6>
-                                            <h6>Vanue : {ev.venueName} </h6>
-                                            <h6>Network : {ev.network}&nbsp; <DisplaynetworkLogo networkName={ev.network}/> </h6>
-                                            <h6>Tokens Required : <b> {ev.balanceRequired} </b> {ev.tokenName} <DisplaycryptoLogo /> </h6>
+                                            <h6>Date: {ev.eventDate} </h6>
+                                            <h6>Start Time: {ev.eventStartTime} </h6>
+                                            <h6>End Time:  {ev.eventEndTime} </h6>
+                                            <h6>Venue: {ev.venueName} </h6>
+                                            <h6>Network: {ev.network}&nbsp; <DisplaynetworkLogo networkName={ev.network}/> </h6>
+                                            <h6>Tokens Required: <b> {ev.balanceRequired} </b> {ev.tokenName} <DisplaycryptoLogo /> </h6>
                                             <br />
 
                                             <Link to="/login/events"> <Button>Get Tickets</Button> </Link>

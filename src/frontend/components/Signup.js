@@ -119,7 +119,7 @@ const [error_msg,setSignErr] = useState('')
         <div className='login_divs'>
             <div className="container">
                 <div className="header">
-                    <h2>Create Account</h2>
+                    <h1>Sign Up</h1>
                 </div>
 
                 <div className="form-control">

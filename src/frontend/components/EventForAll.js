@@ -66,10 +66,16 @@ const EventForAll = (props) =>{
     return(
         <>
         <NavbarHome iseventpage={true} isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
+       
         <div id="events">
                 <br /><br />
                 <br /><br />
-                
+                <div className="container">
+                    <div className="header">
+                        <h1>Events</h1>
+                       
+                    </div>
+                    </div>  
                 
                 <Container>
                     <Row xs={1} md={3} className="g-4">

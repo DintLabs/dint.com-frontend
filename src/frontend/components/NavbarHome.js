@@ -71,7 +71,7 @@ const NavbarHome = (props) => {
               <Link to={'/'}><h1><img src={mainlogo} width="40" height="40" className="" alt="" /></h1></Link>
               {props.iseventpage ?
                 <>
-                  &nbsp; &nbsp; <h2 style={{ color: "white", margin: "0" }} >Dint Events</h2>
+                  &nbsp; &nbsp; <h2 style={{ color: "white", margin: "0" }} ></h2>
                 </>
                 :
                 <></>

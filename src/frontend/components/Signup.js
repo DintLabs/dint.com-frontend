@@ -113,6 +113,7 @@ const [error_msg,setSignErr] = useState('')
         <>
 
 <Helmet>
+   
             <title>Sign Up</title>
             <meta name="description" content="Sign Up to Dint"/>
         </Helmet>
@@ -122,6 +123,7 @@ const [error_msg,setSignErr] = useState('')
         <div className='login_divs'>
             <div className="container">
                 <div className="header">
+                <br /><br />
                     <h1>Sign Up</h1>
                 </div>
 

@@ -9,6 +9,8 @@ import { auth } from './Firebase'
 import { onAuthStateChanged } from "firebase/auth";
 import mainlogo from '../material/white.png';
 import blacklogo from '../material/black.png';
+import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+
 
 const NavbarHome = (props) => {
   // var isLoggedin = props.isloggedin;
@@ -46,8 +48,8 @@ const NavbarHome = (props) => {
 
   const mobile_nav = () => {
     select("#navbar").classList.toggle("navbar-mobile");
-    $("#navbar_icon").classList.toggle("bi-list");
-    $("#navbar_icon").classList.toggle("bi-x");
+    $("#navbar_icon").toggleClass("bi-list");
+    $("#navbar_icon").toggleClass("bi-x");
   }
 
 
@@ -64,6 +66,7 @@ const NavbarHome = (props) => {
 
   return (
     <>
+
       <div id="event_nav" style={{ marginTop: '60px' }}>
         <header id="header" className="fixed-top d-flex align-items-center " style={{ height: '80px' }} >
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
@@ -79,37 +82,48 @@ const NavbarHome = (props) => {
             </div>
             <nav id="navbar" className="navbar order-lg-0">
               <ul>
-                <li className="mobile-logo"> <a href="https://dint.com"><img src={blacklogo} width="40" height="40" className="" alt="" /> </a></li>
+                <li className="mobile-logo">
+                  <Link to="/">
+                    <img src={blacklogo} width="40" height="40" className="" alt="" />
+                    <h1 style={{ margin: 0 }}>Dint Club</h1>
+                  </Link>
+                </li>
 
 
-                {props.isadmin ? <Link to="/admin">Admin</Link> : ''}
+                {props.isadmin ? <li className='no_effect_li'><Link to="/admin" style={{ padding: 0 }}>Admin</Link></li> : ''}
 
 
                 {isLoggedin ?
-                  <li id='no_effect_li'><Link id='no_effect' to="/events" state={{ from: "events" }}>Events</Link></li>
+                  <li className='no_effect_li'><Link id='no_effect' to="/events" state={{ from: "events" }}>Events</Link></li>
                   :
-                  <li id='no_effect_li'><Link id='no_effect' to="/event" state={{ from: "events" }}>Events</Link></li>
+                  <li className='no_effect_li'><Link id='no_effect' to="/event" state={{ from: "events" }}>Events</Link></li>
 
                 }
-           {/* <li id='no_effect_li'><Link id='no_effect' to="/marketplace">Marketplace</Link></li> */}    
+                {/* <li id='no_effect_li'><Link id='no_effect' to="/marketplace">Marketplace</Link></li>     */}
 
 
 
                 {isLoggedin ? <>
                   {/* <div className="navlinks"></div> */}
-                  <Dropdown>
-                    <Dropdown.Toggle id="dropdown-basic" style={{ backgroundColor: 'transparent', border: 0, marginLeft: '15px' }}>
+                  <div className='profile_hide_mobile'>
+                    <Dropdown>
+                      <Dropdown.Toggle id="dropdown-basic" >
 
-                      <button id="profile_btn">
-                        <CgProfile size={35} />
-                      </button>
-                    </Dropdown.Toggle>
+                        <button id="profile_btn">
+                          <CgProfile size={35} />
+                        </button>
+                      </Dropdown.Toggle>
 
-                    <Dropdown.Menu>
-                      <Dropdown.Item style={{ color: 'black' }} onClick={EditProfile}>Edit Profile</Dropdown.Item>
-                      <Dropdown.Item style={{ color: 'black' }} onClick={logout}>Logout</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                      <Dropdown.Menu>
+                        <Dropdown.Item style={{ color: 'black' }} onClick={EditProfile}>Edit Profile</Dropdown.Item>
+                        <Dropdown.Item style={{ color: 'black' }} onClick={logout}>Logout</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
+
+                  <div className='profile_hide_pc'>
+                    <li className='no_effect_li'><Link id='no_effect' to="/login/ ">Profile</Link></li>
+                  </div>
 
 
                   {/* wallet */}
@@ -117,19 +131,27 @@ const NavbarHome = (props) => {
                     <MetamaskLogin />
                   </div>
 
+                  <div className='profile_hide_pc'>
+                    <li className='no_effect_li'><Link id='no_effect' to="/login/ " onClick={logout}>Logout</Link></li>
+                  </div>
                 </> :
                   <>
-                    <li id='no_effect_li'><Link id='no_effect' to="/login/ ">Login</Link></li>
-                    <li id='no_effect_li'><Link id='no_effect' to="/signup">Sign Up</Link></li>
+                    <li className='no_effect_li'><Link id='no_effect' to="/login/ ">Login</Link></li>
+                    <li className='no_effect_li'><Link id='no_effect' to="/signup">Sign Up</Link></li>
+                    
+                    <li className='no_effect_li'><button onClick={()=>navigate('/login/')} style={{background:"transparent", border:"0",color:"white"}}> <MdOutlineAccountBalanceWallet size={35} /> </button>
+                    </li>
+
                   </>
                 }
 
               </ul>
+
               <i className="bi bi-list mobile-nav-toggle" id='navbar_icon' onClick={mobile_nav} />
 
-            </nav>{/* .navbar */}
+            </nav>
           </div>
-        </header>{/* End Header */}
+        </header>
       </div>
     </>
   )

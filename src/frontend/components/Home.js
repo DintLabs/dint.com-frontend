@@ -134,7 +134,7 @@ const Homepage = (props) => {
 
                 <h1>Dint Club Society</h1>
                 <center> <p>Revolutionizing The World of Entertainment Through NFTs and Membership Tokens</p></center>
-                <a href="/signup">  <button className="submit-form btn btn-primary">Join Us</button></a>
+                <Link to="/signup">  <button className="submit-form btn btn-primary">Join Us</button></Link>
               </div>
             </div>
           </div>

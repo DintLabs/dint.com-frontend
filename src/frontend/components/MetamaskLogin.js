@@ -97,7 +97,16 @@ const MetamaskLogin = () => {
 
   return (
     <>
-      <button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /></button>
+    
+    <div className='profile_hide_mobile'>
+      <button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /> </button>
+    </div>
+    <div className='profile_hide_pc'>
+     
+                  <li className='no_effect_li' style={{marginLeft:"10px"}}>
+                  <p style={{color:"#433f39",marginTop:"30px",fontSize:"20px"}} onClick={openNav}>Wallet</p>
+                  </li>
+                  </div>
       {/*  Code of Sidebar */}
       <div id="mySidenav" className="sidenav">
         <button className="closebtn" onClick={closeNav}>×</button>

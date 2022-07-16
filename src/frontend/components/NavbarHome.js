@@ -71,7 +71,8 @@ const NavbarHome = (props) => {
         <header id="header" className="fixed-top d-flex align-items-center " style={{ height: '80px' }} >
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto" style={{ display: 'flex' }}>
-              <Link to={'/'}><h1><img src={mainlogo} width="40" height="40" className="" alt="" /></h1></Link>
+              <Link to={'/'}><h1 style={{marginTop:"7px"}}><img src={mainlogo} width="50px" height="50px" className="" alt="" />  Dint Club</h1></Link>
+        
               {props.iseventpage ?
                 <>
                   &nbsp; &nbsp; <h2 style={{ color: "white", margin: "0" }} ></h2>

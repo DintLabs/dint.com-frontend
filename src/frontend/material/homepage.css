@@ -110,7 +110,8 @@ h6 {
 }
 
 #header .logo h1 {
-    font-size     : 28px;
+    color: white;
+    font-size     : 35px;
     margin        : 0;
     line-height   : 1;
     font-weight   : 400;

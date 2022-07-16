@@ -40,3 +40,14 @@
 .profile_img_div{
     display: flex;
 }
+
+
+
+@media only screen and (max-width: 800px) {
+    .profile_div_child{
+        width: 100%;
+    }
+    .profile_form_div{
+        flex-direction: column-reverse;
+    }
+}

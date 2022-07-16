@@ -87,9 +87,12 @@ const Events = (props) => {
     }
 
 
+
+    if (typeof window.ethereum !== 'undefined') {
     window.ethereum.on('chainChanged', async function (chainId) {
         getmetamaskBalance()
     })
+}
 
 
     const getmetamaskBalance = async () => {
@@ -115,8 +118,6 @@ const Events = (props) => {
 
     
                 const balanceInEth = await contract.balanceOf(accounts[0]);
-                console.log(balanceInEth)
-
                 const tokenname = await contract.name();
                 setTokenNameEvent(tokenname)
                 setUserBalanceEvent(parseFloat(ethers.utils.formatEther(balanceInEth)).toFixed(6))

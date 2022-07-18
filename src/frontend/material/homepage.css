@@ -127,6 +127,7 @@ h6 {
 #header .logo img {
     padding   : 0;
     margin    : 0;
+    margin-left: 10px;
     max-height: 40px;
 }
 
@@ -1448,6 +1449,22 @@ li.mobile-logo {
 }
 
 
+
+
+
+
+
+
+@media  (max-width: 500px) {
+    .overlay {
+        height    : 100vh !important;
+        margin-top: 0%;
+    }
+}
+
+
+
+
 /*--------------------------------------------------------------
 # iPhone
 --------------------------------------------------------------*/
@@ -1468,7 +1485,7 @@ li.mobile-logo {
     }
 
     .overlay {
-        height    : 200vh;
+        height    : 100vh;
         margin-top: 0%;
     }
 
@@ -2119,7 +2136,7 @@ li.mobile-logo {
     }
 }
 
-@media (max-width: 360px) {
+/* @media (max-width: 360px) {
     .video-banner-img img {
         max-width : 100%;
         width     : 75% !important;
@@ -2160,7 +2177,7 @@ li.mobile-logo {
         color  : rgb(255, 255, 255);
         display: block;
     }
-}
+} */
 
 
 /*Smart Phone*/

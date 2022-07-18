@@ -119,7 +119,7 @@ const [error_msg,setSignErr] = useState('')
         </Helmet>
 <NavbarHome/>
 
-
+<br />
         <div className='login_divs'>
             <div className="container">
                 <div className="header">

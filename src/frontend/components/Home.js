@@ -139,7 +139,7 @@ const Homepage = (props) => {
             </div>
           </div>
         </section>{/* End Hero */}
-        <main id="main">
+        <main id="main" style={{padding:0}}>
           <section className="email-col animate__animated animate__fadeInLeft">
             <div className="container position-relative">
               <section className="title">

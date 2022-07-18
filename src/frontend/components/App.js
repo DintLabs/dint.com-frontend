@@ -39,7 +39,7 @@ function App() {
     <BrowserRouter>
 
       <Routes>
-        <Route path="/" element={<Home logout={setLoginfalse} isAdmin={isadmin}  islogin={loggedin}  />} />
+        <Route path="/*" element={<Home logout={setLoginfalse} isAdmin={isadmin}  islogin={loggedin}  />} />
         <Route path="/signup" element={<Signup />} />
 
         <Route path="/buytoken" element={<h1>Buy Ticket</h1>} />

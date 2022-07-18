@@ -189,7 +189,7 @@ const Login = (props) => {
             <meta name="description" content="Login to Dint"/>
         </Helmet>
             <NavbarHome />
-          
+          <br /><br />
             <div className='login_divs'>
                 <div className="container">
                     <div className="header">

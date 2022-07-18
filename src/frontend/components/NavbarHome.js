@@ -71,8 +71,8 @@ const NavbarHome = (props) => {
         <header id="header" className="fixed-top d-flex align-items-center " style={{ height: '80px' }} >
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto" style={{ display: 'flex' }}>
-              <Link to={'/'}><h1 style={{marginTop:"7px"}}><img src={mainlogo} width="50px" height="50px" className="" alt="" />  Dint Club</h1></Link>
-        
+              {/* <Link to={'/'}><h1 ><img src={mainlogo}  height="50px" className="" alt="" />  </h1></Link> */}
+              <Link to={'/'}><h1><img src={mainlogo}  alt="logo" id="logo_homepage" /> </h1></Link>
               {props.iseventpage ?
                 <>
                   &nbsp; &nbsp; <h2 style={{ color: "white", margin: "0" }} ></h2>
@@ -123,7 +123,7 @@ const NavbarHome = (props) => {
                   </div>
 
                   <div className='profile_hide_pc'>
-                    <li className='no_effect_li'><Link id='no_effect' to="/login/ ">Profile</Link></li>
+                    <li className='no_effect_li'><Link id='no_effect' to="/profile ">Profile</Link></li>
                   </div>
 
 

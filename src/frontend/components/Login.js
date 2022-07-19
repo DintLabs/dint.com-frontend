@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, sendPasswordResetEmail, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword,onAuthStateChanged, setPersistence, browserSessionPersistence, sendPasswordResetEmail, signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider } from "firebase/auth";
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { get, child, ref } from "firebase/database";
@@ -25,7 +25,7 @@ const Login = (props) => {
             signInWithEmailAndPassword(auth, login_email, login_password)
                 .then((userCredential) => {
 
-                    
+
                     // sessionStorage.setItem('logged', true);
                     // sessionStorage.setItem('user_email', login_email);
 
@@ -93,12 +93,12 @@ const Login = (props) => {
         }
 
     }
+
+
+
     const googleSignin = () => {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
-<<<<<<< Updated upstream
-        setPersistence(auth, browserSessionPersistence).then(() => {
-=======
 
         if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i)) {
             
@@ -140,31 +140,37 @@ const Login = (props) => {
         }
         else{
            
->>>>>>> Stashed changes
             signInWithPopup(auth, provider)
-                .then((result) => {
-                    // This gives you a Google Access Token. You can use it to access the Google API.
-                    const credential = GoogleAuthProvider.credentialFromResult(result);
-                    const token = credential.accessToken;
-                    // The signed-in user info.
-                    const user = result.user;
-                    props.loginStateChange()
-                    props.setemail(user.email)
-                    // sessionStorage.setItem('logged', true);
-                    // sessionStorage.setItem('user_email', user.email);
-                    navigate("/" + previousPage[2])
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                props.loginStateChange()
+                props.setemail(user.email)
+                // sessionStorage.setItem('logged', true);
+                // sessionStorage.setItem('user_email', user.email);
+                navigate("/" + previousPage[2])
 
-                }).catch((error) => {
-                    // Handle Errors here.
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    const email = error.customData.email;
-                    const credential = GoogleAuthProvider.credentialFromError(error);
-                    alert.log(errorMessage)
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorMessage)
 
-                });
-        }).catch((e) => { alert(e) })
+            });
+
+
+
+
+        }
+
+
     }
+
+
+
     const fbSignin = () => {
         const provider = new FacebookAuthProvider();
         signInWithPopup(auth, provider)
@@ -228,12 +234,12 @@ const Login = (props) => {
 
     return (
         <>
-        <Helmet>
-            <title>Login</title>
-            <meta name="description" content="Login to Dint"/>
-        </Helmet>
+            <Helmet>
+                <title>Login</title>
+                <meta name="description" content="Login to Dint" />
+            </Helmet>
             <NavbarHome />
-          <br /><br />
+            <br /><br />
             <div className='login_divs'>
                 <div className="container">
                     <div className="header">
@@ -257,9 +263,9 @@ const Login = (props) => {
 
                     <p id="signup_line">  Not registered Yet? <Link to="/signup"> <span id='signup_here'> Sign Up</span></Link></p>
                     <center>
-                       
+
                         <button onClick={googleSignin} className="authbtnsocial" style={{ backgroundColor: 'red' }}>Google</button>
-                      
+
                     </center>
                 </div>
             </div>

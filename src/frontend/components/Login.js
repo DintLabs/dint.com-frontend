@@ -7,6 +7,7 @@ import Footer from './Footer'
 import NavbarHome from './NavbarHome';
 import { auth, db } from './Firebase'
 import { Helmet } from "react-helmet"
+import { useEffect } from "react";
 
 
 const Login = (props) => {
@@ -102,18 +103,14 @@ const Login = (props) => {
 
         if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i)) {
             
-            
-
+        
             setPersistence(auth, browserSessionPersistence).then(() => {
-               
-
-                signInWithRedirect(auth, provider).then(()=>{
-                   
+                signInWithRedirect(auth, provider).then(()=>{                   
                 }).catch((e)=>{
                     alert(e)
                 })
 
-                
+
                 getRedirectResult(auth)
                 .then((result) => {
                   // This gives you a Google Access Token. You can use it to access Google APIs.
@@ -126,6 +123,7 @@ const Login = (props) => {
                   // Handle Errors here.
                   const errorCode = error.code;
                   const errorMessage = error.message;
+                  alert(errorMessage)
                   // The email of the user's account used.
                   const email = error.customData.email;
                   // The AuthCredential type that was used.
@@ -229,6 +227,17 @@ const Login = (props) => {
             });
 
     }
+
+
+    useEffect(()=>{
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                navigate("/"+ previousPage[2])
+            } else {
+                console.log('user is not loggedin')
+            }
+        });
+    })
 
 
 

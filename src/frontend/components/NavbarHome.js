@@ -86,7 +86,7 @@ const NavbarHome = (props) => {
                 <li className="mobile-logo">
                   <Link to="/">
                     <img src={blacklogo} width="40" height="40" className="" alt="" />
-                    <h1 style={{ margin: 0 }}>Dint Club</h1>
+                 
                   </Link>
                 </li>
 

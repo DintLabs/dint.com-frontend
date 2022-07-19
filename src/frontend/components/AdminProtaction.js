@@ -46,7 +46,7 @@ const AdminProtaction =(props) =>{
 
                 checkusertype(uid)
             } else {
-                console.log('logout user')
+                console.log('user is not loggedin')
             }
         });
     }, [])

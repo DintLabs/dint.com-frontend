@@ -96,7 +96,51 @@ const Login = (props) => {
     const googleSignin = () => {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
+<<<<<<< Updated upstream
         setPersistence(auth, browserSessionPersistence).then(() => {
+=======
+
+        if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i)) {
+            
+            
+
+            setPersistence(auth, browserSessionPersistence).then(() => {
+               
+
+                signInWithRedirect(auth, provider).then(()=>{
+                   
+                }).catch((e)=>{
+                    alert(e)
+                })
+
+                
+                getRedirectResult(auth)
+                .then((result) => {
+                  // This gives you a Google Access Token. You can use it to access Google APIs.
+                  const credential = GoogleAuthProvider.credentialFromResult(result);
+                  const token = credential.accessToken;
+                  navigate("/" + previousPage[2])
+                  // The signed-in user info.
+                  const user = result.user;
+                }).catch((error) => {
+                  // Handle Errors here.
+                  const errorCode = error.code;
+                  const errorMessage = error.message;
+                  // The email of the user's account used.
+                  const email = error.customData.email;
+                  // The AuthCredential type that was used.
+                  const credential = GoogleAuthProvider.credentialFromError(error);
+                  // ...
+                });
+
+   
+            }).catch((e) => { alert(e) })
+            
+            
+        }
+        else{
+           
+>>>>>>> Stashed changes
             signInWithPopup(auth, provider)
                 .then((result) => {
                     // This gives you a Google Access Token. You can use it to access the Google API.

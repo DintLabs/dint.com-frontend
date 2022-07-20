@@ -26,10 +26,8 @@ const Login = (props) => {
             signInWithEmailAndPassword(auth, login_email, login_password)
                 .then((userCredential) => {
 
-
                     // sessionStorage.setItem('logged', true);
                     // sessionStorage.setItem('user_email', login_email);
-
                     props.loginStateChange()
                     props.setemail(login_email)
 

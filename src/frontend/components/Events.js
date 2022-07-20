@@ -89,42 +89,37 @@ const Events = (props) => {
 
 
     if (typeof window.ethereum !== 'undefined') {
-    window.ethereum.on('chainChanged', async function (chainId) {
-        getmetamaskBalance()
-    })
-}
+        window.ethereum.on('chainChanged', async function (chainId) {
+            getmetamaskBalance()
+        })
+    }
 
 
     const getmetamaskBalance = async () => {
         if (typeof window.ethereum !== 'undefined') {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             if (accounts[0]) {
-                
                 // const provider = new ethers.providers.JsonRpcProvider('https://polygon-rpc.com/')
                 const provider = new ethers.providers.Web3Provider(window.ethereum)
-                if(provider.provider.chainId == "0x13881")
-                {
-                    setnetworkid("Polygon Test" )
+                if (provider.provider.chainId == "0x13881") {
+                    setnetworkid("Polygon Test")
                 }
-                else if(provider.provider.chainId == "0x89")
-                {
+                else if (provider.provider.chainId == "0x89") {
                     setnetworkid('Polygon')
                 }
-                else{
+                else {
                     setnetworkid('polygon not connected')
                 }
                 const contract = new ethers.Contract("0x40763df31955cb3bad544cbed3e1953a9b063311", abicode, provider)
-                try{
+                try {
 
-    
-                const balanceInEth = await contract.balanceOf(accounts[0]);
-                const tokenname = await contract.name();
-                setTokenNameEvent(tokenname)
-                setUserBalanceEvent(parseFloat(ethers.utils.formatEther(balanceInEth)).toFixed(6))
-                window.isWallet = true;
+                    const balanceInEth = await contract.balanceOf(accounts[0]);
+                    const tokenname = await contract.name();
+                    setTokenNameEvent(tokenname)
+                    setUserBalanceEvent(parseFloat(ethers.utils.formatEther(balanceInEth)).toFixed(6))
+                    window.isWallet = true;
                 }
-                catch(e)
-                {
+                catch (e) {
                     setTokenNameEvent('polygon Main not connected')
                     setUserBalanceEvent('polygon Main not connected')
                 }
@@ -141,19 +136,13 @@ const Events = (props) => {
                 cancelButtonText: 'Back'
             }).then((result) => {
                 if (result.isConfirmed) {
-
                 }
                 else {
                     navigate('/', { replace: true })
                 }
             })
         }
-
-
     }
-
-  
-
 
 
     useEffect(() => {
@@ -164,19 +153,19 @@ const Events = (props) => {
 
     return (
         <>
-        <Helmet>
-            <title>Events</title>
-            <meta name="description" content="Dint Events, buy event tickets. Use your digital assets to create event tickets"/>
-        </Helmet>
+            <Helmet>
+                <title>Events</title>
+                <meta name="description" content="Dint Events, buy event tickets. Use your digital assets to create event tickets" />
+            </Helmet>
             <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} iseventpage={true} />
             <div id="events">
                 <br /><br />
                 <div className="container">
                     <div className="header">
                         <h1>Events</h1>
-                       
+
                     </div>
-                    </div>  
+                </div>
 
                 <center><h4>Network : {networkid}</h4></center>
                 <center><h4>Token Name : {tokenNameEvent}</h4></center>

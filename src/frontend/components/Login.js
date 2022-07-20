@@ -106,6 +106,7 @@ const Login = (props) => {
         
             setPersistence(auth, browserSessionPersistence).then(() => {
                 signInWithRedirect(auth, provider).then(()=>{                   
+                    
                 }).catch((e)=>{
                     alert(e)
                 })
@@ -123,7 +124,6 @@ const Login = (props) => {
                   // Handle Errors here.
                   const errorCode = error.code;
                   const errorMessage = error.message;
-                  alert(errorMessage)
                   // The email of the user's account used.
                   const email = error.customData.email;
                   // The AuthCredential type that was used.

@@ -94,7 +94,7 @@ const Events = (props) => {
 
 
 
-    var App_URL = "test.verselix.com"
+    var App_URL = "dint.com"
 
     window.mobileCheck = function () {
         let check = false;

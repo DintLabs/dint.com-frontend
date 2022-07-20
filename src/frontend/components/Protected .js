@@ -21,7 +21,6 @@ const Protected = (props) => {
             if (user) {
                 const uid = user.uid;
                 setLogin(true)
-
             } else {
                 console.log('logout user')
                 Swal.fire({

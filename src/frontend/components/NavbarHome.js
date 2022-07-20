@@ -72,7 +72,7 @@ const NavbarHome = (props) => {
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto" style={{ display: 'flex' }}>
               {/* <Link to={'/'}><h1 ><img src={mainlogo}  height="50px" className="" alt="" />  </h1></Link> */}
-              <Link to={'/'}><h1><img src={mainlogo}  alt="logo" id="logo_homepage" /> </h1></Link>
+              <Link to={'/'}><h1><img src={mainlogo} alt="logo" id="logo_homepage" /> </h1></Link>
               {props.iseventpage ?
                 <>
                   &nbsp; &nbsp; <h2 style={{ color: "white", margin: "0" }} ></h2>
@@ -86,7 +86,7 @@ const NavbarHome = (props) => {
                 <li className="mobile-logo">
                   <Link to="/">
                     <img src={blacklogo} width="40" height="40" className="" alt="" />
-                 
+
                   </Link>
                 </li>
 
@@ -139,8 +139,8 @@ const NavbarHome = (props) => {
                   <>
                     <li className='no_effect_li'><Link id='no_effect' to="/login/ ">Login</Link></li>
                     <li className='no_effect_li'><Link id='no_effect' to="/signup">Sign Up</Link></li>
-                    
-                    <li className='no_effect_li'><button onClick={()=>navigate('/login/')} style={{background:"transparent", border:"0",color:"white"}}> <MdOutlineAccountBalanceWallet size={35} /> </button>
+
+                    <li className='no_effect_li'><button onClick={() => navigate('/login/')} style={{ background: "transparent", border: "0", color: "white" }}> <MdOutlineAccountBalanceWallet size={35} /> </button>
                     </li>
 
                   </>

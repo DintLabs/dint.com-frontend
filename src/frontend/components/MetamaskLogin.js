@@ -18,6 +18,9 @@ const MetamaskLogin = () => {
 
   const [walletConnected, SetWallet] = useState('')
   const [balance, setBalance] = useState('')
+  const [mobileBalance, setmobileBalance] = useState('')
+  const [mobilechainId, setmobilechainId] = useState('')
+
 
   let navigate = useNavigate();
 
@@ -61,34 +64,49 @@ const MetamaskLogin = () => {
   }
 
 
-
   const connectMetamask = async () => {
-    var App_URL = "dint.com"
+    var App_URL = "test.verselix.com"
 
     if (window.mobileCheck() == true) {
-      openMetaMaskUrl("https://metamask.app.link/dapp/"+App_URL);
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      if (accounts[0]) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
 
-        const contract = new ethers.Contract("0x40763df31955cb3bad544cbed3e1953a9b063311", abicode, provider)
-        const balanceInEth = await contract.balanceOf(accounts[0]);
-        SetWallet(accounts[0])
-        setBalance(parseFloat(ethers.utils.formatEther(balanceInEth)).toFixed(6))
-        window.isWallet = true;
+      if (typeof window.ethereum !== 'undefined') {
+        setmobileBalance('')
+        setmobilechainId('')
+
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        if (accounts[0]) {
+        
+          SetWallet(accounts[0].slice(0, 7) + '...' + accounts[0].slice(35, 42))
+          const provider = new ethers.providers.Web3Provider(window.ethereum)
+          if (provider.provider.chainId !== "0x89") {
+            setmobilechainId('Connect Polygon Main')
+          }
+          else {
+            const contract = new ethers.Contract("0x40763df31955cb3bad544cbed3e1953a9b063311", abicode, provider)
+            const balanceInEth = await contract.balanceOf(accounts[0]);
+            setmobileBalance(parseFloat(ethers.utils.formatEther(balanceInEth)).toFixed(6) + " DTC")
+            setBalance(parseFloat(ethers.utils.formatEther(balanceInEth)).toFixed(6))
+          }
+
+          window.isWallet = true;
+        }
+        else {
+          alert('connection problem')
+        }
       }
       else {
-        alert('connection problem')
+        openMetaMaskUrl("https://metamask.app.link/dapp/" + App_URL);
       }
+
+
     }
     else {
 
-    if (typeof window.ethereum !== 'undefined') {
+      if (typeof window.ethereum !== 'undefined') {
 
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         if (accounts[0]) {
           const provider = new ethers.providers.Web3Provider(window.ethereum)
-
           const contract = new ethers.Contract("0x40763df31955cb3bad544cbed3e1953a9b063311", abicode, provider)
           const balanceInEth = await contract.balanceOf(accounts[0]);
           SetWallet(accounts[0])
@@ -98,18 +116,18 @@ const MetamaskLogin = () => {
         else {
           alert('connection problem')
         }
-      
+
+      }
+      else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Metamask is not installed',
+          icon: 'error',
+          confirmButtonText: 'Close',
+          footer: '<a href="https://metamask.io/">Click Here to Install Metamask </a>'
+        })
+      }
     }
-    else {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Metamask is not installed',
-        icon: 'error',
-        confirmButtonText: 'Close',
-        footer: '<a href="https://metamask.io/">Click Here to Install Metamask </a>'
-      })
-    }
-  }
   }
 
 
@@ -137,10 +155,14 @@ const MetamaskLogin = () => {
       <div className='profile_hide_mobile'>
         <button id="wallet_btn" onClick={openNav}> <MdOutlineAccountBalanceWallet size={35} /> </button>
       </div>
+      
       <div className='profile_hide_pc'>
-
         <li className='no_effect_li' style={{ marginLeft: "10px" }}>
-          <p style={{ color: "#433f39", marginTop: "30px", fontSize: "20px" }} onClick={connectMetamask}>Wallet</p>
+          <p style={{ color: "#433f39", marginTop: "30px", fontSize: "20px" }} onClick={connectMetamask}>Wallet   {walletConnected ? ": ":<></>}      {walletConnected}   </p>
+
+          {walletConnected ? <p style={{ color: "#433f39", marginTop: "30px", fontSize: "20px" }}>Balance :  {mobileBalance} <span style={{color:"#8e44ad"}}>{mobilechainId}</span></p>
+            : <></>}
+
         </li>
       </div>
       {/*  Code of Sidebar */}

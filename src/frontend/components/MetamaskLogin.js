@@ -65,7 +65,7 @@ const MetamaskLogin = () => {
 
 
   const connectMetamask = async () => {
-    var App_URL = "test.verselix.com"
+    var App_URL = "dint.com"
 
     if (window.mobileCheck() == true) {
 

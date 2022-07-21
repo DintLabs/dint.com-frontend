@@ -1478,6 +1478,24 @@ li.mobile-logo {
     }
 }
 
+@media (min-width: 980px) and (max-width: 1200px) {
+  .caption-video {
+        position: absolute;
+        top     : 20%;
+        z-index : 9;
+        left    : 5%;
+        right   : 5%;
+    }
+
+    .caption-video h1 {
+        color: rgb(255, 255, 255);
+        font-size: 45px;
+        line-height: 60px;
+        font-weight: bold;
+        text-align: center;
+    }
+}
+
 /*--------------------------------------------------------------
 # iPhone
 --------------------------------------------------------------*/

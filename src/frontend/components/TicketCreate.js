@@ -58,7 +58,7 @@ const TicketCreate = (props) =>{
         <br></br>
         <br></br>
        <center> <h1>{randomNum}</h1></center>
-       <p>For security purposes your ticket regenerates 60 seconds.</p>
+       <p>For security purposes your ticket regenerates every 60 seconds.</p>
         </div></center> 
         </>
     )

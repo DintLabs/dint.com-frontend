@@ -115,6 +115,8 @@ const Homepage = (props) => {
     <Helmet>
             <title>Dint Club</title>
             <meta name="description" content="Dint Club"/>
+
+   
         </Helmet>
       <div>
         {/* ======= Header ======= */}

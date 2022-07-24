@@ -19,7 +19,7 @@ const ShowTicketBtn = (props) => {
     if (parseFloat(props.balance) > parseFloat(props.required)) {
         return (
             <>
-                <Button variant="primary" onClick={() => navigate('/ticketcreate', { state: { eventid: props.detail.eventId, userid: auth.currentUser.uid } })}>Get Ticket</Button>
+                <Button variant="primary" onClick={() => navigate('/ticketcreate', { state: { eventid: props.detail.eventId, userid: auth.currentUser.uid } })}>View Ticket</Button>
             </>
             )
     }

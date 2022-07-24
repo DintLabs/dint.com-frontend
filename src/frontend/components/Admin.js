@@ -367,7 +367,7 @@ const Admin = () => {
                                             <th> Start Time </th>
                                             <th> End Time</th>
                                             <th> Created At</th>
-                                            <th> Tokens Required</th>
+                                            <th> Balance Required</th>
                                             <th> Image</th>
                                             <th> Edit </th>
                                         </tr>

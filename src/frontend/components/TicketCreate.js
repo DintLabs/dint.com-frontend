@@ -52,7 +52,7 @@ const TicketCreate = (props) =>{
         <>
         <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} setaddress={props.setaddress} setchain={props.setchain} />
         <div id='ticket_parent_div'>
-       <h1>Dint Scan</h1>
+       <h1>Use Dint Scan</h1>
         <br></br>
         <QRCode value={"Eventid :"+location.state.eventid+", Userid:"+location.state.userid +" authid:"+randomNum} style={{fill:'red'}} />,
         <br></br>

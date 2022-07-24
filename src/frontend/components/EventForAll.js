@@ -100,7 +100,8 @@ const EventForAll = (props) =>{
                                             <h6>End Time:  {ev.eventEndTime} </h6>
                                             <h6>Venue: {ev.venueName} </h6>
                                             <h6>Network: {ev.network}&nbsp; <DisplaynetworkLogo networkName={ev.network}/> </h6>
-                                            <h6>Tokens Required: <b> {ev.balanceRequired} </b> {ev.tokenName} <DisplaycryptoLogo /> </h6>
+                                            <h6>Token Name: {ev.tokenName} <DisplaycryptoLogo /> </h6>
+                                            <h6>Balance Required: <b> {ev.balanceRequired} </b>  </h6>
                                             <br />
 
                                             <Link to="/login/events"> <Button>Get Tickets</Button> </Link>

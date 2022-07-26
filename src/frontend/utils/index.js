@@ -40,10 +40,12 @@ const CONTRACT_TYPE_MORALIS = {
   TOKEN_1155: "ERC1155",
   TOKEN_721: "ERC721",
 };
-export const FILTER_OWNER_NFT = (
+export const FILTER_OWNER_NFT_EVM = (
   nfts,
   { token_address, contract_type, owner_of }
 ) =>
-  nfts.token_address === token_address &&
-  nfts.contract_type === CONTRACT_TYPE_MORALIS[contract_type] &&
-  nfts.owner_of === owner_of;
+  nfts.token_address.toLowerCase() === token_address.toLowerCase() &&
+  nfts.owner_of.toLowerCase() === owner_of.toLowerCase();
+
+export const FILTER_OWNER_SOL = (nfts, { owner_of }) =>
+  nfts.associatedTokenAddress.toLowerCase() === owner_of.toLowerCase();

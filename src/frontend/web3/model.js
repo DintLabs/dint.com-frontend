@@ -1,4 +1,8 @@
 import { ERC_1155, ERC_20, ERC_721 } from "./abi";
+import SOLANA_ICON from "../assets/img/web3/solana-token.png";
+import ETHERUM_ICON from "../assets/img/web3/eth_logo.svg";
+
+import POLYGON_ICON from "../assets/img/web3/matic-token.png";
 
 export const NETWORK_STANDARD = {
   ERC_721: "ERC 721",
@@ -13,6 +17,7 @@ export const SOLANA_MAINNET = {
   chainId: 101,
   SYMBOL: "SOL",
   DECIMALS: 18,
+  icon: SOLANA_ICON,
 };
 
 export const POLYGON_MAINNET = {
@@ -22,6 +27,7 @@ export const POLYGON_MAINNET = {
   chainId: 137,
   SYMBOL: "MATIC",
   DECIMALS: 18,
+  icon: POLYGON_ICON,
 };
 
 export const ETHERIUM = {
@@ -31,6 +37,7 @@ export const ETHERIUM = {
   chainId: 1,
   SYMBOL: "ETH",
   DECIMALS: 18,
+  icon: ETHERUM_ICON,
 };
 
 export const NETWORKS = Object.freeze({

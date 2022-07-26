@@ -13,13 +13,20 @@ export const configErrorAlert = ({ title, text, footer = null }) => {
   };
 };
 
-
 export const configWarnAlert = ({ title, text, footer = null }) => {
-    return {
-      icon: "warning",
-      title: title,
-      text: text,
-      footer: footer,
-    };
+  return {
+    icon: "warning",
+    title: title,
+    text: text,
+    footer: footer,
   };
-  
+};
+
+export const configSuccessAlert = ({ title, text, footer = null }) => {
+  return {
+    icon: "success",
+    title: title,
+    text: text,
+    footer: footer,
+  };
+};

@@ -60,9 +60,38 @@ const Admin = () => {
     network: 1,
     tokenIcon: "",
   });
+  const [editEventForm, setEditFormEvent] = useState({
+    network: 1,
+    tokenIcon: "",
+  });
+
+  const onChangeEditForm = (e) => {
+    if (e.target.id === "networkedit") {
+      setEditFormEvent({
+        ...editEventForm,
+        network: parseInt(e.target.value),
+      });
+    } else if (e.target.id === "token_typeedit") {
+      setEditFormEvent({
+        ...editEventForm,
+        token_type: e.target.value,
+      });
+    } else if (e.target.id === "tokenIconedit") {
+      setEditFormEvent({
+        ...editEventForm,
+        tokenIcon: e.target.value,
+      });
+    }
+  };
+
+  React.useEffect(() => {
+    if ($("#addressedit").val().length > 0) getpolygontokennameforEdit();
+  }, [
+    editEventForm && editEventForm.network,
+    editEventForm && editEventForm.token_type,
+  ]);
 
   const onChange = (e) => {
-    console.log("onChange ==> ", e.target.id);
     if (e.target.id === "network") {
       setEvent({
         ...addEventForm,
@@ -456,7 +485,54 @@ const Admin = () => {
       });
   };
 
+  const getpolygontokennameforEdit = () => {
+    fetchTokenDetails(
+      editEventForm.network,
+      editEventForm.token_type,
+      $("#addressedit").val()
+    )
+      .then((token_details) => {
+        console.log("token_details", token_details);
+        if (!token_details || !token_details.name) {
+          setEditTokenName("");
+          setEditFormEvent({
+            ...editEventForm,
+            tokenSymbol: "",
+            tokenDecimal: null,
+            tokenIcon: "",
+          });
+        } else {
+          setEditTokenName(token_details.name);
+          if (IS_TOKEN(editEventForm.token_type)) {
+            setEditFormEvent({
+              ...editEventForm,
+              tokenSymbol: token_details.symbol,
+              tokenDecimal: token_details.decimals,
+              tokenIcon: "",
+            });
+            if (token_details.icon) {
+              setEditFormEvent({
+                ...editEventForm,
+                tokenSymbol: token_details.symbol,
+                tokenDecimal: token_details.decimals,
+                tokenIcon: token_details.icon,
+              });
+            }
+          }
+        }
+      })
+      .catch((error) => {
+        setEditTokenName("");
+        setEditFormEvent({
+          ...editEventForm,
+          tokenSymbol: "",
+          tokenDecimal: "",
+          tokenIcon: "",
+        });
+      });
+  };
   const createEvent = () => {
+    console.log("balanceRequired");
     const ename = $("#eventName").val();
     const vanueDropdown = $("#vanueDropdown").val();
     const edesc = $("#eventdescription").val();
@@ -503,7 +579,7 @@ const Admin = () => {
         eventdateCreated: yyyy + "-" + mm + "-" + dd,
         network: network,
         tokenaddress: address,
-        balanceRequired: balanceRequired,
+        balanceRequired: balanceRequired ? balanceRequired : 1,
         EventFrequency: EventFrequency,
         ...tokenData,
       };
@@ -619,9 +695,18 @@ const Admin = () => {
     $("#startTimeedit").val(data.eventStartTime);
     $("#endTimeedit").val(data.eventEndTime);
     $("#networkedit").val(data.network);
+    $("#token_typeedit").val(data.tokenType);
+
     $("#addressedit").val(data.tokenaddress);
     $("#EventFrequencyedit").val(data.EventFrequency);
     $("#balanceRequirededit").val(data.balanceRequired);
+
+    setEditFormEvent({
+      ...editEventForm,
+      network: parseInt(data.network),
+      token_type: data.tokenType,
+      tokenIcon: data.tokenIcon,
+    });
 
     setShow(true);
   };
@@ -637,8 +722,21 @@ const Admin = () => {
     const updateaddress = $("#addressedit").val();
     const updatebalancerequired = $("#balanceRequirededit").val();
     const updateEventFrequency = $("#EventFrequencyedit").val();
-    const tokennameedit = $("#tokennameedit").val();
 
+    const tokenName = $("#tokennameedit").val();
+    const tokenType = $("#token_typeedit").val();
+
+    const tokenData = {
+      tokenName: tokenName,
+      tokenType: tokenType,
+    };
+
+    if (IS_TOKEN(tokenType)) {
+      tokenData.tokenSymbol = editEventForm.tokenSymbol;
+      tokenData.tokenDecimal = editEventForm.tokenDecimal;
+      tokenData.tokenIcon = editEventForm.tokenIcon;
+    }
+    console.log("update", tokenData);
     update(ref(db, "events/" + SelectedeventNameFirebase), {
       eventName: updatedename,
       venueName: updatedvanue,
@@ -650,7 +748,8 @@ const Admin = () => {
       tokenaddress: updateaddress,
       balanceRequired: updatebalancerequired,
       EventFrequency: updateEventFrequency,
-      tokenName: tokennameedit,
+
+      ...tokenData,
     })
       .then(() => {
         alert("update success");
@@ -679,45 +778,7 @@ const Admin = () => {
   };
 
   const geteditTokenName = async () => {
-    if ($("#networkedit").val() == "Polygon") {
-      try {
-        const provider = new ethers.providers.JsonRpcProvider(
-          "https://polygon-rpc.com/"
-        );
-        const contract = new ethers.Contract(
-          $("#addressedit").val(),
-          abicode,
-          provider
-        );
-        const data = await contract.name();
-        setEditTokenName(data);
-      } catch (e) {
-        console.log(e);
-        setEditTokenName("invalid");
-      }
-    } else if ($("#networkedit").val() == "Solana") {
-      fetch(
-        "https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json"
-      )
-        .then((res) => {
-          res
-            .json()
-            .then((tokenList) => {
-              var solanatokenname = tokenList.tokens.filter(
-                (element) => element.address == $("#addressedit").val()
-              );
-              setEditTokenName(solanatokenname[0].name);
-            })
-            .catch((e) => {
-              setEditTokenName("invalid");
-              console.log(e);
-            });
-        })
-        .catch((e) => {
-          console.log(e);
-          alert("something went wrong");
-        });
-    }
+    getpolygontokennameforEdit();
   };
 
   const adminLogoClicked = () => {
@@ -887,9 +948,38 @@ const Admin = () => {
                         className="mb-3"
                         aria-label="Default select example"
                         id="networkedit"
+                        onChange={onChangeEditForm}
+                        // value={editEventForm.network}
                       >
                         {/* <option>Solana</option> */}
-                        <option>Polygon</option>
+                        {Object.entries(NETWORKS).map((item) => {
+                          return (
+                            <option value={item[0]}>{item[1].name}</option>
+                          );
+                        })}
+                      </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Type</Form.Label>
+                      <Form.Select
+                        className="mb-3"
+                        aria-label="Default select example"
+                        id="token_typeedit"
+                        onChange={onChangeEditForm}
+                        vaule={editEventForm.token_type}
+                      >
+                        <option value={""}>Select Type</option>
+                        {Object.entries(OPTIONS_NETWORK_STAD).map((item) => {
+                          if (editEventForm && editEventForm.network) {
+                            if (
+                              item[1].networks.includes(editEventForm.network)
+                            ) {
+                              return (
+                                <option value={item[0]}>{item[1].name}</option>
+                              );
+                            }
+                          }
+                        })}
                       </Form.Select>
                     </Form.Group>
 
@@ -911,16 +1001,60 @@ const Admin = () => {
                         disabled={edittokenName.length > 0 ? true : false}
                       />
                     </Form.Group>
-                    {console.log(
-                      "render ",
-                      edittokenName,
-                      typeof edittokenName,
-                      edittokenName.length,
-                      edittokenName.length > 0 ? true : false
+                    {console.log("editEventForm ", editEventForm)}
+
+                    {IS_TOKEN(editEventForm.token_type) && (
+                      <>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Token Symbol</Form.Label>
+                          <Form.Control
+                            type="text"
+                            disabled={IS_TOKEN(editEventForm.token_type)}
+                            id="tokenSymboledit"
+                            value={editEventForm.tokenSymbol}
+                          />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                          <Form.Label>Token Decimal</Form.Label>
+                          <Form.Control
+                            type="number"
+                            disabled={IS_TOKEN(editEventForm.token_type)}
+                            id="tokenDecimaledit"
+                            value={editEventForm.tokenDecimal}
+                          />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Token Icon</Form.Label>
+
+                          <div className="d-flex text-center">
+                            <img
+                              src={editEventForm.tokenIcon}
+                              alt={editEventForm.tokenSymbol}
+                              className="tokenIcon m-2"
+                              onError={({ currentTarget }) => {
+                                currentTarget.onerror = null; // prevents looping
+                                currentTarget.src = "/images/logo.png";
+                              }}
+                            />
+                            <Form.Control
+                              onChange={onChangeEditForm}
+                              type="text"
+                              id="tokenIconedit"
+                              value={editEventForm.tokenIcon}
+                              className="ml-2"
+                            />
+                          </div>
+                        </Form.Group>
+                      </>
                     )}
                     <Form.Group className="mb-3">
                       <Form.Label>Balance Required</Form.Label>
-                      <Form.Control type="text" id="balanceRequirededit" />
+                      <Form.Control
+                        type="number"
+                        min={1}
+                        id="balanceRequirededit"
+                      />
                     </Form.Group>
 
                     <Button variant="primary" onClick={eventEdit}>
@@ -1044,9 +1178,10 @@ const Admin = () => {
                 <Form.Label>Token Name</Form.Label>
                 <Form.Control
                   type="text"
-                  disabled
+                  disabled={tokenName.length > 0 ? true : false}
                   value={tokenName}
                   id="tokenname"
+                  onChange={setTokenName}
                 />
               </Form.Group>
 
@@ -1095,10 +1230,15 @@ const Admin = () => {
                   </Form.Group>
                 </>
               )}
-
               <Form.Group className="mb-3">
                 <Form.Label>Balance Required</Form.Label>
-                <Form.Control type="text" id="balanceRequired" />
+                <Form.Control
+                  disabled={!IS_TOKEN(addEventForm.token_type)}
+                  type="number"
+                  min={1}
+                  id="balanceRequired"
+                  defaultValue={1}
+                />
               </Form.Group>
 
               <Button variant="primary" onClick={createEvent}>

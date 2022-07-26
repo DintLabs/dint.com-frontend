@@ -7,9 +7,14 @@ import {
 } from "../api/EVM";
 import { getSolanaTokenDetails } from "../api/Solana";
 import * as solanaServices from "../api/Solana";
-import { FILTER_OWNER_NFT, IS_TOKEN } from "../utils";
+import {
+  FILTER_OWNER_NFT,
+  FILTER_OWNER_NFT_EVM,
+  FILTER_OWNER_SOL,
+  IS_TOKEN,
+} from "../utils";
 import { ETHERIUM, POLYGON_MAINNET, SOLANA_MAINNET } from "./model";
-import { convertToDecimal, toHex } from "./utils";
+import { convertBigNumberToDecimal, convertToDecimal, toHex } from "./utils";
 
 export const fetchTokenDetails = async (
   Network,
@@ -96,11 +101,19 @@ export const fetchTokenBalance = async ({
       if (IS_TOKEN(Network_Standard)) {
         req.rpcURL = `${SOLANA_MAINNET.rpcURL}${Token_Address}/tokens`;
         const result = await solanaServices.callMoralis({ ...req });
-        return result;
+        return result.filter((nft) =>
+          FILTER_OWNER_SOL(nft, {
+            owner_of: walletAddress,
+          })
+        ).length;
       } else {
         req.rpcURL = `${SOLANA_MAINNET.rpcURL}${Token_Address}/nft`;
         const result = await solanaServices.callMoralis({ ...req });
-        return result;
+        return result.filter((nft) =>
+          FILTER_OWNER_SOL(nft, {
+            owner_of: walletAddress,
+          })
+        ).length;
       }
     }
     case 2:
@@ -110,17 +123,18 @@ export const fetchTokenBalance = async ({
       if (IS_TOKEN(Network_Standard)) {
         req.abi = Network_Standard;
         let result = await getEVMTokenBalance(req);
-        return convertToDecimal(result, tokenDecimal);
+
+        return convertBigNumberToDecimal(result.toString(), tokenDecimal);
       } else {
         req.rpcURL = `${
           ETHERIUM.rpcURL
-        }${Token_Address}/nft/${walletAddress}?chain=${toHex(
+        }${walletAddress}/nft/${Token_Address}?chain=${toHex(
           POLYGON_MAINNET.chainId
         )}&format=decimal`;
         req.method = "GET";
         const { result } = await callMoralis({ ...req });
         return result.filter((nft) =>
-          FILTER_OWNER_NFT(nft, {
+          FILTER_OWNER_NFT_EVM(nft, {
             token_address: Token_Address,
             contract_type: Network_Standard,
             owner_of: walletAddress,
@@ -138,11 +152,12 @@ export const fetchTokenBalance = async ({
         req.method = "POST";
 
         let result = await callMoralis({ ...req });
-        return convertToDecimal(result, tokenDecimal);
+
+        return convertBigNumberToDecimal(result.toString(), tokenDecimal);
       } else {
         req.rpcURL = `${
           ETHERIUM.rpcURL
-        }${Token_Address}/nft/${walletAddress}?chain=${toHex(
+        }${walletAddress}/nft/${Token_Address}?chain=${toHex(
           ETHERIUM.chainId
         )}&format=decimal`;
         req.method = "GET";
@@ -150,7 +165,7 @@ export const fetchTokenBalance = async ({
         const { result } = await callMoralis({ ...req });
         console.log("result", result);
         return result.filter((nft) =>
-          FILTER_OWNER_NFT(nft, {
+          FILTER_OWNER_NFT_EVM(nft, {
             token_address: Token_Address,
             contract_type: Network_Standard,
             owner_of: walletAddress,

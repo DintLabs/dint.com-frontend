@@ -14,7 +14,7 @@ import {
   IS_TOKEN,
 } from "../utils";
 import { ETHERIUM, POLYGON_MAINNET, SOLANA_MAINNET } from "./model";
-import { convertBigNumberToDecimal, convertToDecimal, toHex } from "./utils";
+import { convertBigNumberToDecimal,  toHex } from "./utils";
 
 export const fetchTokenDetails = async (
   Network,

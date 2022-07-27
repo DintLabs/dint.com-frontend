@@ -14,7 +14,6 @@ import dint from "../material/dintcoin_logo.png";
 import { Helmet } from "react-helmet";
 import { getNetworkByUniqueId, toHex } from "../web3/utils";
 import * as Alert from "../components/common/alert";
-const Swal = require('sweetalert2');
 
 
 import * as metamask from "../web3/wallets/metamask";
@@ -23,6 +22,7 @@ import * as phantom from "../web3/wallets/phantom";
 import { fetchTokenBalance } from "../web3/service";
 import { SOLANA_MAINNET } from "../web3/model";
 import { ENV } from "../..";
+const Swal = require('sweetalert2');
 
 var selectedEvent = null;
 

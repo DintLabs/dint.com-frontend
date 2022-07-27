@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1100ef81.css",
+    "main.js": "/static/js/main.86d893dd.js",
+    "static/media/home2.mp4": "/static/media/home2.7cab7547b9d53384476a.mp4",
+    "static/media/white.png": "/static/media/white.64737522f9a943f30f8a.png",
+    "static/media/black.png": "/static/media/black.b3499babf8700c13475f.png",
+    "static/media/matic-token.png": "/static/media/matic-token.ecb243c52a788bd63818.png",
+    "static/media/adminerr.svg": "/static/media/adminerr.cf98eb70a2532c585044e186b6c3a796.svg",
+    "static/media/metamask.svg": "/static/media/metamask.1eaa9d64cc3beb8f1e48bcbf707ba1aa.svg",
+    "index.html": "/index.html",
+    "static/media/solana_logo.svg": "/static/media/solana_logo.19b20fe83f786a34bae6e2beaddc7f20.svg",
+    "static/media/polygon_logo.svg": "/static/media/polygon_logo.48bd63d3135c740f1b010f6fcdda3644.svg",
+    "static/media/eth_logo.svg": "/static/media/eth_logo.917dc86ca760c0642e30217341a8dbf5.svg",
+    "main.1100ef81.css.map": "/static/css/main.1100ef81.css.map",
+    "main.86d893dd.js.map": "/static/js/main.86d893dd.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1100ef81.css",
+    "static/js/main.86d893dd.js"
+  ]
+}

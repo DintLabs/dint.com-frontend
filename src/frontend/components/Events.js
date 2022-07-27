@@ -7,12 +7,15 @@ import { auth, db } from "./Firebase";
 import { useState, useEffect } from "react";
 import { Card, Button, Row, Col, Container } from "react-bootstrap";
 import { ethers } from "ethers";
+
 import polygonlogo from "../material/polygon_logo.svg";
 import solanalogo from "../material/solana_logo.svg";
 import dint from "../material/dintcoin_logo.png";
 import { Helmet } from "react-helmet";
 import { getNetworkByUniqueId, toHex } from "../web3/utils";
 import * as Alert from "../components/common/alert";
+const Swal = require('sweetalert2');
+
 
 import * as metamask from "../web3/wallets/metamask";
 import * as phantom from "../web3/wallets/phantom";
@@ -24,6 +27,7 @@ import { ENV } from "../..";
 var selectedEvent = null;
 
 const ShowTicketBtn = (props) => {
+
   if (true) {
     return (
       <Button
@@ -37,6 +41,7 @@ const ShowTicketBtn = (props) => {
       </Button>
     );
   }
+
 
   //   let navigate = useNavigate();
   //   if (parseFloat(props.balance) > parseFloat(props.required)) {
@@ -88,6 +93,7 @@ const Events = (props) => {
   );
   const [tokenNameEvent, setTokenNameEvent] = useState("wallet not connected");
   const [networkid, setnetworkid] = useState("wallet not connected");
+
 
   const getEventsfirebase = () => {
     const dbRef = ref(getDatabase());
@@ -142,6 +148,7 @@ const Events = (props) => {
     a.remove();
   }
 
+
   const getmetamaskBalance = async () => {
     const netWork = getNetworkByUniqueId(selectedEvent.network);
 
@@ -173,6 +180,7 @@ const Events = (props) => {
         const config = Alert.configSuccessAlert({
           title: "You are valid for event",
           text: `Your balance ${balanceOf}`,
+
         });
         Alert.alert(config);
       }
@@ -181,6 +189,7 @@ const Events = (props) => {
     }
     if (netWork.uniqueId === SOLANA_MAINNET.uniqueId) {
       const provider = phantom.getProvider();
+
 
       const afterConnect = async () => {
         const walletAddress = provider.publicKey.toString();
@@ -341,6 +350,7 @@ const Events = (props) => {
             <h1>Events</h1>
           </div>
         </div>
+
 
         <center>
           <h4>Network : {networkid}</h4>

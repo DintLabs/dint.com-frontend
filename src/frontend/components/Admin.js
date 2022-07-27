@@ -736,6 +736,7 @@ const Admin = () => {
       tokenData.tokenDecimal = editEventForm.tokenDecimal;
       tokenData.tokenIcon = editEventForm.tokenIcon;
     }
+
     console.log("update", tokenData);
     update(ref(db, "events/" + SelectedeventNameFirebase), {
       eventName: updatedename,
@@ -1061,6 +1062,7 @@ const Admin = () => {
                       Update event
                     </Button>
                   </div>
+
                 </div>
               </div>
             </Tab>

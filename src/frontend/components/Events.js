@@ -352,25 +352,8 @@ const Events = (props) => {
         </div>
 
 
-        <center>
-          <h4>Network : {networkid}</h4>
-        </center>
-        <center>
-          <h4>Token Name : {tokenNameEvent}</h4>
-        </center>
-        <center>
-          <h4>
-            Wallet Balance : {userBalanceEvent}{" "}
-            <img
-              src={dint}
-              alt=""
-              height={"22px"}
-              style={{ marginBottom: "2px" }}
-            />{" "}
-          </h4>
-        </center>
-        <br />
-        <br />
+  
+      
         <Container>
           <Row xs={1} md={3} className="g-4">
             {eventsdata.map((ev) => (

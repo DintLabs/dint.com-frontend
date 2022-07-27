@@ -11,4 +11,4 @@ render(<App />, rootElement);
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-export const ENV = "test";
+export const ENV = "dev";

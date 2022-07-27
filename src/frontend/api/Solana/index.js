@@ -33,7 +33,7 @@ export const callMoralis = async ({ rpcURL, abi, params, method }) => {
   var myHeaders = new Headers();
   myHeaders.append(
     "X-API-Key",
-    "Q4uppPpqyKJFfCgpMLMgnbRP1APbglQDx6VBmQjAElyp7RBj4EdAKHaCTNz0jLoD"
+    "ENMoTIOsh9TMxrUlYdxLOjda5Oh65rddFdbEDzzSaGB4M6ZhhegBCAnTxhYCi9Ec"
   );
   myHeaders.append("Content-Type", "application/json");
 

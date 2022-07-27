@@ -15,19 +15,17 @@ import { Helmet } from "react-helmet";
 import { getNetworkByUniqueId, toHex } from "../web3/utils";
 import * as Alert from "../components/common/alert";
 
-
 import * as metamask from "../web3/wallets/metamask";
 import * as phantom from "../web3/wallets/phantom";
 
 import { fetchTokenBalance } from "../web3/service";
 import { SOLANA_MAINNET } from "../web3/model";
 import { ENV } from "../..";
-const Swal = require('sweetalert2');
+const Swal = require("sweetalert2");
 
 var selectedEvent = null;
 
 const ShowTicketBtn = (props) => {
-
   if (true) {
     return (
       <Button
@@ -41,7 +39,6 @@ const ShowTicketBtn = (props) => {
       </Button>
     );
   }
-
 
   //   let navigate = useNavigate();
   //   if (parseFloat(props.balance) > parseFloat(props.required)) {
@@ -87,13 +84,13 @@ const DisplaycryptoLogo = (props) => {
 };
 
 const Events = (props) => {
+  const navigate = useNavigate();
   const [eventsdata, setEventdata] = useState([]);
   const [userBalanceEvent, setUserBalanceEvent] = useState(
     "wallet not connected"
   );
   const [tokenNameEvent, setTokenNameEvent] = useState("wallet not connected");
   const [networkid, setnetworkid] = useState("wallet not connected");
-
 
   const getEventsfirebase = () => {
     const dbRef = ref(getDatabase());
@@ -148,7 +145,6 @@ const Events = (props) => {
     a.remove();
   }
 
-
   const getmetamaskBalance = async () => {
     const netWork = getNetworkByUniqueId(selectedEvent.network);
 
@@ -166,7 +162,7 @@ const Events = (props) => {
     // Solana -> Phantom Wallet
 
     if (ENV === "test") {
-      const walletAddress = "0x329cE55eE5Fb647B126B71038FD835c6BA0C99D5";
+      const walletAddress = "0xC6869257205e20c2A43CB31345DB534AECB49F6E";
       const balanceOf = await getBalance(walletAddress);
       setUserBalanceEvent(balanceOf);
       setnetworkid(netWork.name);
@@ -177,19 +173,23 @@ const Events = (props) => {
         });
         Alert.alert(config);
       } else {
-        const config = Alert.configSuccessAlert({
-          title: "You are valid for event",
-          text: `Your balance ${balanceOf}`,
-
+        // const config = Alert.configSuccessAlert({
+        //   title: "You are valid for event",
+        //   text: `Your balance ${balanceOf}`,
+        // });
+        // Alert.alert(config);
+        navigate("/ticketcreate", {
+          state: {
+            eventid: selectedEvent.eventId,
+            userid: auth.currentUser.uid,
+          },
         });
-        Alert.alert(config);
       }
       console.log("Accounts", balanceOf);
       return;
     }
     if (netWork.uniqueId === SOLANA_MAINNET.uniqueId) {
       const provider = phantom.getProvider();
-
 
       const afterConnect = async () => {
         const walletAddress = provider.publicKey.toString();
@@ -250,11 +250,17 @@ const Events = (props) => {
             });
             Alert.alert(config);
           } else {
-            const config = Alert.configSuccessAlert({
-              title: "You are valid for event",
-              text: `Your balance ${balanceOf}`,
+            // const config = Alert.configSuccessAlert({
+            //   title: "You are valid for event",
+            //   text: `Your balance ${balanceOf}`,
+            // });
+            // Alert.alert(config);
+            navigate("/ticketcreate", {
+              state: {
+                eventid: selectedEvent.eventId,
+                userid: auth.currentUser.uid,
+              },
             });
-            Alert.alert(config);
           }
 
           console.log("Accounts", balanceOf); // still remain yet
@@ -350,7 +356,6 @@ const Events = (props) => {
             <h1>Events</h1>
           </div>
         </div>
-
 
         <center>
           <h4>Network : {networkid}</h4>

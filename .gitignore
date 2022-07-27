@@ -105,3 +105,4 @@ dist
 *.pack
 node_modules
 build
+.vscode

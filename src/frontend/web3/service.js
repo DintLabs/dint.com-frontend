@@ -14,7 +14,7 @@ import {
   IS_TOKEN,
 } from "../utils";
 import { ETHERIUM, POLYGON_MAINNET, SOLANA_MAINNET } from "./model";
-import { convertBigNumberToDecimal,  toHex } from "./utils";
+import { convertBigNumberToDecimal, toHex } from "./utils";
 
 export const fetchTokenDetails = async (
   Network,
@@ -163,7 +163,7 @@ export const fetchTokenBalance = async ({
         req.method = "GET";
 
         const { result } = await callMoralis({ ...req });
-        console.log("result", result);
+        // console.log("result", result);
         return result.filter((nft) =>
           FILTER_OWNER_NFT_EVM(nft, {
             token_address: Token_Address,
@@ -177,4 +177,52 @@ export const fetchTokenBalance = async ({
       break;
   }
   return res;
+};
+
+export const fetchWalletBalance = async ({ Network, walletAddress }) => {
+  var res = {};
+  var req = {};
+
+  
+
+  switch (Network) {
+    case "1":
+    case 1: {
+      req.method = "GET";
+
+      req.rpcURL = `${SOLANA_MAINNET.rpcURL}${walletAddress}/balance`;
+      const result = await solanaServices.callMoralis({ ...req });
+      return result;
+    }
+    case "2":
+    case 2: {
+      req.rpcURL = `${ETHERIUM.rpcURL}${walletAddress}/balance?chain=${toHex(
+        POLYGON_MAINNET.chainId
+      )}`;
+      req.method = "GET";
+      let result = await callMoralis({ ...req });
+      
+
+      return convertBigNumberToDecimal(
+        result.balance.toString(),
+        POLYGON_MAINNET.DECIMALS
+      );
+    }
+    case "3":
+    case 3: {
+      
+      req.rpcURL = `${ETHERIUM.rpcURL}${walletAddress}/balance?chain=${toHex(
+        ETHERIUM.chainId
+      )}`;
+      req.method = "GET";
+      let result = await callMoralis({ ...req });
+
+      return convertBigNumberToDecimal(
+        result.balance.toString(),
+        ETHERIUM.DECIMALS
+      );
+    }
+    default:
+      break;
+  }
 };

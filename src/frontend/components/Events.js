@@ -4,7 +4,7 @@ import NavbarHome from "./NavbarHome";
 import { useNavigate } from "react-router-dom";
 import { get, getDatabase, ref, child } from "firebase/database";
 import { auth, db } from "./Firebase";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { Card, Button, Row, Col, Container } from "react-bootstrap";
 import { ethers } from "ethers";
 
@@ -35,7 +35,7 @@ const ShowTicketBtn = (props) => {
           props.getmetamaskBalance();
         }}
       >
-        Check Your Ticket
+        More Details
       </Button>
     );
   }
@@ -86,11 +86,9 @@ const DisplaycryptoLogo = (props) => {
 const Events = (props) => {
   const navigate = useNavigate();
   const [eventsdata, setEventdata] = useState([]);
-  const [userBalanceEvent, setUserBalanceEvent] = useState(
-    "wallet not connected"
-  );
-  const [tokenNameEvent, setTokenNameEvent] = useState("wallet not connected");
-  const [networkid, setnetworkid] = useState("wallet not connected");
+  const [userBalanceEvent, setUserBalanceEvent] = useState(null);
+  const [tokenNameEvent, setTokenNameEvent] = useState(null);
+  const [networkid, setnetworkid] = useState(null);
 
   const getEventsfirebase = () => {
     const dbRef = ref(getDatabase());
@@ -184,6 +182,7 @@ const Events = (props) => {
             userid: auth.currentUser.uid,
           },
         });
+        setUserBalanceEvent(balanceOf);
       }
       console.log("Accounts", balanceOf);
       return;
@@ -194,12 +193,22 @@ const Events = (props) => {
       const afterConnect = async () => {
         const walletAddress = provider.publicKey.toString();
         const balanceOf = await getBalance(walletAddress);
+        setUserBalanceEvent(balanceOf);
+        setnetworkid(netWork.name);
+        setTokenNameEvent(selectedEvent.tokenName);
         if (balanceOf <= 0) {
           const config = Alert.configWarnAlert({
             title: "Balance not sufficient ",
             text: `Your balance ${balanceOf}`,
           });
           Alert.alert(config);
+        } else {
+          navigate("/ticketcreate", {
+            state: {
+              eventid: selectedEvent.eventId,
+              userid: auth.currentUser.uid,
+            },
+          });
         }
         console.log("Accounts", balanceOf); // still remain yet
       };
@@ -243,6 +252,7 @@ const Events = (props) => {
           const balanceOf = await getBalance(walletAddress);
           setUserBalanceEvent(balanceOf);
           setnetworkid(netWork.name);
+          setTokenNameEvent(selectedEvent.tokenName);
           if (balanceOf <= 0) {
             const config = Alert.configWarnAlert({
               title: "Balance not sufficient ",
@@ -298,7 +308,7 @@ const Events = (props) => {
             console.log(contract);
             const balanceInEth = await contract.balanceOf(accounts[0]);
             const tokenname = await contract.name();
-            setTokenNameEvent(tokenname);
+            setTokenNameEvent(tokenName);
             setUserBalanceEvent(
               parseFloat(ethers.utils.formatEther(balanceInEth)).toFixed(6)
             );
@@ -357,27 +367,6 @@ const Events = (props) => {
           </div>
         </div>
 
-
-        <center>
-          <h4>Network : {networkid}</h4>
-        </center>
-        <center>
-          <h4>Token Name : {tokenNameEvent}</h4>
-        </center>
-        <center>
-          <h4>
-            Wallet Balance : {userBalanceEvent}{" "}
-            <img
-              src={dint}
-              alt=""
-              height={"22px"}
-              style={{ marginBottom: "2px" }}
-            />{" "}
-          </h4>
-        </center>
-        <br />
-        <br />
-
         <Container>
           <Row xs={1} md={3} className="g-4">
             {eventsdata.map((ev) => (
@@ -408,11 +397,11 @@ const Events = (props) => {
                         />
                       </h6>
                       <h6>
-                        Token Name: {ev.tokenName}{" "}
-                        <DisplaycryptoLogo url={ev.tokenIcon} />{" "}
+                        Token Name: {ev.tokenName}
+                        <DisplaycryptoLogo url={ev.tokenIcon} />
                       </h6>
                       <h6>
-                        Balance Required: <b> {ev.balanceRequired} </b>{" "}
+                        Balance Required: <b> {ev.balanceRequired} </b>
                       </h6>
                       <br />
                       <ShowTicketBtn

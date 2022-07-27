@@ -49,3 +49,19 @@ export const FILTER_OWNER_NFT_EVM = (
 
 export const FILTER_OWNER_SOL = (nfts, { owner_of }) =>
   nfts.associatedTokenAddress.toLowerCase() === owner_of.toLowerCase();
+
+export function groupBy(objectArray, property) {
+  try {
+    return objectArray.reduce((acc, obj) => {
+      const key = obj[property];
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      // Add object to list for given key's value
+      acc[key].push(obj);
+      return acc;
+    }, {});
+  } catch (error) {
+    return null;
+  }
+}

@@ -51,3 +51,8 @@ export const ABI = {
   TOKEN_1155: ERC_1155,
   ERC_20: ERC_20,
 };
+
+export const EVM_NETWORKS = Object.freeze({
+  2: POLYGON_MAINNET,
+  3: ETHERIUM,
+});

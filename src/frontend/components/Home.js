@@ -7,7 +7,7 @@ import blacklogo from "../material/black.png";
 import { Helmet } from "react-helmet";
 
 import $ from "jquery";
-import { isIPhone } from "../utils";
+import { isIPhone, isMetamask } from "../utils";
 
 const Homepage = (props) => {
   let navigate = useNavigate();
@@ -123,7 +123,7 @@ const Homepage = (props) => {
         <section id="hero" className="card-video-banner">
           <div className="hero-container">
             <div className="bg-video-wrap">
-              {!!isIPhone() ? (
+              {isMetamask || !!isIPhone() ? (
                 <img src={homeImage} style={{ height: "100%" }} />
               ) : (
                 <video src={Bgvideo} loop muted autoPlay></video>

@@ -1,4 +1,5 @@
 import { ETHERIUM, POLYGON_MAINNET, SOLANA_MAINNET } from "../web3/model";
+import * as _ from "lodash";
 
 export const OPTIONS_NETWORK_STAD = {
   ERC_20: {
@@ -68,10 +69,21 @@ export function groupBy(objectArray, property) {
 
 export function isIPhone() {
   return (
-    ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
-      navigator.platform
-    ) ||
+    [
+      "iPad Simulator",
+      "iPhone Simulator",
+      "iPod Simulator",
+      "iPad",
+      "iPhone",
+      "iPod",
+    ].includes(navigator.platform) ||
     // iPad on iOS 13 detection
-    (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+    (navigator.userAgent.includes("Mac") && "ontouchend" in document)
   );
 }
+
+export const isBrowser = typeof window !== "undefined";
+
+export const hasEthereum = isBrowser && _.has(window, "ethereum");
+
+export const isMetamask = isIPhone() && hasEthereum;

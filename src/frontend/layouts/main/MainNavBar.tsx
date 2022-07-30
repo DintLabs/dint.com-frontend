@@ -1,10 +1,10 @@
+import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
 import { Dropdown } from 'react-bootstrap';
 import { CgProfile } from 'react-icons/cg';
 import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { auth } from '../../components/Firebase';
 import MetamaskLogin from '../../components/MetamaskLogin';
 import blacklogo from '../../material/black.png';
 import '../../material/Event.css';
@@ -12,26 +12,21 @@ import mainlogo from '../../material/white.png';
 
 const MainNavBar = () => {
   // var isLoggedin = props.isloggedin;
-  const { user, isAuthenticated, isAdmin } = useAuth();
+  const { user, isAuthenticated, isAdmin, logout } = useAuth();
 
   const { pathname } = useLocation();
   const isEventsPage = pathname === '/events';
 
   const navigate = useNavigate();
 
-  const logout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        alert('logout success');
-        // props.logout(); --nik
-        window.location.reload();
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    // sessionStorage.removeItem("logged");
-    navigate('/');
+  const onLogout = async () => {
+    try {
+      await logout();
+      window.location.reload();
+      navigate('/');
+    } catch (ex) {
+      console.log(ex, 'Error occurred in onLogout');
+    }
   };
 
   const EditProfile = () => {
@@ -146,7 +141,7 @@ const MainNavBar = () => {
 
                     <div className="profile_hide_pc">
                       <li className="no_effect_li">
-                        <Link id="no_effect" to="/login/ " onClick={logout}>
+                        <Link id="no_effect" to="/login/ " onClick={onLogout}>
                           Logout
                         </Link>
                       </li>
@@ -155,7 +150,7 @@ const MainNavBar = () => {
                 ) : (
                   <>
                     <li className="no_effect_li">
-                      <Link id="no_effect" to="/login/ ">
+                      <Link id="no_effect" to="/auth/login/ ">
                         Login
                       </Link>
                     </li>

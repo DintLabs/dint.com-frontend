@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { ref, get, child } from 'firebase/database';
 import $ from 'jquery';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from './Firebase';
+import { authInstance } from 'frontend/contexts/FirebaseInstance';
 
 const Swal = require('sweetalert2');
 
@@ -21,7 +21,7 @@ const Protected = (props: {
   const [isLoggedin, setLogin] = useState(false);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(authInstance, (user) => {
       if (user) {
         // const { uid } = user; -- nik
         setLogin(true);

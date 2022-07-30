@@ -3,6 +3,7 @@ import GuestGuard from 'frontend/guards/GuestGuard';
 import MainLayout from 'frontend/layouts/main';
 import Home from 'frontend/pages/Home/Home';
 import Login from 'frontend/pages/Login/Login';
+import Register from 'frontend/pages/Register/Register';
 import { useNavigate, useRoutes } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
@@ -16,12 +17,21 @@ export default function Router() {
   return useRoutes([
     {
       path: 'auth',
+      element: <MainLayout />,
       children: [
         {
           path: 'login',
           element: (
             <GuestGuard>
               <Login />
+            </GuestGuard>
+          )
+        },
+        {
+          path: 'signup',
+          element: (
+            <GuestGuard>
+              <Register />
             </GuestGuard>
           )
         }

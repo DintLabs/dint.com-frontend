@@ -1,86 +1,101 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import {
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  setPersistence,
   browserSessionPersistence,
-  sendPasswordResetEmail,
-  signInWithPopup,
-  signInWithRedirect,
+  getAuth,
   getRedirectResult,
-  GoogleAuthProvider
+  GoogleAuthProvider,
   // FacebookAuthProvider,
   // OAuthProvider
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  setPersistence,
+  signInWithPopup,
+  signInWithRedirect
 } from 'firebase/auth';
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { get, child, ref } from 'firebase/database';
+import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import Footer from './Footer';
-import NavbarHome from './NavbarHome';
-import { auth, db } from './Firebase';
+import { Link, useNavigate } from 'react-router-dom';
+import { auth } from '../../components/Firebase';
+import Footer from '../../components/Footer';
+import NavbarHome from '../../components/NavbarHome';
 
 const Login = (props: any) => {
+  const { login } = useAuth();
   const previousPage = window.location.pathname.split('/');
 
   const navigate = useNavigate();
 
   const [error_msg_login, setLoginErr] = useState('');
 
-  const loginClicked = () => {
+  const loginClicked = async () => {
     const login_email = $('#login_email').val() as string;
     const login_password = $('#login_password').val() as string;
 
-    setPersistence(auth, browserSessionPersistence)
-      .then(() => {
-        signInWithEmailAndPassword(auth, login_email, login_password)
-          .then((userCredential) => {
-            // sessionStorage.setItem('logged', true);
-            // sessionStorage.setItem('user_email', login_email);
-            props.loginStateChange();
-            props.setemail(login_email);
+    try {
+      await login(login_email, login_password);
 
-            // for get role of loggedin user
-            get(child(ref(db), `users/${userCredential.user.uid}/role`))
-              .then((snapshot) => {
-                // sessionStorage.setItem('role',snapshot.val())
-                if (snapshot.val() === 'admin') {
-                  props.isadmin();
-                }
-              })
-              .catch((e) => {
-                alert(e);
-                console.log(e);
-              });
+      //   if (isMountedRef.current) {
+      //     setSubmitting(false);
+      //   }
+    } catch (error) {
+      console.error(error);
+      //   resetForm();
+      //   if (isMountedRef.current) {
+      //     setSubmitting(false);
+      //     setErrors({ afterSubmit: error.message });
+      //   }
+    }
 
-            if (previousPage[2] === 'undefined') {
-              navigate('/');
-            } else {
-              navigate(`/${previousPage[2]}`);
-            }
-          })
-          .catch((error) => {
-            switch (error.code) {
-              case 'auth/user-not-found':
-                console.log(`User is Not Found`);
-                setLoginErr('User Not Found');
-                break;
-              case 'auth/wrong-password':
-                console.log(`Wrong Password`);
-                setLoginErr('Wrong Password');
-                break;
-              default:
-                console.log(error.message);
-                setLoginErr('Something Went Wrong');
-                break;
-            }
-          });
-      })
-      .catch((e) => {
-        alert(e.message);
-      });
+    // setPersistence(auth, browserSessionPersistence)
+    //   .then(() => {
+    //     signInWithEmailAndPassword(auth, login_email, login_password)
+    //       .then((userCredential) => {
+    //         // sessionStorage.setItem('logged', true);
+    //         // sessionStorage.setItem('user_email', login_email);
+    //         props.loginStateChange();
+    //         props.setemail(login_email);
+
+    //         // for get role of loggedin user
+    //         get(child(ref(db), `users/${userCredential.user.uid}/role`))
+    //           .then((snapshot) => {
+    //             // sessionStorage.setItem('role',snapshot.val())
+    //             if (snapshot.val() === 'admin') {
+    //               props.isadmin();
+    //             }
+    //           })
+    //           .catch((e) => {
+    //             alert(e);
+    //             console.log(e);
+    //           });
+
+    //         if (previousPage[2] === 'undefined') {
+    //           navigate('/');
+    //         } else {
+    //           navigate(`/${previousPage[2]}`);
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         switch (error.code) {
+    //           case 'auth/user-not-found':
+    //             console.log(`User is Not Found`);
+    //             setLoginErr('User Not Found');
+    //             break;
+    //           case 'auth/wrong-password':
+    //             console.log(`Wrong Password`);
+    //             setLoginErr('Wrong Password');
+    //             break;
+    //           default:
+    //             console.log(error.message);
+    //             setLoginErr('Something Went Wrong');
+    //             break;
+    //         }
+    //       });
+    //   })
+    //   .catch((e) => {
+    //     alert(e.message);
+    //   });
   };
 
   const forgotPassClicked = () => {

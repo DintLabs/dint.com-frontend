@@ -72,10 +72,10 @@ const EventForAll = (props: { logout: () => void; isAdmin: any }) => {
         />
       </Helmet>
       <NavbarHome
-        iseventpage={true}
-        // isloggedin={props.islogin}
-        logout={props.logout}
-        isadmin={props.isAdmin}
+      // iseventpage={true}
+      // isloggedin={props.islogin}
+      // logout={props.logout}
+      // isadmin={props.isAdmin}
       />
 
       <div id="events">

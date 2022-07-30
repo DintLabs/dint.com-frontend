@@ -329,9 +329,9 @@ const Events = (props: { islogin: any; logout: () => void; isAdmin: any; }) => {
       </Helmet>
       <NavbarHome
         // isloggedin={props.islogin} -- nik
-        logout={props.logout}
-        isadmin={props.isAdmin}
-        iseventpage={true}
+        // logout={props.logout}
+        // isadmin={props.isAdmin}
+        // iseventpage={true}
       />
       <div id="events">
         <br />

@@ -28,6 +28,7 @@ function initTokenChange() {
 
 const initialState: AuthState = {
   isAuthenticated: false,
+  isAdmin: false,
   isInitialized: false,
   user: null,
   idToken: ''
@@ -40,6 +41,7 @@ enum Types {
 type FirebaseAuthPayload = {
   [Types.Initial]: {
     isAuthenticated: boolean;
+    isAdmin: boolean;
     user: AuthUser;
     idToken?: string;
   };
@@ -89,13 +91,18 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
           dispatch({
             type: Types.Initial,
-            payload: { isAuthenticated: true, user, idToken }
+            payload: {
+              isAuthenticated: true,
+              user,
+              idToken,
+              isAdmin: ADMIN_EMAILS.includes(auth.email)
+            }
           });
         } else {
           localStorage.removeItem('firebaseToken');
           dispatch({
             type: Types.Initial,
-            payload: { isAuthenticated: false, user: null, idToken: '' }
+            payload: { isAuthenticated: false, isAdmin: false, user: null, idToken: '' }
           });
         }
       }),

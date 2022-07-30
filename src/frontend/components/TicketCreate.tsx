@@ -56,11 +56,11 @@ const TicketCreate = (props: {
   return (
     <>
       <NavbarHome
-        // isloggedin={props.islogin} -- nik
-        logout={props.logout}
-        isadmin={props.isAdmin}
-        // setaddress={props.setaddress} -- nik
-        // setchain={props.setchain} -- nik
+      // isloggedin={props.islogin} -- nik
+      // logout={props.logout}
+      // isadmin={props.isAdmin}
+      // setaddress={props.setaddress} -- nik
+      // setchain={props.setchain} -- nik
       />
       <div style={{ textAlign: 'center' }}>
         {' '}

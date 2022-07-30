@@ -1,15 +1,17 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+// import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import NavbarHome from '../components/NavbarHome';
-import blacklogo from '../material/black.png';
-import homeImage from '../material/home-miami.jpg';
-import Bgvideo from '../material/home2.mp4';
-import '../material/homepage.css';
-import { isIPhone, isMetamask } from '../utils';
+import blacklogo from '../../material/black.png';
+import homeImage from '../../material/home-miami.jpg';
+import Bgvideo from '../../material/home2.mp4';
+import '../../material/homepage.css';
+import { isIPhone, isMetamask } from '../../utils';
 
-const Home = (props: { logout: () => void; isAdmin: any; islogin?: any }) => {
+const Home = () => {
+  // const { user } = useAuth();
+  // console.log(user);
   // const navigate = useNavigate();
   const back_to_top = $('#back_to_top');
 
@@ -60,10 +62,6 @@ const Home = (props: { logout: () => void; isAdmin: any; islogin?: any }) => {
         <meta name="description" content="Dint Club" />
       </Helmet>
       <div>
-        {/* ======= Header ======= */}
-
-        <NavbarHome isadmin={props.isAdmin} logout={props.logout} />
-
         {/* ======= Hero Section ======= */}
         <section id="hero" className="card-video-banner">
           <div className="hero-container">
@@ -114,58 +112,7 @@ const Home = (props: { logout: () => void; isAdmin: any; islogin?: any }) => {
           </section>
         </main>
         {/* End #main */}
-        {/* ======= Footer ======= */}
-        <footer id="footer" className="animate__animated animate__fadeInUp">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-3">
-                <a href="https://dint.com">
-                  <img src="images/logo.png" alt="logo" width="40" height="40" />
-                </a>
-                <p />
-              </div>
-              <div className="col-md-3">&nbsp;</div>
-              <div className="col-md-3">&nbsp;</div>
-              <div className="col-md-3">&nbsp;</div>
-            </div>
-          </div>
 
-          <div id="back_to_top" />
-        </footer>
-        {/* End Footer */}
-        <div className="social-links animate__animated animate__fadeInUp">
-          <a
-            href="https://discord.gg/zk97Vf4YyX"
-            className="discord"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i className="bi bi-discord" />
-          </a>
-          <a href="https://twitter.com/dint" className="twitter" target="_blank" rel="noreferrer">
-            <i className="bi bi-twitter" />
-          </a>
-          <a
-            href="https://www.instagram.com/dint"
-            className="instagram"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i className="bi bi-instagram" />
-          </a>
-          <a
-            href="https://www.youtube.com/channel/UCGXYFkXyYYIZIjOyjDQ6S7w"
-            className="youtube"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i className="bi bi-youtube" />
-          </a>
-          <div className="copyright">Copyright ©2022 All rights reserved | dint.com</div>
-        </div>
-        <div className="back-to-top d-flex align-items-center justify-content-center">
-          <i className="bi bi-arrow-up-short" />
-        </div>
         {/* The Modal */}
         <div className="modal animate__animated animate__fadeInUp" id="myModal">
           <div className="modal-dialog model-waitlist">
@@ -253,3 +200,56 @@ const Home = (props: { logout: () => void; isAdmin: any; islogin?: any }) => {
   );
 };
 export default Home;
+
+//  {/* ======= Footer ======= */}
+//  <footer id="footer" className="animate__animated animate__fadeInUp">
+//  <div className="container">
+//    <div className="row">
+//      <div className="col-md-3">
+//        <a href="https://dint.com">
+//          <img src="images/logo.png" alt="logo" width="40" height="40" />
+//        </a>
+//        <p />
+//      </div>
+//      <div className="col-md-3">&nbsp;</div>
+//      <div className="col-md-3">&nbsp;</div>
+//      <div className="col-md-3">&nbsp;</div>
+//    </div>
+//  </div>
+
+//  <div id="back_to_top" />
+// </footer>
+// {/* End Footer */}
+// <div className="social-links animate__animated animate__fadeInUp">
+//  <a
+//    href="https://discord.gg/zk97Vf4YyX"
+//    className="discord"
+//    target="_blank"
+//    rel="noreferrer"
+//  >
+//    <i className="bi bi-discord" />
+//  </a>
+//  <a href="https://twitter.com/dint" className="twitter" target="_blank" rel="noreferrer">
+//    <i className="bi bi-twitter" />
+//  </a>
+//  <a
+//    href="https://www.instagram.com/dint"
+//    className="instagram"
+//    target="_blank"
+//    rel="noreferrer"
+//  >
+//    <i className="bi bi-instagram" />
+//  </a>
+//  <a
+//    href="https://www.youtube.com/channel/UCGXYFkXyYYIZIjOyjDQ6S7w"
+//    className="youtube"
+//    target="_blank"
+//    rel="noreferrer"
+//  >
+//    <i className="bi bi-youtube" />
+//  </a>
+//  <div className="copyright">Copyright ©2022 All rights reserved | dint.com</div>
+// </div>
+// <div className="back-to-top d-flex align-items-center justify-content-center">
+//  <i className="bi bi-arrow-up-short" />
+// </div>

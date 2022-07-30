@@ -1,20 +1,21 @@
-import { Link, useNavigate } from 'react-router-dom';
-import '../material/Event.css';
-import { CgProfile } from 'react-icons/cg';
+import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
 import { Dropdown } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import { CgProfile } from 'react-icons/cg';
 import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
-import MetamaskLogin from './MetamaskLogin';
-import { auth } from './Firebase';
-import mainlogo from '../material/white.png';
-import blacklogo from '../material/black.png';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { auth } from '../../components/Firebase';
+import MetamaskLogin from '../../components/MetamaskLogin';
+import blacklogo from '../../material/black.png';
+import '../../material/Event.css';
+import mainlogo from '../../material/white.png';
 
-const NavbarHome = () => {
+const MainNavBar = () => {
   // var isLoggedin = props.isloggedin;
+  const { user, isAuthenticated, isAdmin } = useAuth();
 
-  const [isLoggedin, setIsLogin] = useState(false);
+  const { pathname } = useLocation();
+  const isEventsPage = pathname === '/events';
 
   const navigate = useNavigate();
 
@@ -51,14 +52,6 @@ const NavbarHome = () => {
     $('#navbar_icon').toggleClass('bi-x');
   };
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsLogin(true);
-      }
-    });
-  });
-
   return (
     <>
       <div id="event_nav" style={{ marginTop: '60px' }}>
@@ -75,13 +68,13 @@ const NavbarHome = () => {
                   <img src={mainlogo} alt="logo" id="logo_homepage" />{' '}
                 </h1>
               </Link>
-              {/* {props.iseventpage ? ( --nik
+              {isEventsPage ? (
                 <>
                   &nbsp; <h2 style={{ color: 'white', margin: '0' }}>&nbsp;</h2>
                 </>
               ) : (
                 <></>
-              )} */}
+              )}
             </div>
             <nav id="navbar" className="navbar order-lg-0">
               <ul>
@@ -91,7 +84,7 @@ const NavbarHome = () => {
                   </Link>
                 </li>
 
-                {/* {props.isadmin ? ( --nik
+                {isAdmin ? (
                   <li className="no_effect_li">
                     <Link to="/admin" style={{ padding: 0 }}>
                       Admin
@@ -99,9 +92,9 @@ const NavbarHome = () => {
                   </li>
                 ) : (
                   ''
-                )} */}
+                )}
 
-                {isLoggedin ? (
+                {isAuthenticated ? (
                   <li className="no_effect_li">
                     <Link id="no_effect" to="/events" state={{ from: 'events' }}>
                       Events
@@ -116,7 +109,7 @@ const NavbarHome = () => {
                 )}
                 {/* <li id='no_effect_li'><Link id='no_effect' to="/marketplace">Marketplace</Link></li>     */}
 
-                {isLoggedin ? (
+                {isAuthenticated ? (
                   <>
                     {/* <div className="navlinks"></div> */}
                     <div className="profile_hide_mobile">
@@ -197,4 +190,4 @@ const NavbarHome = () => {
   );
 };
 
-export default NavbarHome;
+export default MainNavBar;

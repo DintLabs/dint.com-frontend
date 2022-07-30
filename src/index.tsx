@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
+// eslint-disable-next-line import/no-named-as-default
 import AuthProvider from 'frontend/contexts/FirebaseContext';
 import { render } from 'react-dom';
 import { HelmetProvider } from 'react-helmet-async';

@@ -100,7 +100,7 @@ const Signup = () => {
         <title>Sign Up</title>
         <meta name="description" content="Sign Up to Dint" />
       </Helmet>
-      <NavbarHome isadmin={false} logout={() => {}} />
+      <NavbarHome />
 
       <br />
       <div className="login_divs">

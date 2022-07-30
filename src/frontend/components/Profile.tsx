@@ -148,7 +148,7 @@ const Profile = (props: { islogin: any; logout: any; isAdmin: any }) => {
 
   return (
     <>
-      <NavbarHome logout={props.logout} isadmin={props.isAdmin} />
+      <NavbarHome />
       <div className="profile_form_parent">
         <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
           <Tab eventKey="home" title="Wallets">

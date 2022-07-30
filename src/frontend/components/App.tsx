@@ -1,9 +1,10 @@
 import { store } from 'frontend/redux/store';
+import Router from 'frontend/routes';
 // import { SnackbarProvider } from 'notistack5';
 import { useState } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from '../pages/Home';
+import Home from '../pages/Home/Home';
 // import AdminProtaction from './AdminProtaction';
 import './App.css';
 // import EventForAll from './EventForAll.js';
@@ -17,8 +18,6 @@ import './App.css';
 // import TicketCreate from './TicketCreate.js';
 
 function App() {
-  const [loggedin, setLoggedin] = useState(false);
-  const [isadmin] = useState(false);
   // const [userEmail, setuserEmail] = useState('');
   // const [chainId, serChainId] = useState('');
   // const [WalletAddress, setWalletAddress] = useState('');
@@ -26,10 +25,6 @@ function App() {
   // const setLogintrue = () => {
   //   setLoggedin(true);
   // };
-
-  const setLoginfalse = () => {
-    setLoggedin(false);
-  };
 
   // const setAdmin = () => {
   //   setisAdmin(true);
@@ -51,12 +46,13 @@ function App() {
     <ReduxProvider store={store}>
       <BrowserRouter>
         {/* <SnackbarProvider> */}
-        <Routes>
+        <Router />
+        {/* <Routes>
           <Route
             path="/*"
             element={<Home logout={setLoginfalse} isAdmin={isadmin} islogin={loggedin} />}
           />
-        </Routes>
+        </Routes> */}
         {/* </SnackbarProvider> */}
       </BrowserRouter>
     </ReduxProvider>

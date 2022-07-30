@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Row, Col, Card } from 'react-bootstrap';
 
-export default function MyPurchases({ marketplace, nft, account }) {
+interface IMyPurchases {
+  marketplace: any;
+  nft: any;
+  account: any;
+}
+export default function MyPurchases({ marketplace, nft, account }: IMyPurchases) {
   const [loading, setLoading] = useState(true);
   const [purchases, setPurchases] = useState([]);
   const loadPurchasedItems = async () => {
@@ -11,7 +16,7 @@ export default function MyPurchases({ marketplace, nft, account }) {
     const results = await marketplace.queryFilter(filter);
     // Fetch metadata of each nft and add that to listedItem object.
     const purchases = await Promise.all(
-      results.map(async (i) => {
+      results.map(async (i: { args: any; tokenId: any; itemId: any; price: any }) => {
         // fetch arguments from each result
         i = i.args;
         // get uri url from nft contract
@@ -34,7 +39,7 @@ export default function MyPurchases({ marketplace, nft, account }) {
       })
     );
     setLoading(false);
-    setPurchases(purchases);
+    setPurchases(purchases as any);
   };
   useEffect(() => {
     loadPurchasedItems();
@@ -50,7 +55,7 @@ export default function MyPurchases({ marketplace, nft, account }) {
       {purchases.length > 0 ? (
         <div className="px-5 container">
           <Row xs={1} md={2} lg={4} className="g-4 py-5">
-            {purchases.map((item, idx) => (
+            {purchases.map((item: any, idx) => (
               <Col key={idx} className="overflow-hidden">
                 <Card>
                   <Card.Img variant="top" src={item.image} />

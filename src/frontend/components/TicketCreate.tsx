@@ -7,11 +7,11 @@ import '../material/tickets.css';
 import NavbarHome from './NavbarHome';
 
 const TicketCreate = (props: {
-  islogin: any;
+  // islogin: any; -- nik
   logout: any;
   isAdmin: any;
-  setaddress: any;
-  setchain: any;
+  // setaddress: any; -- nik
+  // setchain: any; -- nik
 }) => {
   const [randomNum, setRandomNum] = useState(Math.floor(Math.random() * 100000 + 999999));
   const location = useLocation();
@@ -56,11 +56,11 @@ const TicketCreate = (props: {
   return (
     <>
       <NavbarHome
-        isloggedin={props.islogin}
+        // isloggedin={props.islogin} -- nik
         logout={props.logout}
         isadmin={props.isAdmin}
-        setaddress={props.setaddress}
-        setchain={props.setchain}
+        // setaddress={props.setaddress} -- nik
+        // setchain={props.setchain} -- nik
       />
       <div style={{ textAlign: 'center' }}>
         {' '}

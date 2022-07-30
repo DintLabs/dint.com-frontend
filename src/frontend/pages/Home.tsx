@@ -9,7 +9,7 @@ import Bgvideo from '../material/home2.mp4';
 import '../material/homepage.css';
 import { isIPhone, isMetamask } from '../utils';
 
-const Home = (props: { logout: () => void; isAdmin: any; islogin: any }) => {
+const Home = (props: { logout: () => void; isAdmin: any; islogin?: any }) => {
   // const navigate = useNavigate();
   const back_to_top = $('#back_to_top');
 
@@ -62,7 +62,7 @@ const Home = (props: { logout: () => void; isAdmin: any; islogin: any }) => {
       <div>
         {/* ======= Header ======= */}
 
-        <NavbarHome isadmin={props.isAdmin} isloggedin={props.islogin} logout={props.logout} />
+        <NavbarHome isadmin={props.isAdmin} logout={props.logout} />
 
         {/* ======= Hero Section ======= */}
         <section id="hero" className="card-video-banner">

@@ -11,7 +11,7 @@ import { auth } from './Firebase';
 import mainlogo from '../material/white.png';
 import blacklogo from '../material/black.png';
 
-const NavbarHome = (props) => {
+const NavbarHome = (props: { logout: () => void; iseventpage?: any; isadmin: any }) => {
   // var isLoggedin = props.isloggedin;
 
   const [isLoggedin, setIsLogin] = useState(false);
@@ -37,16 +37,16 @@ const NavbarHome = (props) => {
     navigate('/profile');
   };
 
-  const select = (el, all = false) => {
-    el = el.trim();
-    if (all) {
-      return [...document.querySelectorAll(el)];
-    }
-    return document.querySelector(el);
-  };
+  // const select = (el: string, all = false) => { -- NIK
+  //   el = el.trim();
+  //   if (all) {
+  //     return [...document.querySelectorAll(el)];
+  //   }
+  //   return document.querySelector(el);
+  // };
 
   const mobile_nav = () => {
-    select('#navbar').classList.toggle('navbar-mobile');
+    // select('#navbar').classList.toggle('navbar-mobile'); -- nik
     $('#navbar_icon').toggleClass('bi-list');
     $('#navbar_icon').toggleClass('bi-x');
   };
@@ -54,9 +54,7 @@ const NavbarHome = (props) => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { uid } = user;
         setIsLogin(true);
-      } else {
       }
     });
   });
@@ -79,7 +77,7 @@ const NavbarHome = (props) => {
               </Link>
               {props.iseventpage ? (
                 <>
-                  &nbsp; &nbsp; <h2 style={{ color: 'white', margin: '0' }} />
+                  &nbsp; <h2 style={{ color: 'white', margin: '0' }}>&nbsp;</h2>
                 </>
               ) : (
                 <></>
@@ -124,7 +122,7 @@ const NavbarHome = (props) => {
                     <div className="profile_hide_mobile">
                       <Dropdown>
                         <Dropdown.Toggle id="dropdown-basic">
-                          <button id="profile_btn">
+                          <button id="profile_btn" type="button">
                             <CgProfile size={35} />
                           </button>
                         </Dropdown.Toggle>
@@ -176,6 +174,7 @@ const NavbarHome = (props) => {
 
                     <li className="no_effect_li">
                       <button
+                        type="button"
                         onClick={() => navigate('/login/')}
                         style={{ background: 'transparent', border: '0', color: 'white' }}
                       >
@@ -187,7 +186,9 @@ const NavbarHome = (props) => {
                 )}
               </ul>
 
-              <i className="bi bi-list mobile-nav-toggle" id="navbar_icon" onClick={mobile_nav} />
+              <div onClick={mobile_nav} aria-hidden="true">
+                <i className="bi bi-list mobile-nav-toggle" id="navbar_icon" />
+              </div>
             </nav>
           </div>
         </header>

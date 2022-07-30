@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { getDatabase, ref, set } from 'firebase/database';
@@ -20,39 +21,40 @@ const Signup = () => {
   const auth = getAuth(app);
 
   const signup_sub = () => {
-    const email = $('#email').val();
+    const email = $('#email').val() as string;
     const c_email = $('#confirm_email').val();
     const password = $('#password').val();
-    const c_password = $('#confirm_password').val();
+    const c_password = $('#confirm_password').val() as string;
 
-    if (email == c_email) {
-      if (password == c_password) {
+    if (email === c_email) {
+      if (password === c_password) {
         // email and password matched Successfully
         createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             console.log('Registration Success');
             const user = auth.currentUser;
-
-            const database = getDatabase();
-            const userData = {
-              email,
-              role: 'simple',
-              name: 'user',
-              biography: 'no biography yet',
-              city: 'null',
-              profileImage:
-                'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
-              twitter: 'null',
-              instagram: 'null',
-              discord: 'null'
-            };
-            set(ref(database, `users/${user.uid}`), userData)
-              .then(() => {
-                console.log('profile detail saved');
-              })
-              .catch((e) => {
-                console.log(e);
-              });
+            if (user) {
+              const database = getDatabase();
+              const userData = {
+                email,
+                role: 'simple',
+                name: 'user',
+                biography: 'no biography yet',
+                city: 'null',
+                profileImage:
+                  'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
+                twitter: 'null',
+                instagram: 'null',
+                discord: 'null'
+              };
+              set(ref(database, `users/${user.uid}`), userData)
+                .then(() => {
+                  console.log('profile detail saved');
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            }
             navigate('/login/ ');
           })
           .catch((error) => {
@@ -98,7 +100,7 @@ const Signup = () => {
         <title>Sign Up</title>
         <meta name="description" content="Sign Up to Dint" />
       </Helmet>
-      <NavbarHome />
+      <NavbarHome isadmin={false} logout={() => {}} />
 
       <br />
       <div className="login_divs">
@@ -128,7 +130,7 @@ const Signup = () => {
 
           <p id="error_signup">{error_msg}</p>
 
-          <button id="signup_btn" onClick={signup_sub}>
+          <button id="signup_btn" type="button" onClick={signup_sub}>
             Submit
           </button>
         </div>

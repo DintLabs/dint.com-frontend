@@ -20,4 +20,4 @@ render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-export const ENV = 'dev';
+export const ENV: 'dev' | 'test' = 'dev';

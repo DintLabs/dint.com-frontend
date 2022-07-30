@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -8,9 +9,9 @@ import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  OAuthProvider
+  GoogleAuthProvider
+  // FacebookAuthProvider,
+  // OAuthProvider
 } from 'firebase/auth';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -21,7 +22,7 @@ import Footer from './Footer';
 import NavbarHome from './NavbarHome';
 import { auth, db } from './Firebase';
 
-const Login = (props) => {
+const Login = (props: any) => {
   const previousPage = window.location.pathname.split('/');
 
   const navigate = useNavigate();
@@ -29,8 +30,8 @@ const Login = (props) => {
   const [error_msg_login, setLoginErr] = useState('');
 
   const loginClicked = () => {
-    const login_email = $('#login_email').val();
-    const login_password = $('#login_password').val();
+    const login_email = $('#login_email').val() as string;
+    const login_password = $('#login_password').val() as string;
 
     setPersistence(auth, browserSessionPersistence)
       .then(() => {
@@ -45,7 +46,7 @@ const Login = (props) => {
             get(child(ref(db), `users/${userCredential.user.uid}/role`))
               .then((snapshot) => {
                 // sessionStorage.setItem('role',snapshot.val())
-                if (snapshot.val() == 'admin') {
+                if (snapshot.val() === 'admin') {
                   props.isadmin();
                 }
               })
@@ -54,7 +55,7 @@ const Login = (props) => {
                 console.log(e);
               });
 
-            if (previousPage[2] == 'undefined') {
+            if (previousPage[2] === 'undefined') {
               navigate('/');
             } else {
               navigate(`/${previousPage[2]}`);
@@ -83,7 +84,7 @@ const Login = (props) => {
   };
 
   const forgotPassClicked = () => {
-    const login_email = $('#login_email').val();
+    const login_email = $('#login_email').val() as string;
     if (login_email !== '') {
       const auth = getAuth();
       sendPasswordResetEmail(auth, login_email)
@@ -91,7 +92,7 @@ const Login = (props) => {
           alert('Email Sent');
         })
         .catch((error) => {
-          const errorCode = error.code;
+          // const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorMessage);
           // ..
@@ -117,21 +118,21 @@ const Login = (props) => {
           getRedirectResult(auth)
             .then((result) => {
               // This gives you a Google Access Token. You can use it to access Google APIs.
-              const credential = GoogleAuthProvider.credentialFromResult(result);
-              const token = credential.accessToken;
+              // const credential = GoogleAuthProvider.credentialFromResult(result);
+              // const token = credential.accessToken;
               navigate(`/${previousPage[2]}`);
               // The signed-in user info.
-              const { user } = result;
+              // const { user } = result;
             })
             .catch((error) => {
               // Handle Errors here.
-              const errorCode = error.code;
-              const errorMessage = error.message;
-              // The email of the user's account used.
-              const { email } = error.customData;
-              // The AuthCredential type that was used.
-              const credential = GoogleAuthProvider.credentialFromError(error);
-              // ...
+              // const errorCode = error.code;
+              // const errorMessage = error.message;
+              // // The email of the user's account used.
+              // const { email } = error.customData;
+              // // The AuthCredential type that was used.
+              // const credential = GoogleAuthProvider.credentialFromError(error);
+              // // ...
             });
         })
         .catch((e) => {
@@ -141,8 +142,8 @@ const Login = (props) => {
       signInWithPopup(auth, provider)
         .then((result) => {
           // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
+          // const credential = GoogleAuthProvider.credentialFromResult(result);
+          // const token = credential.accessToken;
           // The signed-in user info.
           const { user } = result;
           props.loginStateChange();
@@ -153,70 +154,70 @@ const Login = (props) => {
         })
         .catch((error) => {
           // Handle Errors here.
-          const errorCode = error.code;
+          // const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorMessage);
         });
     }
   };
 
-  const fbSignin = () => {
-    const provider = new FacebookAuthProvider();
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // The signed-in user info.
-        const { user } = result;
-        console.log(user);
-        props.loginStateChange();
-        props.setemail(user.email);
-        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-        const credential = FacebookAuthProvider.credentialFromResult(result);
-        const { accessToken } = credential;
+  // const fbSignin = () => {
+  //   const provider = new FacebookAuthProvider();
+  //   signInWithPopup(auth, provider)
+  //     .then((result) => {
+  //       // The signed-in user info.
+  //       const { user } = result;
+  //       console.log(user);
+  //       props.loginStateChange();
+  //       props.setemail(user.email);
+  //       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+  //       const credential = FacebookAuthProvider.credentialFromResult(result);
+  //       const { accessToken } = credential;
 
-        // ...
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const { email } = error.customData;
-        // The AuthCredential type that was used.
-        const credential = FacebookAuthProvider.credentialFromError(error);
+  //       // ...
+  //     })
+  //     .catch((error) => {
+  //       // Handle Errors here.
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       // The email of the user's account used.
+  //       const { email } = error.customData;
+  //       // The AuthCredential type that was used.
+  //       const credential = FacebookAuthProvider.credentialFromError(error);
 
-        // ...
-      });
-  };
+  //       // ...
+  //     });
+  // };
 
-  const appleSignin = () => {
-    const provider = new OAuthProvider('apple.com');
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // The signed-in user info.
-        const { user } = result;
+  // const appleSignin = () => {
+  //   const provider = new OAuthProvider('apple.com');
+  //   signInWithPopup(auth, provider)
+  //     .then((result) => {
+  //       // The signed-in user info.
+  //       const { user } = result;
 
-        console.log(user);
-        props.loginStateChange();
-        props.setemail(user.email);
-        // Apple credential
-        const credential = OAuthProvider.credentialFromResult(result);
-        const { accessToken } = credential;
-        const { idToken } = credential;
+  //       console.log(user);
+  //       props.loginStateChange();
+  //       props.setemail(user.email);
+  //       // Apple credential
+  //       // const credential = OAuthProvider.credentialFromResult(result);
+  //       // const { accessToken } = credential;
+  //       // const { idToken } = credential;
 
-        // ...
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const { email } = error.customData;
-        // The credential that was used.
-        const credential = OAuthProvider.credentialFromError(error);
+  //       // ...
+  //     })
+  //     .catch((error) => {
+  //       // Handle Errors here.
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       // The email of the user's account used.
+  //       const { email } = error.customData;
+  //       // The credential that was used.
+  //       const credential = OAuthProvider.credentialFromError(error);
 
-        // ...
-      });
-  };
+  //       // ...
+  //     });
+  // };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -234,7 +235,7 @@ const Login = (props) => {
         <title>Login</title>
         <meta name="description" content="Login to Dint" />
       </Helmet>
-      <NavbarHome />
+      <NavbarHome logout={() => {}} isadmin={false} />
       <br />
       <br />
       <div className="login_divs">
@@ -252,34 +253,33 @@ const Login = (props) => {
           <div className="form-control">
             <label htmlFor="username">Password</label>
             <input type="password" placeholder="Password" id="login_password" />
-            <button id="forgotpassBtn" onClick={forgotPassClicked}>
-              {' '}
+            <button id="forgotpassBtn" type="button" onClick={forgotPassClicked}>
               <span id="forgotPassText">Forgot Password?</span>{' '}
             </button>
           </div>
 
           <p id="error_signup">{error_msg_login}</p>
-          <button id="signup_btn" onClick={loginClicked}>
+          <button id="signup_btn" type="button" onClick={loginClicked}>
             Submit
           </button>
 
           <p id="signup_line">
-            {' '}
             Not registered Yet?{' '}
             <Link to="/signup">
               {' '}
               <span id="signup_here"> Sign Up</span>
             </Link>
           </p>
-          <center>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <button
+              type="button"
               onClick={googleSignin}
               className="authbtnsocial"
               style={{ backgroundColor: 'red' }}
             >
               Google
             </button>
-          </center>
+          </div>
         </div>
       </div>
       <Footer />

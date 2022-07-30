@@ -1,21 +1,19 @@
 import $ from 'jquery';
-import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
+import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
+import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { ethers } from 'ethers';
-import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import Metamask_icon from '../material/metamask.svg';
 import '../material/walletsSidebar.css';
-import dint from '../material/dintcoin_logo.png';
-import * as phantom from '../web3/wallets/phantom';
+import { groupBy } from '../utils';
+import { EVM_NETWORKS, NETWORKS, SOLANA_MAINNET } from '../web3/model';
+import { fetchWalletBalance } from '../web3/service';
 import * as metamask from '../web3/wallets/metamask';
+import * as phantom from '../web3/wallets/phantom';
 import * as Alert from './common/alert';
 
-import { fetchTokenBalance, fetchWalletBalance } from '../web3/service';
-import { EVM_NETWORKS, NETWORKS, SOLANA_MAINNET } from '../web3/model';
-import { groupBy } from '../utils';
-
-const Swal = require('sweetalert2');
+const win = window as any;
 
 const abicode = [
   {
@@ -332,12 +330,12 @@ const abicode = [
 ];
 
 const MetamaskLogin = () => {
-  const [walletConnected, SetWallet] = useState('');
+  const [walletConnected, SetWallet] = useState<boolean>();
   const [balance, setBalance] = useState('');
   const [mobileBalance, setmobileBalance] = useState('');
   const [mobilechainId, setmobilechainId] = useState('');
 
-  const [wallet, SetWallets] = useState([]);
+  const [wallet, SetWallets] = useState<any>([]);
   const navigate = useNavigate();
 
   const openNav = () => {
@@ -358,9 +356,9 @@ const MetamaskLogin = () => {
     });
   };
 
-  window.mobileCheck = function () {
+  win.mobileCheck = () => {
     let check = false;
-    (function (a) {
+    ((a) => {
       if (
         /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
           a
@@ -370,11 +368,11 @@ const MetamaskLogin = () => {
         )
       )
         check = true;
-    })(navigator.userAgent || navigator.vendor || window.opera);
+    })(navigator.userAgent || navigator.vendor || win.opera);
     return check;
   };
 
-  function openMetaMaskUrl(url) {
+  function openMetaMaskUrl(url: string) {
     const a = document.createElement('a');
     a.href = url;
     a.target = '_self';
@@ -393,7 +391,7 @@ const MetamaskLogin = () => {
         Network: SOLANA_MAINNET.uniqueId,
         walletAddress
       });
-      SetWallets((current) => [
+      SetWallets((current: any) => [
         ...current,
         {
           balance: balanceOf,
@@ -419,13 +417,13 @@ const MetamaskLogin = () => {
   };
 
   const connectMetamask = async () => {
-    const getBalance = async (netWork, walletAddress) =>
+    const getBalance = async (netWork: number, walletAddress: string) =>
       fetchWalletBalance({
         Network: netWork,
         walletAddress
       });
 
-    if (window.mobileCheck() === true) {
+    if (win.mobileCheck() === true) {
       if (!(await metamask.hasWallet())) {
         openMetaMaskUrl(`https://metamask.app.link/dapp/${App_URL()}`);
         return;
@@ -445,10 +443,10 @@ const MetamaskLogin = () => {
       const accounts = await metamask.getConnectedAccounts();
       console.log('accounts', accounts);
       if (accounts && accounts.length) {
-        accounts.map(async (walletAddress) => {
-          Object.keys(EVM_NETWORKS).map(async (network) => {
+        accounts.map(async (walletAddress: string) => {
+          Object.keys(EVM_NETWORKS).map(async (network: any) => {
             const balanceOf = await getBalance(network, walletAddress);
-            SetWallets((current) => [
+            SetWallets((current: any) => [
               ...current,
               {
                 balance: balanceOf,
@@ -490,11 +488,11 @@ const MetamaskLogin = () => {
     }
   };
 
-  if (typeof window.ethereum !== 'undefined') {
-    window.ethereum.on('chainChanged', async (chainId) => {
+  if (typeof win.ethereum !== 'undefined') {
+    win.ethereum.on('chainChanged', async () => {
       // await connectMetamask();
     });
-    window.ethereum.on('accountsChanged', async (accounts) => {
+    win.ethereum.on('accountsChanged', async () => {
       // await connectMetamask();
     });
   }
@@ -516,7 +514,7 @@ const MetamaskLogin = () => {
   return (
     <>
       <div className="profile_hide_mobile">
-        <button id="wallet_btn" onClick={openNav}>
+        <button id="wallet_btn" onClick={openNav} type="button">
           <MdOutlineAccountBalanceWallet size={35} />
         </button>
       </div>
@@ -526,6 +524,7 @@ const MetamaskLogin = () => {
           <p
             style={{ color: '#433f39', marginTop: '30px', fontSize: '20px' }}
             onClick={connectMetamask}
+            aria-hidden="true"
           >
             Wallet {walletConnected ? ': ' : <></>} {walletConnected}
           </p>
@@ -542,7 +541,7 @@ const MetamaskLogin = () => {
       </div>
       {/*  Code of Sidebar */}
       <div id="mySidenav" className="sidenav">
-        <button className="closebtn" onClick={closeNav}>
+        <button className="closebtn" onClick={closeNav} type="button">
           ×
         </button>
         {walletConnected ? (
@@ -550,7 +549,7 @@ const MetamaskLogin = () => {
             <div className="container">
               {wallet &&
                 wallet.length > 0 &&
-                Object.values(groupBy(wallet, 'walletAddress')).map((data) => {
+                Object.values(groupBy(wallet, 'walletAddress')).map((data: any) => {
                   if (!data) {
                     return <></>;
                   }
@@ -568,8 +567,8 @@ const MetamaskLogin = () => {
                           </div>
                           <small className="text_title">Account Balance</small>
                         </div>
-                        {data.map((item) => {
-                          const { balance, network } = item;
+                        {data.map((item: { network: any }) => {
+                          const { network } = item;
                           return (
                             <>
                               <div className="wallets">
@@ -581,7 +580,7 @@ const MetamaskLogin = () => {
                                     height="27px"
                                     style={{ marginBottom: '2px' }}
                                   />
-                                  {EVM_NETWORKS.hasOwnProperty(network) ? balance : balance?.solana}
+                                  {/* {(EVM_NETWORKS as any).hasOwnProperty(network) ? balance : balance?.solana} --nik */}
                                 </h4>
                               </div>
                             </>

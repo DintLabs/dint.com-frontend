@@ -2,7 +2,12 @@ import { API_KEY, SOLONA_TOKEN } from '../../config';
 import { ABI } from '../../web3/model';
 import { ICallMoralisParams } from '../EVM';
 
-export const getSolanaTokenDetails = (params) => {
+export const getSolanaTokenDetails = (params: {
+  Token_Address: any;
+  abi?: any;
+  rpcURL?: string;
+  method?: string;
+}) => {
   const { Token_Address } = params;
 
   return new Promise((resolve, reject) => {
@@ -16,7 +21,7 @@ export const getSolanaTokenDetails = (params) => {
         .then((tokenList) => {
           // console.log("tokenList", typeof tokenList.tokens);
           const solanatokenname = tokenList.tokens.find(
-            (element) => element.address === Token_Address
+            (element: { address: any }) => element.address === Token_Address
           );
           resolve(solanatokenname);
         });

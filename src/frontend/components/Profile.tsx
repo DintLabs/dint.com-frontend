@@ -1,32 +1,37 @@
-import { Tabs, Tab, Form, Button } from 'react-bootstrap';
-import { updatePassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  updatePassword,
+  User
+} from 'firebase/auth';
+import { child, get, ref, update } from 'firebase/database';
 import $ from 'jquery';
-import { useState, useEffect } from 'react';
-import { set, get, child, ref, update } from 'firebase/database';
-import NavbarHome from './NavbarHome';
-import { auth, db } from './Firebase';
+import { useEffect, useState } from 'react';
+import { Button, Form, Tab, Tabs } from 'react-bootstrap';
 import '../material/Profile.css';
+import { auth, db } from './Firebase';
+import NavbarHome from './NavbarHome';
 
 const Swal = require('sweetalert2');
 
-const Profile = (props) => {
+const Profile = (props: { islogin: any; logout: any; isAdmin: any }) => {
   const [passErr, setPassErr] = useState('');
   const [userrole, setUserRole] = useState('');
 
   // function for updating password
   const passwordUpdate = () => {
-    const current_password = $('#current_password').val();
-    const new_password = $('#new_password').val();
+    const current_password = $('#current_password').val() as string;
+    const new_password = $('#new_password').val() as string;
     const confirm_new_password = $('#confirm_new_password').val();
 
     if (current_password !== '' && new_password !== '' && confirm_new_password !== '') {
       if (current_password !== new_password) {
-        if (new_password == confirm_new_password) {
-          signInWithEmailAndPassword(auth, auth.currentUser.uid, current_password)
+        if (new_password === confirm_new_password) {
+          signInWithEmailAndPassword(auth, auth?.currentUser?.uid || '', current_password)
             .then((userCredential) => {
               const user = auth.currentUser;
               // update password function
-              updatePassword(user, new_password)
+              updatePassword(user as User, new_password)
                 .then(() => {
                   setPassErr('');
                   Swal.fire({
@@ -79,7 +84,7 @@ const Profile = (props) => {
       const uinsta = $('#instaLink').val();
       const discord = $('#discordLink').val();
 
-      update(ref(db, `users/${auth.currentUser.uid}`), {
+      update(ref(db, `users/${auth?.currentUser?.uid || ''}`), {
         name: uname,
         biography: ubio,
         city: ucity,
@@ -105,11 +110,11 @@ const Profile = (props) => {
   };
 
   // get values from database
-  const getdatavalues = (uid) => {
+  const getdatavalues = (uid: string) => {
     get(child(ref(db), `users/${uid}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
-          if (snapshot.val() == '' || snapshot.val() == undefined) {
+          if (snapshot.val() === '' || snapshot.val() === undefined) {
             setUserRole('simple');
           } else {
             setUserRole(snapshot.val().role);
@@ -143,7 +148,7 @@ const Profile = (props) => {
 
   return (
     <>
-      <NavbarHome isloggedin={props.islogin} logout={props.logout} isadmin={props.isAdmin} />
+      <NavbarHome logout={props.logout} isadmin={props.isAdmin} />
       <div className="profile_form_parent">
         <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
           <Tab eventKey="home" title="Wallets">
@@ -190,7 +195,7 @@ const Profile = (props) => {
               </div>
               <div className="profile_div_child profile_img_div">
                 <div id="edit_image_print">
-                  <img id="profile_image_edit" />
+                  <img id="profile_image_edit" alt="profile_image_edit" />
                 </div>
               </div>
             </div>

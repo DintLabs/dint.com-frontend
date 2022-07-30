@@ -1,10 +1,11 @@
+/* eslint-disable no-await-in-loop */
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 
-const Marketplace = ({ marketplace, nft }) => {
+const Marketplace = ({ marketplace, nft }: any) => {
   const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<any>([]);
   const loadMarketplaceItems = async () => {
     // Load all unsold items
     const itemCount = await marketplace.itemCount();
@@ -34,7 +35,7 @@ const Marketplace = ({ marketplace, nft }) => {
     setItems(items);
   };
 
-  const buyMarketItem = async (item) => {
+  const buyMarketItem = async (item: { itemId: any; totalPrice: any }) => {
     await (await marketplace.purchaseItem(item.itemId, { value: item.totalPrice })).wait();
     loadMarketplaceItems();
   };
@@ -53,7 +54,7 @@ const Marketplace = ({ marketplace, nft }) => {
       {items.length > 0 ? (
         <div className="px-5 container">
           <Row xs={1} md={2} lg={4} className="g-4 py-5">
-            {items.map((item, idx) => (
+            {items.map((item: any, idx: number) => (
               <Col key={idx} className="overflow-hidden">
                 <Card>
                   <Card.Img variant="top" src={item.image} />

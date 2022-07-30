@@ -1,19 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Navbar, Nav, Button, Container, Dropdown } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
-import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
-import { CgProfile } from 'react-icons/cg';
-import $ from 'jquery';
 import { onAuthStateChanged } from 'firebase/auth';
-import { FaLaptopHouse } from 'react-icons/fa';
-import Metamask_icon from '../material/metamask.svg';
-import MetamaskLogin from './MetamaskLogin';
-import { auth } from './Firebase';
+import { useEffect, useState } from 'react';
+import { Container, Dropdown, Nav, Navbar } from 'react-bootstrap';
+import { CgProfile } from 'react-icons/cg';
+import { Link, useNavigate } from 'react-router-dom';
 import mainlogo from '../material/white.png';
+import { auth } from './Firebase';
+import MetamaskLogin from './MetamaskLogin';
 
-const Swal = require('sweetalert2');
-
-const Navigation = ({ web3Handler, account }) => {
+const Navigation = () => {
   const [islogin, setLogin] = useState(false);
   const navigate = useNavigate();
 
@@ -36,9 +30,8 @@ const Navigation = ({ web3Handler, account }) => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { uid } = user;
+        // const { uid } = user;
         setLogin(true);
-      } else {
       }
     });
   });
@@ -77,7 +70,7 @@ const Navigation = ({ web3Handler, account }) => {
                     id="dropdown-basic"
                     style={{ backgroundColor: 'transparent', border: 0, marginLeft: '15px' }}
                   >
-                    <button id="profile_btn">
+                    <button id="profile_btn" type="button">
                       <CgProfile size={35} />
                     </button>
                   </Dropdown.Toggle>

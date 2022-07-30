@@ -45,7 +45,7 @@ export const NETWORKS: { [key: number]: any } = Object.freeze({
   3: ETHERIUM
 });
 
-export const ABI = {
+export const ABI: { [key: string]: any } = {
   TOKEN_721: ERC_721,
   TOKEN_1155: ERC_1155,
   ERC_20

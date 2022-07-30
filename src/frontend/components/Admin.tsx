@@ -1,27 +1,26 @@
-import '../material/admin.css';
+import { child, get, getDatabase, ref, set, update } from 'firebase/database';
 import $ from 'jquery';
 import React, { useEffect, useState } from 'react';
-import { get, getDatabase, ref, set, update, child } from 'firebase/database';
-import { Tabs, Tab, Form, Button, Table } from 'react-bootstrap';
+import { Button, Form, Tab, Table, Tabs } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { ethers } from 'ethers';
-import { db, auth } from './Firebase';
-import mainlogo from '../material/white.png';
+import '../material/admin.css';
 import polygonlogo from '../material/polygon_logo.svg';
 import solanalogo from '../material/solana_logo.svg';
-import { NETWORKS, token_type } from '../web3/model';
+import mainlogo from '../material/white.png';
 import { IS_TOKEN, OPTIONS_NETWORK_STAD } from '../utils';
+import { NETWORKS } from '../web3/model';
 import { fetchTokenDetails } from '../web3/service';
+import { auth, db } from './Firebase';
 
-const DisplaynetworkLogo = (props) => {
-  if (props.networkName == 'Polygon') {
+const DisplaynetworkLogo = (props: { networkName: string }) => {
+  if (props.networkName === 'Polygon') {
     return (
       <>
         <img src={polygonlogo} alt="" height="17px" style={{ marginBottom: '2px' }} />
       </>
     );
   }
-  if (props.networkName == 'Solana') {
+  if (props.networkName === 'Solana') {
     return (
       <>
         <img src={solanalogo} alt="" height="17px" style={{ marginBottom: '2px' }} />
@@ -39,24 +38,24 @@ const Admin = () => {
   const navigate = useNavigate();
   const [eventslist, setEventsData] = useState([]);
   const [SelectedeventNameFirebase, setSelectedEventNameFirebase] = useState('');
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
   const [tokenName, setTokenName] = useState('');
   const [edittokenName, setEditTokenName] = useState('');
 
-  const [addEventForm, setEvent] = useState({
+  const [addEventForm, setEvent] = useState<any>({
     network: 1,
     tokenIcon: ''
   });
-  const [editEventForm, setEditFormEvent] = useState({
+  const [editEventForm, setEditFormEvent] = useState<any>({
     network: 1,
     tokenIcon: ''
   });
 
-  const onChangeEditForm = (e) => {
+  const onChangeEditForm = (e: { target: { id: string; value: string } }) => {
     if (e.target.id === 'networkedit') {
       setEditFormEvent({
         ...editEventForm,
-        network: parseInt(e.target.value)
+        network: parseInt(e.target.value, 10)
       });
     } else if (e.target.id === 'token_typeedit') {
       setEditFormEvent({
@@ -71,15 +70,15 @@ const Admin = () => {
     }
   };
 
-  React.useEffect(() => {
-    if ($('#addressedit').val().length > 0) getpolygontokennameforEdit();
-  }, [editEventForm && editEventForm.network, editEventForm && editEventForm.token_type]);
+  // React.useEffect(() => { -- nik
+  //   if ($('#addressedit').val().length > 0) getpolygontokennameforEdit();
+  // }, [editEventForm && editEventForm.network, editEventForm && editEventForm.token_type]);
 
-  const onChange = (e) => {
+  const onChange = (e: { target: { id: string; value: string } }) => {
     if (e.target.id === 'network') {
       setEvent({
         ...addEventForm,
-        network: parseInt(e.target.value)
+        network: parseInt(e.target.value, 10)
       });
     } else if (e.target.id === 'token_type') {
       setEvent({
@@ -94,330 +93,330 @@ const Admin = () => {
     }
   };
 
-  React.useEffect(() => {
-    if ($('#address').val().length > 0) getpolygontokenname();
-  }, [addEventForm && addEventForm.network, addEventForm && addEventForm.token_type]);
+  // React.useEffect(() => { --nik
+  //   if ($('#address').val().length > 0) getpolygontokenname();
+  // }, [addEventForm && addEventForm.network, addEventForm && addEventForm.token_type]);
 
-  const handleClose = () => setShow(false);
+  // const handleClose = () => setShow(false);
 
   const today = new Date();
   const dd = String(today.getDate()).padStart(2, '0');
   const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
   const yyyy = today.getFullYear();
 
-  const abicode = [
-    {
-      constant: true,
-      inputs: [],
-      name: 'name',
-      outputs: [{ name: '', type: 'string' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: false,
-      inputs: [
-        { name: '_spender', type: 'address' },
-        { name: '_amount', type: 'uint256' }
-      ],
-      name: 'approve',
-      outputs: [{ name: 'success', type: 'bool' }],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: 'creationBlock',
-      outputs: [{ name: '', type: 'uint256' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: 'totalSupply',
-      outputs: [{ name: '', type: 'uint256' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: false,
-      inputs: [
-        { name: '_from', type: 'address' },
-        { name: '_to', type: 'address' },
-        { name: '_amount', type: 'uint256' }
-      ],
-      name: 'transferFrom',
-      outputs: [{ name: 'success', type: 'bool' }],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: 'decimals',
-      outputs: [{ name: '', type: 'uint8' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: false,
-      inputs: [{ name: '_newController', type: 'address' }],
-      name: 'changeController',
-      outputs: [],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [
-        { name: '_owner', type: 'address' },
-        { name: '_blockNumber', type: 'uint256' }
-      ],
-      name: 'balanceOfAt',
-      outputs: [{ name: '', type: 'uint256' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: 'version',
-      outputs: [{ name: '', type: 'string' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: false,
-      inputs: [
-        { name: '_cloneTokenName', type: 'string' },
-        { name: '_cloneDecimalUnits', type: 'uint8' },
-        { name: '_cloneTokenSymbol', type: 'string' },
-        { name: '_snapshotBlock', type: 'uint256' },
-        { name: '_transfersEnabled', type: 'bool' }
-      ],
-      name: 'createCloneToken',
-      outputs: [{ name: '', type: 'address' }],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [{ name: '_owner', type: 'address' }],
-      name: 'balanceOf',
-      outputs: [{ name: 'balance', type: 'uint256' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: 'parentToken',
-      outputs: [{ name: '', type: 'address' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: false,
-      inputs: [
-        { name: '_owner', type: 'address' },
-        { name: '_amount', type: 'uint256' }
-      ],
-      name: 'generateTokens',
-      outputs: [{ name: '', type: 'bool' }],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: 'symbol',
-      outputs: [{ name: '', type: 'string' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [{ name: '_blockNumber', type: 'uint256' }],
-      name: 'totalSupplyAt',
-      outputs: [{ name: '', type: 'uint256' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: false,
-      inputs: [
-        { name: '_to', type: 'address' },
-        { name: '_amount', type: 'uint256' }
-      ],
-      name: 'transfer',
-      outputs: [{ name: 'success', type: 'bool' }],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: 'transfersEnabled',
-      outputs: [{ name: '', type: 'bool' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: 'parentSnapShotBlock',
-      outputs: [{ name: '', type: 'uint256' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: false,
-      inputs: [
-        { name: '_spender', type: 'address' },
-        { name: '_amount', type: 'uint256' },
-        { name: '_extraData', type: 'bytes' }
-      ],
-      name: 'approveAndCall',
-      outputs: [{ name: 'success', type: 'bool' }],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      constant: false,
-      inputs: [
-        { name: '_owner', type: 'address' },
-        { name: '_amount', type: 'uint256' }
-      ],
-      name: 'destroyTokens',
-      outputs: [{ name: '', type: 'bool' }],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [
-        { name: '_owner', type: 'address' },
-        { name: '_spender', type: 'address' }
-      ],
-      name: 'allowance',
-      outputs: [{ name: 'remaining', type: 'uint256' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: false,
-      inputs: [{ name: '_token', type: 'address' }],
-      name: 'claimTokens',
-      outputs: [],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: 'tokenFactory',
-      outputs: [{ name: '', type: 'address' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      constant: false,
-      inputs: [{ name: '_transfersEnabled', type: 'bool' }],
-      name: 'enableTransfers',
-      outputs: [],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'function'
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: 'controller',
-      outputs: [{ name: '', type: 'address' }],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function'
-    },
-    {
-      inputs: [
-        { name: '_tokenFactory', type: 'address' },
-        { name: '_parentToken', type: 'address' },
-        { name: '_parentSnapShotBlock', type: 'uint256' },
-        { name: '_tokenName', type: 'string' },
-        { name: '_decimalUnits', type: 'uint8' },
-        { name: '_tokenSymbol', type: 'string' },
-        { name: '_transfersEnabled', type: 'bool' }
-      ],
-      payable: false,
-      stateMutability: 'nonpayable',
-      type: 'constructor'
-    },
-    { payable: true, stateMutability: 'payable', type: 'fallback' },
-    {
-      anonymous: false,
-      inputs: [
-        { indexed: true, name: '_token', type: 'address' },
-        { indexed: true, name: '_controller', type: 'address' },
-        { indexed: false, name: '_amount', type: 'uint256' }
-      ],
-      name: 'ClaimedTokens',
-      type: 'event'
-    },
-    {
-      anonymous: false,
-      inputs: [
-        { indexed: true, name: '_from', type: 'address' },
-        { indexed: true, name: '_to', type: 'address' },
-        { indexed: false, name: '_amount', type: 'uint256' }
-      ],
-      name: 'Transfer',
-      type: 'event'
-    },
-    {
-      anonymous: false,
-      inputs: [
-        { indexed: true, name: '_cloneToken', type: 'address' },
-        { indexed: false, name: '_snapshotBlock', type: 'uint256' }
-      ],
-      name: 'NewCloneToken',
-      type: 'event'
-    },
-    {
-      anonymous: false,
-      inputs: [
-        { indexed: true, name: '_owner', type: 'address' },
-        { indexed: true, name: '_spender', type: 'address' },
-        { indexed: false, name: '_amount', type: 'uint256' }
-      ],
-      name: 'Approval',
-      type: 'event'
-    }
-  ];
+  // const abicode = [
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'name',
+  //     outputs: [{ name: '', type: 'string' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: false,
+  //     inputs: [
+  //       { name: '_spender', type: 'address' },
+  //       { name: '_amount', type: 'uint256' }
+  //     ],
+  //     name: 'approve',
+  //     outputs: [{ name: 'success', type: 'bool' }],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'creationBlock',
+  //     outputs: [{ name: '', type: 'uint256' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'totalSupply',
+  //     outputs: [{ name: '', type: 'uint256' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: false,
+  //     inputs: [
+  //       { name: '_from', type: 'address' },
+  //       { name: '_to', type: 'address' },
+  //       { name: '_amount', type: 'uint256' }
+  //     ],
+  //     name: 'transferFrom',
+  //     outputs: [{ name: 'success', type: 'bool' }],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'decimals',
+  //     outputs: [{ name: '', type: 'uint8' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: false,
+  //     inputs: [{ name: '_newController', type: 'address' }],
+  //     name: 'changeController',
+  //     outputs: [],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [
+  //       { name: '_owner', type: 'address' },
+  //       { name: '_blockNumber', type: 'uint256' }
+  //     ],
+  //     name: 'balanceOfAt',
+  //     outputs: [{ name: '', type: 'uint256' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'version',
+  //     outputs: [{ name: '', type: 'string' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: false,
+  //     inputs: [
+  //       { name: '_cloneTokenName', type: 'string' },
+  //       { name: '_cloneDecimalUnits', type: 'uint8' },
+  //       { name: '_cloneTokenSymbol', type: 'string' },
+  //       { name: '_snapshotBlock', type: 'uint256' },
+  //       { name: '_transfersEnabled', type: 'bool' }
+  //     ],
+  //     name: 'createCloneToken',
+  //     outputs: [{ name: '', type: 'address' }],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [{ name: '_owner', type: 'address' }],
+  //     name: 'balanceOf',
+  //     outputs: [{ name: 'balance', type: 'uint256' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'parentToken',
+  //     outputs: [{ name: '', type: 'address' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: false,
+  //     inputs: [
+  //       { name: '_owner', type: 'address' },
+  //       { name: '_amount', type: 'uint256' }
+  //     ],
+  //     name: 'generateTokens',
+  //     outputs: [{ name: '', type: 'bool' }],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'symbol',
+  //     outputs: [{ name: '', type: 'string' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [{ name: '_blockNumber', type: 'uint256' }],
+  //     name: 'totalSupplyAt',
+  //     outputs: [{ name: '', type: 'uint256' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: false,
+  //     inputs: [
+  //       { name: '_to', type: 'address' },
+  //       { name: '_amount', type: 'uint256' }
+  //     ],
+  //     name: 'transfer',
+  //     outputs: [{ name: 'success', type: 'bool' }],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'transfersEnabled',
+  //     outputs: [{ name: '', type: 'bool' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'parentSnapShotBlock',
+  //     outputs: [{ name: '', type: 'uint256' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: false,
+  //     inputs: [
+  //       { name: '_spender', type: 'address' },
+  //       { name: '_amount', type: 'uint256' },
+  //       { name: '_extraData', type: 'bytes' }
+  //     ],
+  //     name: 'approveAndCall',
+  //     outputs: [{ name: 'success', type: 'bool' }],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: false,
+  //     inputs: [
+  //       { name: '_owner', type: 'address' },
+  //       { name: '_amount', type: 'uint256' }
+  //     ],
+  //     name: 'destroyTokens',
+  //     outputs: [{ name: '', type: 'bool' }],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [
+  //       { name: '_owner', type: 'address' },
+  //       { name: '_spender', type: 'address' }
+  //     ],
+  //     name: 'allowance',
+  //     outputs: [{ name: 'remaining', type: 'uint256' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: false,
+  //     inputs: [{ name: '_token', type: 'address' }],
+  //     name: 'claimTokens',
+  //     outputs: [],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'tokenFactory',
+  //     outputs: [{ name: '', type: 'address' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: false,
+  //     inputs: [{ name: '_transfersEnabled', type: 'bool' }],
+  //     name: 'enableTransfers',
+  //     outputs: [],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'function'
+  //   },
+  //   {
+  //     constant: true,
+  //     inputs: [],
+  //     name: 'controller',
+  //     outputs: [{ name: '', type: 'address' }],
+  //     payable: false,
+  //     stateMutability: 'view',
+  //     type: 'function'
+  //   },
+  //   {
+  //     inputs: [
+  //       { name: '_tokenFactory', type: 'address' },
+  //       { name: '_parentToken', type: 'address' },
+  //       { name: '_parentSnapShotBlock', type: 'uint256' },
+  //       { name: '_tokenName', type: 'string' },
+  //       { name: '_decimalUnits', type: 'uint8' },
+  //       { name: '_tokenSymbol', type: 'string' },
+  //       { name: '_transfersEnabled', type: 'bool' }
+  //     ],
+  //     payable: false,
+  //     stateMutability: 'nonpayable',
+  //     type: 'constructor'
+  //   },
+  //   { payable: true, stateMutability: 'payable', type: 'fallback' },
+  //   {
+  //     anonymous: false,
+  //     inputs: [
+  //       { indexed: true, name: '_token', type: 'address' },
+  //       { indexed: true, name: '_controller', type: 'address' },
+  //       { indexed: false, name: '_amount', type: 'uint256' }
+  //     ],
+  //     name: 'ClaimedTokens',
+  //     type: 'event'
+  //   },
+  //   {
+  //     anonymous: false,
+  //     inputs: [
+  //       { indexed: true, name: '_from', type: 'address' },
+  //       { indexed: true, name: '_to', type: 'address' },
+  //       { indexed: false, name: '_amount', type: 'uint256' }
+  //     ],
+  //     name: 'Transfer',
+  //     type: 'event'
+  //   },
+  //   {
+  //     anonymous: false,
+  //     inputs: [
+  //       { indexed: true, name: '_cloneToken', type: 'address' },
+  //       { indexed: false, name: '_snapshotBlock', type: 'uint256' }
+  //     ],
+  //     name: 'NewCloneToken',
+  //     type: 'event'
+  //   },
+  //   {
+  //     anonymous: false,
+  //     inputs: [
+  //       { indexed: true, name: '_owner', type: 'address' },
+  //       { indexed: true, name: '_spender', type: 'address' },
+  //       { indexed: false, name: '_amount', type: 'uint256' }
+  //     ],
+  //     name: 'Approval',
+  //     type: 'event'
+  //   }
+  // ];
 
   const getpolygontokenname = () => {
     fetchTokenDetails(addEventForm.network, addEventForm.token_type, $('#address').val())
@@ -518,11 +517,14 @@ const Admin = () => {
     const EventFrequency = $('#EventFrequency').val();
     const eventid = Math.floor(Math.random() * 100000 + 999999);
     const tokenName = $('#tokenname').val();
-    const tokenType = $('#token_type').val();
+    const tokenType = $('#token_type').val() as string;
 
     const tokenData = {
       tokenName,
-      tokenType
+      tokenType,
+      tokenSymbol: '',
+      tokenDecimal: '',
+      tokenIcon: ''
     };
 
     if (IS_TOKEN(tokenType)) {
@@ -575,7 +577,7 @@ const Admin = () => {
       .then((snapshot) => {
         if (snapshot.exists()) {
           const events = Object.keys(snapshot.val());
-          const dataarray = [];
+          const dataarray: any = [];
           for (let i = 0; i < events.length; i++) {
             dataarray.push(snapshot.val()[events[i]]);
           }
@@ -609,7 +611,7 @@ const Admin = () => {
           $('#addvanueAddress').val('');
         })
         .catch((e) => {
-          alert('Error in Vanue Save', e);
+          alert('Error in Vanue Save');
         });
     } else {
       alert('please fill all fields in vanue form');
@@ -655,7 +657,7 @@ const Admin = () => {
       });
   };
 
-  const editEventShow = (data) => {
+  const editEventShow = (data: any) => {
     $('#event_edit_div').css('display', 'block');
     $('#eventNameedit').val(data.eventName);
     setEditTokenName(data.tokenName);
@@ -674,12 +676,12 @@ const Admin = () => {
 
     setEditFormEvent({
       ...editEventForm,
-      network: parseInt(data.network),
+      network: parseInt(data.network, 10),
       token_type: data.tokenType,
       tokenIcon: data.tokenIcon
     });
 
-    setShow(true);
+    // setShow(true);
   };
 
   const eventEdit = () => {
@@ -695,11 +697,14 @@ const Admin = () => {
     const updateEventFrequency = $('#EventFrequencyedit').val();
 
     const tokenName = $('#tokennameedit').val();
-    const tokenType = $('#token_typeedit').val();
+    const tokenType = $('#token_typeedit').val() as string;
 
     const tokenData = {
       tokenName,
-      tokenType
+      tokenType,
+      tokenSymbol: '',
+      tokenDecimal: '',
+      tokenIcon: ''
     };
 
     if (IS_TOKEN(tokenType)) {
@@ -767,10 +772,17 @@ const Admin = () => {
       <div id="navbarAdmin">
         <div id="navbarAdminChild">
           <div>
-            <img id="admin_logo_img" src={mainlogo} height="40px" onClick={adminLogoClicked} />
+            <img
+              id="admin_logo_img"
+              src={mainlogo}
+              height="40px"
+              aria-hidden="true"
+              onClick={adminLogoClicked}
+              alt="admin_logo_g"
+            />
           </div>
           <div>
-            <button id="adminLogoutBtn" onClick={adminLogout}>
+            <button type="button" id="adminLogoutBtn" onClick={adminLogout}>
               Logout
             </button>
           </div>
@@ -779,9 +791,9 @@ const Admin = () => {
 
       <div id="admin_form_parent">
         <div id="admin_form_child">
-          <center>
+          <div style={{ textAlign: 'center' }}>
             <h1>Event Management</h1>
-          </center>
+          </div>
 
           <Tabs defaultActiveKey="eventshow" id="uncontrolled-tab-example" className="mb-3">
             <Tab eventKey="eventshow" title="Event List">
@@ -803,7 +815,7 @@ const Admin = () => {
                     </tr>
                   </thead>
                   <tbody id="eventtable_body">
-                    {eventslist.map((data, index) => (
+                    {eventslist.map((data: any, index: number) => (
                       <>
                         <tr key={index}>
                           <td>{index + 1}</td>
@@ -819,7 +831,11 @@ const Admin = () => {
                             <DisplaynetworkLogo networkName={data.network} />
                           </td>
                           <td>
-                            <img src={data.eventPhoto} style={{ height: '80px', width: '80px' }} />
+                            <img
+                              src={data.eventPhoto}
+                              style={{ height: '80px', width: '80px' }}
+                              alt="eventPhoto"
+                            />
                           </td>
                           <td>
                             <Button variant="primary" onClick={() => editEventShow(data)}>
@@ -838,160 +854,173 @@ const Admin = () => {
                     Close
                   </Button>
                   <div>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Event Name</Form.Label>
-                      <Form.Control type="text" id="eventNameedit" placeholder="Event Name Here" />
-                    </Form.Group>
+                    <>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Event Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          id="eventNameedit"
+                          placeholder="Event Name Here"
+                        />
+                      </Form.Group>
 
-                    <Form.Label>Select Venue</Form.Label>
-                    <Form.Select
-                      className="mb-3"
-                      aria-label="Default select example"
-                      id="vanueDropdownedit"
-                    />
-
-                    <Form.Group className="mb-3">
-                      <Form.Label>Event Description</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        id="eventdescriptionedit"
-                        placeholder="Description"
-                        rows={3}
+                      <Form.Label>Select Venue</Form.Label>
+                      <Form.Select
+                        className="mb-3"
+                        aria-label="Default select example"
+                        id="vanueDropdownedit"
                       />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Event Date</Form.Label>
-                      <Form.Control id="eventDateedit" type="date" />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Start Time</Form.Label>
-                      <Form.Control type="time" id="startTimeedit" />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label>End Time</Form.Label>
-                      <Form.Control type="time" id="endTimeedit" />
-                    </Form.Group>
 
-                    <Form.Group className="mb-3">
-                      <Form.Label>Event Frequency</Form.Label>
-                      <Form.Select
-                        className="mb-3"
-                        aria-label="Default select example"
-                        id="EventFrequencyedit"
-                      >
-                        <option>Once</option>
-                        <option>Year</option>
-                        <option>Monthly</option>
-                        <option>Weekly</option>
-                        <option>Quarterly</option>
-                      </Form.Select>
-                    </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Event Description</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          id="eventdescriptionedit"
+                          placeholder="Description"
+                          rows={3}
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Event Date</Form.Label>
+                        <Form.Control id="eventDateedit" type="date" />
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Start Time</Form.Label>
+                        <Form.Control type="time" id="startTimeedit" />
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label>End Time</Form.Label>
+                        <Form.Control type="time" id="endTimeedit" />
+                      </Form.Group>
 
-                    <h4>Settings</h4>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Network</Form.Label>
-                      <Form.Select
-                        className="mb-3"
-                        aria-label="Default select example"
-                        id="networkedit"
-                        onChange={onChangeEditForm}
-                        // value={editEventForm.network}
-                      >
-                        {/* <option>Solana</option> */}
-                        {Object.entries(NETWORKS).map((item) => (
-                          <option value={item[0]}>{item[1].name}</option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Type</Form.Label>
-                      <Form.Select
-                        className="mb-3"
-                        aria-label="Default select example"
-                        id="token_typeedit"
-                        onChange={onChangeEditForm}
-                        vaule={editEventForm.token_type}
-                      >
-                        <option value="">Select Type</option>
-                        {Object.entries(OPTIONS_NETWORK_STAD).map((item) => {
-                          if (editEventForm && editEventForm.network) {
-                            if (item[1].networks.includes(editEventForm.network)) {
-                              return <option value={item[0]}>{item[1].name}</option>;
-                            }
-                          }
-                        })}
-                      </Form.Select>
-                    </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Event Frequency</Form.Label>
+                        <Form.Select
+                          className="mb-3"
+                          aria-label="Default select example"
+                          id="EventFrequencyedit"
+                        >
+                          <option>Once</option>
+                          <option>Year</option>
+                          <option>Monthly</option>
+                          <option>Weekly</option>
+                          <option>Quarterly</option>
+                        </Form.Select>
+                      </Form.Group>
 
-                    <Form.Group className="mb-3">
-                      <Form.Label>Token Address</Form.Label>
-                      <Form.Control type="text" id="addressedit" onChange={geteditTokenName} />
-                    </Form.Group>
+                      <h4>Settings</h4>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Network</Form.Label>
+                        <Form.Select
+                          className="mb-3"
+                          aria-label="Default select example"
+                          id="networkedit"
+                          onChange={onChangeEditForm}
+                          // value={editEventForm.network}
+                        >
+                          {/* <option>Solana</option> */}
+                          {Object.entries(NETWORKS).map((item, index) => (
+                            <option value={item[0]} key={index}>
+                              {item[1].name}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Type</Form.Label>
+                        <Form.Select
+                          className="mb-3"
+                          aria-label="Default select example"
+                          id="token_typeedit"
+                          onChange={onChangeEditForm}
+                          value={editEventForm.token_type}
+                        >
+                          <option value="">Select Type</option>
+                          {editEventForm &&
+                            editEventForm.network &&
+                            Object.entries(OPTIONS_NETWORK_STAD).map((item, index) => {
+                              if (item[1].networks.includes(editEventForm.network)) {
+                                return (
+                                  <option value={item[0]} key={index}>
+                                    {item[1].name}
+                                  </option>
+                                );
+                              }
+                              return null;
+                            })}
+                        </Form.Select>
+                      </Form.Group>
 
-                    <Form.Group className="mb-3">
-                      <Form.Label>Token Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        value={edittokenName}
-                        id="tokennameedit"
-                        disabled={edittokenName.length > 0}
-                      />
-                    </Form.Group>
-                    {console.log('editEventForm ', editEventForm)}
+                      <Form.Group className="mb-3">
+                        <Form.Label>Token Address</Form.Label>
+                        <Form.Control type="text" id="addressedit" onChange={geteditTokenName} />
+                      </Form.Group>
 
-                    {IS_TOKEN(editEventForm.token_type) && (
-                      <>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Token Symbol</Form.Label>
-                          <Form.Control
-                            type="text"
-                            disabled={IS_TOKEN(editEventForm.token_type)}
-                            id="tokenSymboledit"
-                            value={editEventForm.tokenSymbol}
-                          />
-                        </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Token Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={edittokenName}
+                          id="tokennameedit"
+                          disabled={edittokenName.length > 0}
+                        />
+                      </Form.Group>
+                      {console.log('editEventForm ', editEventForm)}
 
-                        <Form.Group className="mb-3">
-                          <Form.Label>Token Decimal</Form.Label>
-                          <Form.Control
-                            type="number"
-                            disabled={IS_TOKEN(editEventForm.token_type)}
-                            id="tokenDecimaledit"
-                            value={editEventForm.tokenDecimal}
-                          />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label>Token Icon</Form.Label>
-
-                          <div className="d-flex text-center">
-                            <img
-                              src={editEventForm.tokenIcon}
-                              alt={editEventForm.tokenSymbol}
-                              className="tokenIcon m-2"
-                              onError={({ currentTarget }) => {
-                                currentTarget.onerror = null; // prevents looping
-                                currentTarget.src = '/images/logo.png';
-                              }}
-                            />
+                      {IS_TOKEN(editEventForm.token_type) && (
+                        <>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Token Symbol</Form.Label>
                             <Form.Control
-                              onChange={onChangeEditForm}
                               type="text"
-                              id="tokenIconedit"
-                              value={editEventForm.tokenIcon}
-                              className="ml-2"
+                              disabled={IS_TOKEN(editEventForm.token_type)}
+                              id="tokenSymboledit"
+                              value={editEventForm.tokenSymbol}
                             />
-                          </div>
-                        </Form.Group>
-                      </>
-                    )}
-                    <Form.Group className="mb-3">
-                      <Form.Label>Balance Required</Form.Label>
-                      <Form.Control type="number" min={1} id="balanceRequirededit" />
-                    </Form.Group>
+                          </Form.Group>
 
-                    <Button variant="primary" onClick={eventEdit}>
-                      Update event
-                    </Button>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Token Decimal</Form.Label>
+                            <Form.Control
+                              type="number"
+                              disabled={IS_TOKEN(editEventForm.token_type)}
+                              id="tokenDecimaledit"
+                              value={editEventForm.tokenDecimal}
+                            />
+                          </Form.Group>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Token Icon</Form.Label>
+
+                            <div className="d-flex text-center">
+                              <img
+                                src={editEventForm.tokenIcon}
+                                alt={editEventForm.tokenSymbol}
+                                className="tokenIcon m-2"
+                                onError={({ currentTarget }) => {
+                                  currentTarget.onerror = null; // prevents looping
+                                  currentTarget.src = '/images/logo.png';
+                                }}
+                              />
+                              <Form.Control
+                                onChange={onChangeEditForm}
+                                type="text"
+                                id="tokenIconedit"
+                                value={editEventForm.tokenIcon}
+                                className="ml-2"
+                              />
+                            </div>
+                          </Form.Group>
+                        </>
+                      )}
+                      <Form.Group className="mb-3">
+                        <Form.Label>Balance Required</Form.Label>
+                        <Form.Control type="number" min={1} id="balanceRequirededit" />
+                      </Form.Group>
+
+                      <Button variant="primary" onClick={eventEdit}>
+                        Update event
+                      </Button>
+                    </>
                   </div>
                 </div>
               </div>
@@ -1059,8 +1088,8 @@ const Admin = () => {
                   id="network"
                   onChange={onChange}
                 >
-                  {Object.entries(NETWORKS).map((item) => (
-                    <option defaultValue value={item[0]}>
+                  {Object.entries(NETWORKS).map((item, index) => (
+                    <option value={item[0]} key={index}>
                       {item[1].name}
                     </option>
                   ))}
@@ -1076,20 +1105,21 @@ const Admin = () => {
                   id="token_type"
                   onChange={onChange}
                 >
-                  <option defaultValue value="">
+                  <option value="" selected>
                     Select Type
                   </option>
-                  {Object.entries(OPTIONS_NETWORK_STAD).map((item) => {
-                    if (addEventForm && addEventForm.network) {
+                  {addEventForm &&
+                    addEventForm.network &&
+                    Object.entries(OPTIONS_NETWORK_STAD).map((item, index) => {
                       if (item[1].networks.includes(addEventForm.network)) {
                         return (
-                          <option defaultValue value={item[0]}>
+                          <option value={item[0]} key={index}>
                             {item[1].name}
                           </option>
                         );
                       }
-                    }
-                  })}
+                      return null;
+                    })}
                 </Form.Select>
               </Form.Group>
               <Form.Group className="mb-3">
@@ -1103,7 +1133,9 @@ const Admin = () => {
                   disabled={tokenName.length > 0}
                   value={tokenName}
                   id="tokenname"
-                  onChange={setTokenName}
+                  onChange={(e: any) => {
+                    setTokenName(e.target.value);
+                  }}
                 />
               </Form.Group>
 

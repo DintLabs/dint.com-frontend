@@ -1,45 +1,41 @@
-import { Card, Button, Row, Col, Container } from 'react-bootstrap';
-import { get, getDatabase, ref, child } from 'firebase/database';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { child, get, getDatabase, ref } from 'firebase/database';
+import { useEffect, useState } from 'react';
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
-import NavbarHome from './NavbarHome';
-import { auth, db } from './Firebase';
-import Footer from './Footer';
-import polygonlogo from '../material/polygon_logo.svg';
-import solanalogo from '../material/solana_logo.svg';
-import dint from '../material/dintcoin_logo.png';
+import { Link } from 'react-router-dom';
 import { getNetworkByUniqueId } from '../web3/utils';
+import Footer from './Footer';
+import NavbarHome from './NavbarHome';
 
-const DisplaynetworkLogo = (props) => {
-  if (props.networkName == 'Polygon') {
-    return (
-      <>
-        <img src={polygonlogo} alt="" height="17px" style={{ marginBottom: '2px' }} />
-      </>
-    );
-  }
-  if (props.networkName == 'Solana') {
-    return (
-      <>
-        <img src={solanalogo} alt="" height="17px" style={{ marginBottom: '2px' }} />
-      </>
-    );
-  }
-  return (
-    <>
-      <p>token</p>
-    </>
-  );
-};
+// const DisplaynetworkLogo = (props: { networkName: string }) => { --nik
+//   if (props.networkName === 'Polygon') {
+//     return (
+//       <>
+//         <img src={polygonlogo} alt="" height="17px" style={{ marginBottom: '2px' }} />
+//       </>
+//     );
+//   }
+//   if (props.networkName === 'Solana') {
+//     return (
+//       <>
+//         <img src={solanalogo} alt="" height="17px" style={{ marginBottom: '2px' }} />
+//       </>
+//     );
+//   }
+//   return (
+//     <>
+//       <p>token</p>
+//     </>
+//   );
+// };
 
-const DisplaycryptoLogo = (props) => (
+const DisplaycryptoLogo = (props: { url: string | undefined }) => (
   <>
     <img src={props.url ? props.url : ''} alt="" height="22px" style={{ marginBottom: '2px' }} />
   </>
 );
 
-const EventForAll = (props) => {
+const EventForAll = (props: { logout: () => void; isAdmin: any }) => {
   const [eventsdata, setEventdata] = useState([]);
 
   const getEventsfirebase = () => {
@@ -48,7 +44,7 @@ const EventForAll = (props) => {
       .then((snapshot) => {
         if (snapshot.exists()) {
           const events = Object.keys(snapshot.val());
-          const eventarray = [];
+          const eventarray: any = [];
           for (let i = 0; i < events.length; i++) {
             eventarray.push(snapshot.val()[events[i]]);
           }
@@ -77,7 +73,7 @@ const EventForAll = (props) => {
       </Helmet>
       <NavbarHome
         iseventpage={true}
-        isloggedin={props.islogin}
+        // isloggedin={props.islogin}
         logout={props.logout}
         isadmin={props.isAdmin}
       />
@@ -95,7 +91,7 @@ const EventForAll = (props) => {
 
         <Container>
           <Row xs={1} md={3} className="g-4">
-            {eventsdata.map((ev, index) => (
+            {eventsdata.map((ev: any, index: number) => (
               <>
                 <Col>
                   <Card>

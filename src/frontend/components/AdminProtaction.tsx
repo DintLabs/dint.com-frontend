@@ -6,7 +6,7 @@ import { auth, db } from './Firebase';
 import Admin from './Admin';
 import AdminerrorSvg from '../material/adminerr.svg';
 
-const AdminProtaction = (props) => {
+const AdminProtaction = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isloggedin, setIsloggedin] = useState(false);
 
@@ -18,7 +18,7 @@ const AdminProtaction = (props) => {
     margin: '10px'
   };
 
-  const checkusertype = async (uid) => {
+  const checkusertype = async (uid: string) => {
     await get(child(ref(db), `users/${uid}/role`))
       .then((snapshot) => {
         // sessionStorage.setItem('role',snapshot.val())
@@ -60,6 +60,7 @@ const AdminProtaction = (props) => {
         <img src={AdminerrorSvg} alt="" height="200px" />
         <h1>You are not Admin</h1>
         <button
+          type="button"
           style={adminBtnCss}
           onClick={() => {
             navigate('/login/admin');
@@ -68,6 +69,7 @@ const AdminProtaction = (props) => {
           Login
         </button>{' '}
         <button
+          type="button"
           style={adminBtnCss}
           onClick={() => {
             navigate('/');
@@ -90,6 +92,7 @@ const AdminProtaction = (props) => {
       <img src={AdminerrorSvg} alt="" height="200px" />
       <h1>You are not Admin</h1>
       <button
+        type="button"
         style={adminBtnCss}
         onClick={() => {
           navigate('/login/admin');
@@ -98,6 +101,7 @@ const AdminProtaction = (props) => {
         Login
       </button>{' '}
       <button
+        type="button"
         style={adminBtnCss}
         onClick={() => {
           navigate('/');

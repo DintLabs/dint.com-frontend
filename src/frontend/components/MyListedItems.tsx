@@ -1,8 +1,9 @@
+/* eslint-disable no-await-in-loop */
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Row, Col, Card } from 'react-bootstrap';
 
-function renderSoldItems(items) {
+function renderSoldItems(items: any[]) {
   return (
     <>
       <h2>Sold</h2>
@@ -23,10 +24,16 @@ function renderSoldItems(items) {
   );
 }
 
-export default function MyListedItems({ marketplace, nft, account }) {
+interface IMyListedItems {
+  marketplace: any;
+  nft: any;
+  account: any;
+}
+
+export default function MyListedItems({ marketplace, nft, account }: IMyListedItems) {
   const [loading, setLoading] = useState(true);
-  const [listedItems, setListedItems] = useState([]);
-  const [soldItems, setSoldItems] = useState([]);
+  const [listedItems, setListedItems] = useState<any>([]);
+  const [soldItems, setSoldItems] = useState<any>([]);
   const loadListedItems = async () => {
     // Load all sold items that the user listed
     const itemCount = await marketplace.itemCount();
@@ -76,7 +83,7 @@ export default function MyListedItems({ marketplace, nft, account }) {
         <div className="px-5 py-3 container">
           <h2>Listed</h2>
           <Row xs={1} md={2} lg={4} className="g-4 py-3">
-            {listedItems.map((item, idx) => (
+            {listedItems.map((item: any, idx: number) => (
               <Col key={idx} className="overflow-hidden">
                 <Card>
                   <Card.Img variant="top" src={item.image} />

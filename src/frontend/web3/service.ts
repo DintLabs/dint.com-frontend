@@ -174,7 +174,7 @@ export const fetchWalletBalance = async ({
   Network,
   walletAddress
 }: {
-  Network: string;
+  Network: number;
   walletAddress: string;
 }) => {
   if (Network.toString() === '1') {

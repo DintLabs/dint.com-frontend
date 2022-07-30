@@ -54,7 +54,12 @@ export const callMoralis = async ({ rpcURL, abi, params, method }: ICallMoralisP
   });
 };
 
-export const getEVMTokenName = async (params) => {
+export const getEVMTokenName = async (params: {
+  Token_Address: string;
+  abi: any;
+  rpcURL: string;
+  method?: string;
+}) => {
   const { rpcURL, abi, Token_Address } = params;
   try {
     const provider = new ethers.providers.JsonRpcProvider(rpcURL);
@@ -68,7 +73,11 @@ export const getEVMTokenName = async (params) => {
   }
 };
 
-export const getEVMTokenSymbol = async (params) => {
+export const getEVMTokenSymbol = async (params: {
+  rpcURL: string;
+  abi: any;
+  Token_Address: string;
+}) => {
   const { rpcURL, abi, Token_Address } = params;
   try {
     const provider = new ethers.providers.JsonRpcProvider(rpcURL);
@@ -80,7 +89,12 @@ export const getEVMTokenSymbol = async (params) => {
     return null;
   }
 };
-export const getEVMTokenDecimal = async (params) => {
+export const getEVMTokenDecimal = async (params: {
+  Token_Address: string;
+  abi: any;
+  rpcURL: string;
+  method?: string;
+}) => {
   const { rpcURL, abi, Token_Address } = params;
   try {
     const provider = new ethers.providers.JsonRpcProvider(rpcURL);
@@ -93,7 +107,14 @@ export const getEVMTokenDecimal = async (params) => {
   }
 };
 
-export const getEVMTokenBalance = async (params) => {
+export const getEVMTokenBalance = async (params: {
+  Token_Address: string;
+  walletAddress: string;
+  method?: string;
+  rpcURL: any;
+  abi: any;
+  params?: any;
+}) => {
   const { rpcURL, abi, Token_Address, walletAddress } = params;
   try {
     const provider = new ethers.providers.JsonRpcProvider(rpcURL);

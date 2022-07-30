@@ -1,5 +1,5 @@
 export const API_KEY = {
-  CALL_MORALIS: process.env.REACT_APP_CALL_MORALIS_API_KEY
+  CALL_MORALIS: process.env.REACT_APP_CALL_MORALIS_API_KEY || ''
 };
 
 export const SOLONA_TOKEN = {

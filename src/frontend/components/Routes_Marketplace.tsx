@@ -17,7 +17,7 @@ import MyPurchases from './MyPurchases.jsx';
 
 const winEthereum = window.ethereum as any;
 
-function Marketplace_app(props: { islogin: any }) {
+function Marketplace_app() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState(null);
@@ -93,7 +93,8 @@ function Marketplace_app(props: { islogin: any }) {
     <>
       <div className="App">
         <>
-          <Navigation web3Handler={web3Handler} account={account} islogin={props.islogin} />
+          {/* <Navigation web3Handler={web3Handler} account={account} islogin={props.islogin} /> */}
+          <Navigation />
         </>
         <div>
           {loading ? (

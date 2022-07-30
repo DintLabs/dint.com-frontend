@@ -7,7 +7,14 @@ import { auth, db } from './Firebase';
 
 const Swal = require('sweetalert2');
 
-const Protected = (props) => {
+const Protected = (props: {
+  cmp?: any;
+  userEmail?: any;
+  logout?: any;
+  isAdmin?: any;
+  islogin?: any;
+  pagename?: any;
+}) => {
   const Page_req = props.cmp;
   const { pagename } = props;
   // var isLoggedin = props.islogin;
@@ -16,7 +23,7 @@ const Protected = (props) => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { uid } = user;
+        // const { uid } = user; -- nik
         setLogin(true);
       } else {
         console.log('logout user');
@@ -29,7 +36,7 @@ const Protected = (props) => {
           cancelButtonColor: '#CBC9C9',
           confirmButtonText: 'Login',
           cancelButtonText: 'Back'
-        }).then((result) => {
+        }).then((result: any) => {
           if (result.isConfirmed) {
             navigate(`/login/${pagename}`);
           } else {

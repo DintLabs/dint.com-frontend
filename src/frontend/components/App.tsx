@@ -1,5 +1,5 @@
 import { store } from 'frontend/redux/store';
-import { SnackbarProvider } from 'notistack5';
+// import { SnackbarProvider } from 'notistack5';
 import { useState } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -50,14 +50,14 @@ function App() {
   return (
     <ReduxProvider store={store}>
       <BrowserRouter>
-        <SnackbarProvider>
-          <Routes>
-            <Route
-              path="/*"
-              element={<Home logout={setLoginfalse} isAdmin={isadmin} islogin={loggedin} />}
-            />
-          </Routes>
-        </SnackbarProvider>
+        {/* <SnackbarProvider> */}
+        <Routes>
+          <Route
+            path="/*"
+            element={<Home logout={setLoginfalse} isAdmin={isadmin} islogin={loggedin} />}
+          />
+        </Routes>
+        {/* </SnackbarProvider> */}
       </BrowserRouter>
     </ReduxProvider>
   );

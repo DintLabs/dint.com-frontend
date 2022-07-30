@@ -1,35 +1,26 @@
-import Footer from './Footer';
-import '../material/Event.css';
-import NavbarHome from './NavbarHome';
-import { useNavigate } from 'react-router-dom';
-import { get, getDatabase, ref, child } from 'firebase/database';
-import { auth, db } from './Firebase';
-import { useState, useEffect, Fragment } from 'react';
-import { Card, Button, Row, Col, Container } from 'react-bootstrap';
-import { ethers } from 'ethers';
-
-import polygonlogo from '../material/polygon_logo.svg';
-import solanalogo from '../material/solana_logo.svg';
-import dint from '../material/dintcoin_logo.png';
+import { child, get, getDatabase, ref } from 'firebase/database';
+import { useEffect, useState } from 'react';
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
+import { useNavigate } from 'react-router-dom';
+import { ENV } from '../..';
+import '../material/Event.css';
+import { SOLANA_MAINNET } from '../web3/model';
+import { fetchTokenBalance } from '../web3/service';
 import { getNetworkByUniqueId, toHex } from '../web3/utils';
-import * as Alert from './common/alert';
-
 import * as metamask from '../web3/wallets/metamask';
 import * as phantom from '../web3/wallets/phantom';
+import * as Alert from './common/alert';
+import { auth } from './Firebase';
+import Footer from './Footer';
+import NavbarHome from './NavbarHome';
 
-import { fetchTokenBalance } from '../web3/service';
-import { SOLANA_MAINNET } from '../web3/model';
-import { ENV } from '../..';
+// const Swal = require('sweetalert2');
+const win = window as any
 
-const Swal = require('sweetalert2');
+let selectedEvent: any = null;
 
-let selectedEvent = null;
-
-const ShowTicketBtn = (props) => {
-  if (true) {
-    return (
-      <Button
+const ShowTicketBtn = (props: { event: any; getmetamaskBalance: () => void }) => <Button
         variant="primary"
         onClick={() => {
           selectedEvent = props?.event;
@@ -38,8 +29,7 @@ const ShowTicketBtn = (props) => {
       >
         More Details
       </Button>
-    );
-  }
+    
 
   //   let navigate = useNavigate();
   //   if (parseFloat(props.balance) > parseFloat(props.required)) {
@@ -71,18 +61,18 @@ const ShowTicketBtn = (props) => {
   //   }
 };
 
-const DisplaycryptoLogo = (props) => (
+const DisplaycryptoLogo = (props: { url: string | undefined; }) => (
   <>
     <img src={props.url ? props.url : ''} alt="" height="22px" style={{ marginBottom: '2px' }} />
   </>
 );
 
-const Events = (props) => {
+const Events = (props: { islogin: any; logout: () => void; isAdmin: any; }) => {
   const navigate = useNavigate();
   const [eventsdata, setEventdata] = useState([]);
   const [userBalanceEvent, setUserBalanceEvent] = useState(null);
-  const [tokenNameEvent, setTokenNameEvent] = useState(null);
-  const [networkid, setnetworkid] = useState(null);
+  // const [tokenNameEvent, setTokenNameEvent] = useState(null);
+  // const [networkid, setnetworkid] = useState(null);
 
   const getEventsfirebase = () => {
     const dbRef = ref(getDatabase());
@@ -90,7 +80,7 @@ const Events = (props) => {
       .then((snapshot) => {
         if (snapshot.exists()) {
           const events = Object.keys(snapshot.val());
-          const eventarray = [];
+          const eventarray:any = [];
           for (let i = 0; i < events.length; i++) {
             eventarray.push(snapshot.val()[events[i]]);
           }
@@ -104,15 +94,15 @@ const Events = (props) => {
       });
   };
 
-  if (typeof window.ethereum !== 'undefined') {
-    window.ethereum.on('chainChanged', async () => {
+  if (typeof win.ethereum !== 'undefined') {
+    win.ethereum.on('chainChanged', async () => {
       //  getmetamaskBalance();
     });
   }
 
-  const App_URL = () => window.location.host;
+  const App_URL = () => win.location.host;
 
-  window.mobileCheck = function () {
+  win.mobileCheck = function () {
     let check = false;
     (function (a) {
       if (
@@ -124,11 +114,11 @@ const Events = (props) => {
         )
       )
         check = true;
-    })(navigator.userAgent || navigator.vendor || window.opera);
+    })(navigator.userAgent || navigator.vendor || win.opera);
     return check;
   };
 
-  function openMetaMaskUrl(url) {
+  function openMetaMaskUrl(url:string) {
     const a = document.createElement('a');
     a.href = url;
     a.target = '_self';
@@ -138,9 +128,9 @@ const Events = (props) => {
   }
 
   const getmetamaskBalance = async () => {
-    const netWork = getNetworkByUniqueId(selectedEvent.network);
+    const netWork:any = getNetworkByUniqueId(selectedEvent.network);
 
-    const getBalance = async (walletAddress) =>
+    const getBalance = async (walletAddress:string) =>
       fetchTokenBalance({
         Network: netWork.uniqueId,
         Network_Standard: selectedEvent.tokenType,
@@ -156,7 +146,7 @@ const Events = (props) => {
       const walletAddress = '0xC6869257205e20c2A43CB31345DB534AECB49F6E';
       const balanceOf = await getBalance(walletAddress);
       setUserBalanceEvent(balanceOf);
-      setnetworkid(netWork.name);
+      // setnetworkid(netWork.name);
       if (balanceOf <= 0) {
         const config = Alert.configWarnAlert({
           title: 'Balance not sufficient ',
@@ -165,7 +155,7 @@ const Events = (props) => {
         Alert.alert(config);
       } else {
         navigate('/ticketcreate', {
-          state: { eventid: selectedEvent.eventId, userid: auth.currentUser.uid }
+          state: { eventid: selectedEvent.eventId, userid: auth?.currentUser?.uid || "" }
         });
         setUserBalanceEvent(balanceOf);
       }
@@ -179,8 +169,8 @@ const Events = (props) => {
         const walletAddress = provider.publicKey.toString();
         const balanceOf = await getBalance(walletAddress);
         setUserBalanceEvent(balanceOf);
-        setnetworkid(netWork.name);
-        setTokenNameEvent(selectedEvent.tokenName);
+        // setnetworkid(netWork.name);
+        // setTokenNameEvent(selectedEvent.tokenName);
         if (balanceOf <= 0) {
           const config = Alert.configWarnAlert({
             title: 'Balance not sufficient ',
@@ -191,7 +181,7 @@ const Events = (props) => {
           navigate('/ticketcreate', {
             state: {
               eventid: selectedEvent.eventId,
-              userid: auth.currentUser.uid
+              userid: auth?.currentUser?.uid
             }
           });
         }
@@ -207,7 +197,7 @@ const Events = (props) => {
         afterConnect();
       }
     } else {
-      if (window.mobileCheck() === true) {
+      if (win.mobileCheck() === true) {
         if (!(await metamask.hasWallet())) {
           openMetaMaskUrl(`https://metamask.app.link/dapp/${App_URL()}`);
           return;
@@ -236,8 +226,8 @@ const Events = (props) => {
           const walletAddress = accounts[0];
           const balanceOf = await getBalance(walletAddress);
           setUserBalanceEvent(balanceOf);
-          setnetworkid(netWork.name);
-          setTokenNameEvent(selectedEvent.tokenName);
+          // setnetworkid(netWork.name);
+          // setTokenNameEvent(selectedEvent.tokenName);
           if (balanceOf <= 0) {
             const config = Alert.configWarnAlert({
               title: 'Balance not sufficient ',
@@ -253,7 +243,7 @@ const Events = (props) => {
             navigate('/ticketcreate', {
               state: {
                 eventid: selectedEvent.eventId,
-                userid: auth.currentUser.uid
+                userid: auth?.currentUser?.uid
               }
             });
           }
@@ -338,7 +328,7 @@ const Events = (props) => {
         />
       </Helmet>
       <NavbarHome
-        isloggedin={props.islogin}
+        // isloggedin={props.islogin} -- nik
         logout={props.logout}
         isadmin={props.isAdmin}
         iseventpage={true}
@@ -354,9 +344,9 @@ const Events = (props) => {
 
         <Container>
           <Row xs={1} md={3} className="g-4">
-            {eventsdata.map((ev) => (
+            {eventsdata.map((ev:any,index:number) => (
               <>
-                <Col>
+                <Col key={index}>
                   <Card>
                     <Card.Img variant="top" src={ev.eventPhoto} style={{ height: '200px' }} />
                     <Card.Body>
@@ -386,8 +376,8 @@ const Events = (props) => {
                       </h6>
                       <br />
                       <ShowTicketBtn
-                        balance={userBalanceEvent}
-                        required={ev.balanceRequired}
+                        // balance={userBalanceEvent} -- nik
+                        // required={ev.balanceRequired} --nik
                         getmetamaskBalance={getmetamaskBalance}
                         event={ev}
                       />

@@ -9,16 +9,15 @@ import {
   signInWithPopup,
   signOut
 } from 'firebase/auth';
-import { collection, doc, DocumentData, getDoc, setDoc } from 'firebase/firestore';
+import { child, get, ref } from 'firebase/database';
+import { collection, doc, DocumentData, setDoc } from 'firebase/firestore';
 import { createContext, ReactNode, useEffect, useReducer, useState } from 'react';
 // @types
 import { ActionMap, AuthState, AuthUser, FirebaseContextType } from '../types/authentication';
 //
-import { authInstance, fireStoreInstance } from './FirebaseInstance';
+import { authInstance, databaseInstance, fireStoreInstance } from './FirebaseInstance';
 
 // ----------------------------------------------------------------------
-
-const ADMIN_EMAILS = ['admin@dint.com'];
 
 function initTokenChange() {
   onIdTokenChanged(authInstance, async (user) => {
@@ -78,11 +77,16 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
           initTokenChange();
 
-          getDoc(doc(fireStoreInstance, 'users', user.uid))
-            .then((docRef) => {
-              if (docRef.exists()) {
-                const userData = docRef.data();
-                setProfile(userData);
+          // for get role of loggedin user
+          const snapshot = await get(child(ref(databaseInstance), `users/${user.uid}/role`));
+
+          get(child(ref(databaseInstance), `users/${user.uid}`))
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                const objUser = snapshot.val();
+                setProfile(objUser);
+              } else {
+                console.log('No data available');
               }
             })
             .catch((error) => {
@@ -95,7 +99,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
               isAuthenticated: true,
               user,
               idToken,
-              isAdmin: ADMIN_EMAILS.includes(auth.email)
+              isAdmin: snapshot.val() === 'admin'
             }
           });
         } else {
@@ -153,21 +157,15 @@ function AuthProvider({ children }: { children: ReactNode }) {
           id: auth.uid,
           idToken: state.idToken,
           email: auth.email,
-          photoURL: auth.photoURL || profile?.photoURL,
-          coverImageURL: auth.coverImageURL || profile?.coverImageURL,
-          userType: profile ? profile?.userType : 'GUEST',
+          instagram: auth.instagram || profile?.instagram,
+          biography: auth.biography || profile?.biography,
+          city: auth.city || profile?.city,
+          name: auth.name || profile?.name,
           displayName: auth.displayName || profile?.displayName,
-          fristName: auth.firstName || profile?.firstName,
-          lastName: auth.firstName || profile?.lastName,
-          role: ADMIN_EMAILS.includes(auth.email) ? 'admin' : 'user',
-          mobileNo: auth.mobileNo || profile?.mobileNo || '',
-          country: profile?.country || '',
-          address: profile?.address || '',
-          state: profile?.state || '',
-          city: profile?.city || '',
-          zipCode: profile?.zipCode || '',
-          about: profile?.about || '',
-          isPublic: profile?.isPublic || false
+          discord: auth.discord || profile?.discord,
+          profileImage: auth.profileImage || profile?.profileImage,
+          role: auth.role || profile?.role,
+          twitter: auth.twitter || profile?.twitter
         },
         login,
         register,

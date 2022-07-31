@@ -1,23 +1,23 @@
-import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  updatePassword,
-  User
-} from 'firebase/auth';
-import { child, get, ref, update } from 'firebase/database';
+import { signInWithEmailAndPassword, updatePassword, User } from 'firebase/auth';
+import { ref, update } from 'firebase/database';
 import { authInstance, databaseInstance } from 'frontend/contexts/FirebaseInstance';
 import useAuth from 'frontend/hooks/useAuth';
+import { AuthUser } from 'frontend/types/authentication';
 import $ from 'jquery';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Form, Tab, Tabs } from 'react-bootstrap';
-import '../material/Profile.css';
-import NavbarHome from './NavbarHome';
+import Swal from 'sweetalert2';
+import '../../material/Profile.css';
 
-const Swal = require('sweetalert2');
-
-const Profile = (props: { islogin: any; logout: any; isAdmin: any }) => {
+const Profile = () => {
+  const { user } = useAuth();
+  console.log(user);
   const [passErr, setPassErr] = useState('');
-  const [userrole, setUserRole] = useState('');
+  const [objUser, setObjUser] = useState<AuthUser>({});
+
+  const onChangeUserInfo = (updatedInfo: Partial<AuthUser>) => {
+    setObjUser({ ...objUser, ...updatedInfo });
+  };
 
   // function for updating password
   const passwordUpdate = () => {
@@ -114,46 +114,8 @@ const Profile = (props: { islogin: any; logout: any; isAdmin: any }) => {
     setPassErr('');
   };
 
-  // get values from database
-  const getdatavalues = (uid: string) => {
-    get(child(ref(databaseInstance), `users/${uid}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          if (snapshot.val() === '' || snapshot.val() === undefined) {
-            setUserRole('simple');
-          } else {
-            setUserRole(snapshot.val().role);
-          }
-          $('#profileName').val(snapshot.val().name);
-          $('#biography').val(snapshot.val().biography);
-          $('#city').val(snapshot.val().city);
-          $('#twitterLink').val(snapshot.val().twitter);
-          $('#instaLink').val(snapshot.val().instagram);
-          $('#discordLink').val(snapshot.val().discord);
-          $('#profile_image_edit').attr('src', snapshot.val().profileImage);
-        } else {
-          console.log('No data available');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  useEffect(() => {
-    onAuthStateChanged(authInstance, (user) => {
-      if (user) {
-        const { uid } = user;
-        getdatavalues(uid);
-      } else {
-        console.log('logout user');
-      }
-    });
-  }, []);
-
   return (
     <>
-      <NavbarHome />
       <div className="profile_form_parent">
         <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
           <Tab eventKey="home" title="Wallets">
@@ -169,29 +131,74 @@ const Profile = (props: { islogin: any; logout: any; isAdmin: any }) => {
                 <Form>
                   <Form.Group className="mb-3">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Name" id="profileName" />
+                    <Form.Control
+                      type="text"
+                      placeholder="Name"
+                      value={objUser?.name || user?.name}
+                      onChange={(e: any) => {
+                        onChangeUserInfo({ name: e.target.value });
+                      }}
+                    />
                   </Form.Group>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                  <Form.Group className="mb-3">
                     <Form.Label>Biography</Form.Label>
-                    <Form.Control as="textarea" id="biography" placeholder="Biography" rows={3} />
+                    <Form.Control
+                      as="textarea"
+                      value={objUser?.biography}
+                      onChange={(e: any) => {
+                        onChangeUserInfo({ biography: e.target.value });
+                      }}
+                      placeholder="Biography"
+                      rows={3}
+                    />
                   </Form.Group>
                   <Form.Group className="mb-3">
                     <Form.Label>City</Form.Label>
-                    <Form.Control type="text" id="city" placeholder="city" />
+                    <Form.Control
+                      type="text"
+                      value={objUser?.city}
+                      onChange={(e: any) => {
+                        onChangeUserInfo({ city: e.target.value });
+                      }}
+                      placeholder="city"
+                    />
                   </Form.Group>
                   <Form.Group className="mb-3">
                     <Form.Label>Twitter</Form.Label>
-                    <Form.Control type="text" placeholder="URL" id="twitterLink" />
+                    <Form.Control
+                      type="text"
+                      value={objUser?.twitter}
+                      onChange={(e: any) => {
+                        onChangeUserInfo({ twitter: e.target.value });
+                      }}
+                      placeholder="URL"
+                    />
                   </Form.Group>
 
                   <Form.Group className="mb-3">
                     <Form.Label>Instagram</Form.Label>
-                    <Form.Control type="text" id="instaLink" placeholder="URL" />
+                    <Form.Control
+                      type="text"
+                      value={objUser?.instagram}
+                      onChange={(e: any) => {
+                        onChangeUserInfo({ instagram: e.target.value });
+                      }}
+                      id="instaLink"
+                      placeholder="URL"
+                    />
                   </Form.Group>
 
                   <Form.Group className="mb-3">
                     <Form.Label>Discord</Form.Label>
-                    <Form.Control type="text" id="discordLink" placeholder="URL" />
+                    <Form.Control
+                      type="text"
+                      value={objUser?.discord}
+                      onChange={(e: any) => {
+                        onChangeUserInfo({ discord: e.target.value });
+                      }}
+                      id="discordLink"
+                      placeholder="URL"
+                    />
                   </Form.Group>
                   <Button variant="primary" onClick={informationUpdate}>
                     Save
@@ -200,7 +207,7 @@ const Profile = (props: { islogin: any; logout: any; isAdmin: any }) => {
               </div>
               <div className="profile_div_child profile_img_div">
                 <div id="edit_image_print">
-                  <img id="profile_image_edit" alt="profile_image_edit" />
+                  <img id="profile_image_edit" alt="profile_image_edit" src={user?.profileImage} />
                 </div>
               </div>
             </div>
@@ -210,7 +217,7 @@ const Profile = (props: { islogin: any; logout: any; isAdmin: any }) => {
             <div className="forgot_password_div">
               <h5>Change Your Password</h5>
               <Form style={{ marginTop: '25px' }}>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Group className="mb-3">
                   <Form.Label>Current password</Form.Label>
                   <Form.Control
                     type="text"
@@ -220,7 +227,7 @@ const Profile = (props: { islogin: any; logout: any; isAdmin: any }) => {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Group className="mb-3">
                   <Form.Label>New Password</Form.Label>
                   <Form.Control
                     type="text"
@@ -230,7 +237,7 @@ const Profile = (props: { islogin: any; logout: any; isAdmin: any }) => {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Group className="mb-3">
                   <Form.Label>Confirm New Password</Form.Label>
                   <Form.Control
                     type="text"

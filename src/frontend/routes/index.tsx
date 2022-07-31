@@ -3,6 +3,7 @@ import GuestGuard from 'frontend/guards/GuestGuard';
 import MainLayout from 'frontend/layouts/main';
 import Home from 'frontend/pages/Home/Home';
 import Login from 'frontend/pages/Login/Login';
+import Profile from 'frontend/pages/Profile/Profile';
 import Register from 'frontend/pages/Register/Register';
 import { useNavigate, useRoutes } from 'react-router-dom';
 
@@ -43,7 +44,10 @@ export default function Router() {
     {
       path: '/',
       element: <MainLayout />,
-      children: [{ path: '/', element: <Home /> }]
+      children: [
+        { path: '/', element: <Home /> },
+        { path: '/profile', element: <Profile /> }
+      ]
     }
   ]);
 }

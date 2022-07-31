@@ -1,4 +1,3 @@
-import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
 import { Dropdown } from 'react-bootstrap';
@@ -12,7 +11,7 @@ import mainlogo from '../../material/white.png';
 
 const MainNavBar = () => {
   // var isLoggedin = props.isloggedin;
-  const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { isAuthenticated, isAdmin, logout } = useAuth();
 
   const { pathname } = useLocation();
   const isEventsPage = pathname === '/events';
@@ -155,7 +154,7 @@ const MainNavBar = () => {
                       </Link>
                     </li>
                     <li className="no_effect_li">
-                      <Link id="no_effect" to="/signup">
+                      <Link id="no_effect" to="/auth/signup">
                         Sign Up
                       </Link>
                     </li>

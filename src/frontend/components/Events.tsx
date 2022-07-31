@@ -1,4 +1,5 @@
 import { child, get, getDatabase, ref } from 'firebase/database';
+import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import { useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
@@ -11,7 +12,6 @@ import { getNetworkByUniqueId, toHex } from '../web3/utils';
 import * as metamask from '../web3/wallets/metamask';
 import * as phantom from '../web3/wallets/phantom';
 import * as Alert from './common/alert';
-import { auth } from './Firebase';
 import Footer from './Footer';
 import NavbarHome from './NavbarHome';
 
@@ -155,7 +155,7 @@ const Events = (props: { islogin: any; logout: () => void; isAdmin: any; }) => {
         Alert.alert(config);
       } else {
         navigate('/ticketcreate', {
-          state: { eventid: selectedEvent.eventId, userid: auth?.currentUser?.uid || "" }
+          state: { eventid: selectedEvent.eventId, userid: authInstance?.currentUser?.uid || "" }
         });
         setUserBalanceEvent(balanceOf);
       }
@@ -181,7 +181,7 @@ const Events = (props: { islogin: any; logout: () => void; isAdmin: any; }) => {
           navigate('/ticketcreate', {
             state: {
               eventid: selectedEvent.eventId,
-              userid: auth?.currentUser?.uid
+              userid: authInstance?.currentUser?.uid
             }
           });
         }
@@ -243,7 +243,7 @@ const Events = (props: { islogin: any; logout: () => void; isAdmin: any; }) => {
             navigate('/ticketcreate', {
               state: {
                 eventid: selectedEvent.eventId,
-                userid: auth?.currentUser?.uid
+                userid: authInstance?.currentUser?.uid
               }
             });
           }

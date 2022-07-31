@@ -1,26 +1,26 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import {
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  setPersistence,
   browserSessionPersistence,
-  sendPasswordResetEmail,
-  signInWithPopup,
-  signInWithRedirect,
+  getAuth,
   getRedirectResult,
-  GoogleAuthProvider
+  GoogleAuthProvider,
   // FacebookAuthProvider,
   // OAuthProvider
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  setPersistence,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signInWithRedirect
 } from 'firebase/auth';
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { get, child, ref } from 'firebase/database';
+import { child, get, ref } from 'firebase/database';
+import { authInstance, databaseInstance } from 'frontend/contexts/FirebaseInstance';
 import $ from 'jquery';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 import NavbarHome from './NavbarHome';
-import { auth, db } from './Firebase';
 
 const Login = (props: any) => {
   const previousPage = window.location.pathname.split('/');
@@ -33,9 +33,9 @@ const Login = (props: any) => {
     const login_email = $('#login_email').val() as string;
     const login_password = $('#login_password').val() as string;
 
-    setPersistence(auth, browserSessionPersistence)
+    setPersistence(authInstance, browserSessionPersistence)
       .then(() => {
-        signInWithEmailAndPassword(auth, login_email, login_password)
+        signInWithEmailAndPassword(authInstance, login_email, login_password)
           .then((userCredential) => {
             // sessionStorage.setItem('logged', true);
             // sessionStorage.setItem('user_email', login_email);
@@ -43,7 +43,7 @@ const Login = (props: any) => {
             props.setemail(login_email);
 
             // for get role of loggedin user
-            get(child(ref(db), `users/${userCredential.user.uid}/role`))
+            get(child(ref(databaseInstance), `users/${userCredential.user.uid}/role`))
               .then((snapshot) => {
                 // sessionStorage.setItem('role',snapshot.val())
                 if (snapshot.val() === 'admin') {
@@ -220,7 +220,7 @@ const Login = (props: any) => {
   // };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(authInstance, (user) => {
       if (user) {
         navigate(`/${previousPage[2]}`);
       } else {

@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { get, child, ref } from 'firebase/database';
-import { auth, db } from './Firebase';
-import Admin from './Admin';
+import { child, get, ref } from 'firebase/database';
+import { authInstance, databaseInstance } from 'frontend/contexts/FirebaseInstance';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AdminerrorSvg from '../material/adminerr.svg';
+import Admin from './Admin';
 
 const AdminProtaction = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -19,7 +19,7 @@ const AdminProtaction = () => {
   };
 
   const checkusertype = async (uid: string) => {
-    await get(child(ref(db), `users/${uid}/role`))
+    await get(child(ref(databaseInstance), `users/${uid}/role`))
       .then((snapshot) => {
         // sessionStorage.setItem('role',snapshot.val())
         console.log(snapshot.val());
@@ -36,7 +36,7 @@ const AdminProtaction = () => {
   };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(authInstance, (user) => {
       if (user) {
         setIsloggedin(true);
         console.log(user);

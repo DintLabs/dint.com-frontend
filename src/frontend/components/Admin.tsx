@@ -1,4 +1,5 @@
 import { child, get, getDatabase, ref, set, update } from 'firebase/database';
+import { authInstance, databaseInstance } from 'frontend/contexts/FirebaseInstance';
 import $ from 'jquery';
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Tab, Table, Tabs } from 'react-bootstrap';
@@ -10,7 +11,6 @@ import mainlogo from '../material/white.png';
 import { IS_TOKEN, OPTIONS_NETWORK_STAD } from '../utils';
 import { NETWORKS } from '../web3/model';
 import { fetchTokenDetails } from '../web3/service';
-import { auth, db } from './Firebase';
 
 const DisplaynetworkLogo = (props: { networkName: string }) => {
   if (props.networkName === 'Polygon') {
@@ -559,7 +559,7 @@ const Admin = () => {
         ...tokenData
       };
 
-      set(ref(db, `events/${ename}`), eventData)
+      set(ref(databaseInstance, `events/${ename}`), eventData)
         .then(() => {
           alert('Event Saved Success');
           getEvents();
@@ -603,7 +603,7 @@ const Admin = () => {
         venueGmap: addvanuegmap,
         venuedateCreated: `${yyyy}-${mm}-${dd}`
       };
-      set(ref(db, `venues/${addvenuename}`), venueData)
+      set(ref(databaseInstance, `venues/${addvenuename}`), venueData)
         .then(() => {
           alert('Vanue Saved Success');
           getVanues();
@@ -714,7 +714,7 @@ const Admin = () => {
     }
 
     console.log('update', tokenData);
-    update(ref(db, `events/${SelectedeventNameFirebase}`), {
+    update(ref(databaseInstance, `events/${SelectedeventNameFirebase}`), {
       eventName: updatedename,
       venueName: updatedvanue,
       eventDescription: updatededesc,
@@ -743,13 +743,13 @@ const Admin = () => {
   };
 
   const adminLogout = () => {
-    auth
+    authInstance
       .signOut()
       .then(() => {
         alert('logout success');
         window.location.reload();
       })
-      .catch((e) => {
+      .catch((e: any) => {
         console.log(e);
       });
   };

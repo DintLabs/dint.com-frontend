@@ -1,15 +1,15 @@
-import { Link, useNavigate } from 'react-router-dom';
-import '../material/Event.css';
-import { CgProfile } from 'react-icons/cg';
-import $ from 'jquery';
-import { Dropdown } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
+import { authInstance } from 'frontend/contexts/FirebaseInstance';
+import $ from 'jquery';
+import { useEffect, useState } from 'react';
+import { Dropdown } from 'react-bootstrap';
+import { CgProfile } from 'react-icons/cg';
 import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
-import MetamaskLogin from './MetamaskLogin';
-import { auth } from './Firebase';
-import mainlogo from '../material/white.png';
+import { Link, useNavigate } from 'react-router-dom';
 import blacklogo from '../material/black.png';
+import '../material/Event.css';
+import mainlogo from '../material/white.png';
+import MetamaskLogin from './MetamaskLogin';
 
 const NavbarHome = () => {
   // var isLoggedin = props.isloggedin;
@@ -19,14 +19,14 @@ const NavbarHome = () => {
   const navigate = useNavigate();
 
   const logout = () => {
-    auth
+    authInstance
       .signOut()
       .then(() => {
         alert('logout success');
         // props.logout(); --nik
         window.location.reload();
       })
-      .catch((e) => {
+      .catch((e: any) => {
         console.log(e);
       });
     // sessionStorage.removeItem("logged");
@@ -52,7 +52,7 @@ const NavbarHome = () => {
   };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(authInstance, (user) => {
       if (user) {
         setIsLogin(true);
       }

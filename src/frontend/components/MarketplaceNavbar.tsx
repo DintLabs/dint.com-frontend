@@ -1,10 +1,10 @@
 import { onAuthStateChanged } from 'firebase/auth';
+import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import { useEffect, useState } from 'react';
 import { Container, Dropdown, Nav, Navbar } from 'react-bootstrap';
 import { CgProfile } from 'react-icons/cg';
 import { Link, useNavigate } from 'react-router-dom';
 import mainlogo from '../material/white.png';
-import { auth } from './Firebase';
 import MetamaskLogin from './MetamaskLogin';
 
 const Navigation = () => {
@@ -12,13 +12,13 @@ const Navigation = () => {
   const navigate = useNavigate();
 
   const logout = () => {
-    auth
+    authInstance
       .signOut()
       .then(() => {
         alert('logout success');
         window.location.reload();
       })
-      .catch((e) => {
+      .catch((e: any) => {
         console.log(e);
       });
   };
@@ -28,7 +28,7 @@ const Navigation = () => {
   };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(authInstance, (user) => {
       if (user) {
         // const { uid } = user;
         setLogin(true);

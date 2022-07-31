@@ -1,4 +1,10 @@
-import { signInWithEmailAndPassword, updatePassword, User } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  updatePassword,
+  User,
+  reauthenticateWithCredential,
+  EmailAuthProvider
+} from 'firebase/auth';
 import { ref, update } from 'firebase/database';
 import { authInstance, databaseInstance } from 'frontend/contexts/FirebaseInstance';
 import useAuth from 'frontend/hooks/useAuth';
@@ -14,29 +20,44 @@ const Profile = () => {
   console.log(user);
   const [passErr, setPassErr] = useState('');
   const [objUser, setObjUser] = useState<AuthUser>({});
+  const [updatePasswordState, setObjUpdatePassword] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmNewPassword: ''
+  });
 
   const onChangeUserInfo = (updatedInfo: Partial<AuthUser>) => {
     setObjUser({ ...objUser, ...updatedInfo });
   };
 
+  const onPasswordStateChange = (updatedInfo: any) => {
+    setObjUpdatePassword({ ...updatePasswordState, ...updatedInfo });
+  };
+
   // function for updating password
   const passwordUpdate = () => {
-    const current_password = $('#current_password').val() as string;
-    const new_password = $('#new_password').val() as string;
-    const confirm_new_password = $('#confirm_new_password').val();
+    if (
+      updatePasswordState.currentPassword !== '' &&
+      updatePasswordState.newPassword !== '' &&
+      updatePasswordState.confirmNewPassword !== ''
+    ) {
+      if (updatePasswordState.currentPassword !== updatePasswordState.newPassword) {
+        if (updatePasswordState.newPassword === updatePasswordState.confirmNewPassword) {
+          const credential = EmailAuthProvider.credential(
+            authInstance.currentUser?.email || '',
+            updatePasswordState.currentPassword
+          );
 
-    if (current_password !== '' && new_password !== '' && confirm_new_password !== '') {
-      if (current_password !== new_password) {
-        if (new_password === confirm_new_password) {
+          reauthenticateWithCredential(user as User, credential);
           signInWithEmailAndPassword(
             authInstance,
             authInstance.currentUser?.uid || '',
-            current_password
+            updatePasswordState.currentPassword
           )
             .then((userCredential) => {
               const user = authInstance.currentUser;
               // update password function
-              updatePassword(user as User, new_password)
+              updatePassword(user as User, updatePasswordState.newPassword)
                 .then(() => {
                   setPassErr('');
                   Swal.fire({
@@ -108,10 +129,6 @@ const Profile = () => {
     } catch (e) {
       alert(e);
     }
-  };
-
-  const passInputChange = () => {
-    setPassErr('');
   };
 
   return (
@@ -222,8 +239,10 @@ const Profile = () => {
                   <Form.Control
                     type="text"
                     placeholder="Current Password"
-                    id="current_password"
-                    onChange={passInputChange}
+                    value={updatePasswordState.currentPassword}
+                    onChange={(e: any) => {
+                      onPasswordStateChange({ currentPassword: e.target.value });
+                    }}
                   />
                 </Form.Group>
 
@@ -232,8 +251,10 @@ const Profile = () => {
                   <Form.Control
                     type="text"
                     placeholder="Enter Password"
-                    id="new_password"
-                    onChange={passInputChange}
+                    value={updatePasswordState.newPassword}
+                    onChange={(e: any) => {
+                      onPasswordStateChange({ newPassword: e.target.value });
+                    }}
                   />
                 </Form.Group>
 
@@ -243,7 +264,10 @@ const Profile = () => {
                     type="text"
                     placeholder="Confirm Password"
                     id="confirm_new_password"
-                    onChange={passInputChange}
+                    value={updatePasswordState.confirmNewPassword}
+                    onChange={(e: any) => {
+                      onPasswordStateChange({ ConfirmNewPassword: e.target.value });
+                    }}
                   />
                 </Form.Group>
 

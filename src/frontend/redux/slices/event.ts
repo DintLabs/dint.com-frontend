@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { child, get, getDatabase, ref } from 'firebase/database';
 import { IEvent } from 'frontend/types/event';
-import { RootState } from '../store';
 
 type IEventState = {
   isLoading: boolean;
@@ -37,19 +36,18 @@ const slice = createSlice({
 export default slice.reducer;
 
 export function fetchEvents() {
-  return async (dispatch: any, getState: () => RootState) => {
+  return async (dispatch: any) => {
     try {
-      console.log('Data');
+      dispatch(slice.actions.startLoading());
       const dbRef = ref(getDatabase());
       const snapshot = await get(child(dbRef, `events/`));
       if (snapshot.exists()) {
-        console.log(snapshot.val());
         const events = Object.keys(snapshot.val());
         const eventarray: any = [];
         for (let i = 0; i < events.length; i++) {
           eventarray.push(snapshot.val()[events[i]]);
         }
-        dispatch(slice.actions.setSliceChanges({ lstEvent: eventarray }));
+        dispatch(slice.actions.setSliceChanges({ lstEvent: eventarray, isLoading: false }));
       }
     } catch (error) {
       console.log(error);

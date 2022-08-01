@@ -10,7 +10,7 @@ const EventListCard = ({
   objEvent: IEvent;
   getMetamaskBalance: (selectedEvent: IEvent) => void;
 }) => (
-  <Col>
+  <Col md={4}>
     <Card>
       <Card.Img variant="top" src={objEvent.eventPhoto} style={{ height: '200px' }} />
       <Card.Body>

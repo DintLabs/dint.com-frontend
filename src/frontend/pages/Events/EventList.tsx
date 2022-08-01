@@ -1,3 +1,5 @@
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import { ENV } from 'frontend/config';
 import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import { RootState, useSelector } from 'frontend/redux/store';
@@ -15,7 +17,7 @@ import EventListCard from './EventListCard';
 const win = window as any;
 
 const EventList = () => {
-  const { lstEvent } = useSelector((rootState: RootState) => rootState.event);
+  const { lstEvent, isLoading } = useSelector((rootState: RootState) => rootState.event);
   const navigate = useNavigate();
 
   const openMetaMaskUrl = (url: string) => {
@@ -162,6 +164,13 @@ const EventList = () => {
       }
     }
   };
+
+  if (isLoading)
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <CircularProgress />
+      </Box>
+    );
 
   return (
     <>

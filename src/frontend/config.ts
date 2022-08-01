@@ -16,3 +16,5 @@ export const FIREBASE_CONFIG = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGNING_SENDER_ID || '',
   appId: process.env.REACT_APP_FIREBASE_APP_ID || ''
 };
+
+export const ENV: 'dev' | 'test' = 'dev';

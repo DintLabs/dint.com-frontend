@@ -1,10 +1,10 @@
 import { child, get, getDatabase, ref } from 'firebase/database';
+import { ENV } from 'frontend/config';
 import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import { useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
-import { ENV } from '../..';
 import '../material/Event.css';
 import { SOLANA_MAINNET } from '../web3/model';
 import { fetchTokenBalance } from '../web3/service';
@@ -71,6 +71,7 @@ const Events = (props: { islogin: any; logout: () => void; isAdmin: any; }) => {
   const navigate = useNavigate();
   const [eventsdata, setEventdata] = useState([]);
   const [userBalanceEvent, setUserBalanceEvent] = useState(null);
+  
   // const [tokenNameEvent, setTokenNameEvent] = useState(null);
   // const [networkid, setnetworkid] = useState(null);
 

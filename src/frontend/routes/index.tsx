@@ -2,6 +2,7 @@
 import AuthGuard from 'frontend/guards/AuthGuard';
 import GuestGuard from 'frontend/guards/GuestGuard';
 import MainLayout from 'frontend/layouts/main';
+import Events from 'frontend/pages/Events/Events';
 import Home from 'frontend/pages/Home/Home';
 import Login from 'frontend/pages/Login/Login';
 import Profile from 'frontend/pages/Profile/Profile';
@@ -47,6 +48,7 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { path: '/', element: <Home /> },
+        { path: '/events', element: <Events /> },
         {
           path: '/profile',
           element: (

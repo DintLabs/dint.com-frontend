@@ -51,7 +51,7 @@ export const ABI: { [key: string]: any } = {
   ERC_20
 };
 
-export const EVM_NETWORKS = Object.freeze({
+export const EVM_NETWORKS: { [key: number]: any } = Object.freeze({
   2: POLYGON_MAINNET,
   3: ETHERIUM
 });

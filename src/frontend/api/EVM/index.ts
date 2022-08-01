@@ -31,12 +31,13 @@ export const callMoralis = async ({ rpcURL, abi, params, method }: ICallMoralisP
     method,
     headers: myHeaders,
     redirect: 'follow',
-    body: ''
+    body: undefined
   };
 
   if (method === 'POST' || method === 'post') {
     requestOptions.body = body;
   }
+  console.log(requestOptions, 'requestOptions');
 
   return new Promise((resolve, reject) => {
     fetch(rpcURL, requestOptions)

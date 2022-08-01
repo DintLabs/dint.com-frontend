@@ -1,25 +1,15 @@
-import {
-  signInWithEmailAndPassword,
-  updatePassword,
-  User,
-  reauthenticateWithCredential,
-  EmailAuthProvider
-} from 'firebase/auth';
-import { ref, update } from 'firebase/database';
-import { authInstance, databaseInstance } from 'frontend/contexts/FirebaseInstance';
 import useAuth from 'frontend/hooks/useAuth';
 import { AuthUser } from 'frontend/types/authentication';
-import $ from 'jquery';
 import { useState } from 'react';
 import { Button, Form, Tab, Tabs } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import '../../material/Profile.css';
 
 const Profile = () => {
-  const { user } = useAuth();
-  console.log(user);
+  const { user, updateProfile, changePassword } = useAuth();
   const [passErr, setPassErr] = useState('');
   const [objUser, setObjUser] = useState<AuthUser>({});
+
   const [updatePasswordState, setObjUpdatePassword] = useState({
     currentPassword: '',
     newPassword: '',
@@ -35,97 +25,53 @@ const Profile = () => {
   };
 
   // function for updating password
-  const passwordUpdate = () => {
+  const passwordUpdate = async () => {
     if (
-      updatePasswordState.currentPassword !== '' &&
-      updatePasswordState.newPassword !== '' &&
-      updatePasswordState.confirmNewPassword !== ''
+      updatePasswordState.currentPassword === '' ||
+      updatePasswordState.newPassword === '' ||
+      updatePasswordState.confirmNewPassword === ''
     ) {
-      if (updatePasswordState.currentPassword !== updatePasswordState.newPassword) {
-        if (updatePasswordState.newPassword === updatePasswordState.confirmNewPassword) {
-          const credential = EmailAuthProvider.credential(
-            authInstance.currentUser?.email || '',
-            updatePasswordState.currentPassword
-          );
-
-          reauthenticateWithCredential(user as User, credential);
-          signInWithEmailAndPassword(
-            authInstance,
-            authInstance.currentUser?.uid || '',
-            updatePasswordState.currentPassword
-          )
-            .then((userCredential) => {
-              const user = authInstance.currentUser;
-              // update password function
-              updatePassword(user as User, updatePasswordState.newPassword)
-                .then(() => {
-                  setPassErr('');
-                  Swal.fire({
-                    title: 'Success',
-                    text: 'Your Password Is Updated Successfully',
-                    icon: 'success',
-                    confirmButtonText: 'Close'
-                  });
-                })
-                .catch((error) => {
-                  console.log(error);
-                  setPassErr(error);
-                });
-            })
-            .catch((e) => {
-              switch (e.code) {
-                case 'auth/user-not-found':
-                  console.log(`User is Not Found`);
-                  setPassErr('User Not Found');
-                  break;
-                case 'auth/wrong-password':
-                  console.log(`Wrong Password`);
-                  setPassErr('Wrong Current Password');
-                  break;
-                default:
-                  console.log(e.message);
-                  setPassErr('Something Went Wrong');
-                  break;
-              }
-            });
-        } else {
-          setPassErr('Password and Confirm Password Not Matching');
-          console.log('password and confirm password is not matching');
-        }
-      } else {
-        setPassErr('Cannot set current Password to New Password');
-      }
-    } else {
-      setPassErr('Fill All Fields');
+      return setPassErr('Fill All Fields');
     }
+    if (updatePasswordState.currentPassword === updatePasswordState.newPassword) {
+      return setPassErr('Cannot set current Password to New Password');
+    }
+    if (updatePasswordState.newPassword !== updatePasswordState.confirmNewPassword) {
+      console.log('password and confirm password is not matching');
+      return setPassErr('Password and Confirm Password Not Matching');
+    }
+
+    try {
+      await changePassword(
+        updatePasswordState.currentPassword,
+        updatePasswordState.confirmNewPassword
+      );
+      Swal.fire({
+        title: 'Success',
+        text: 'Your Password Is Updated Successfully',
+        icon: 'success',
+        confirmButtonText: 'Close'
+      });
+      setPassErr('');
+    } catch (ex: any) {
+      if (ex.code === 'auth/user-not-found') {
+        setPassErr('User Not Found');
+      } else if (ex.code === 'auth/wrong-password') {
+        setPassErr('Wrong Current Password');
+      } else if (ex.code) {
+        setPassErr('Something Went Wrong');
+      } else {
+        setPassErr(ex);
+      }
+      console.log(ex);
+    }
+    return null;
   };
 
   // function of updating user's profile information
-  const informationUpdate = () => {
+  const informationUpdate = async () => {
     try {
-      const uname = $('#profileName').val();
-      const ubio = $('#biography').val();
-      const ucity = $('#city').val();
-      const utwitter = $('#twitterLink').val();
-      const uinsta = $('#instaLink').val();
-      const discord = $('#discordLink').val();
-
-      update(ref(databaseInstance, `users/${authInstance?.currentUser?.uid || ''}`), {
-        name: uname,
-        biography: ubio,
-        city: ucity,
-        discord,
-        instagram: uinsta,
-        profileImage:
-          'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
-        twitter: utwitter
-      })
-        .then(() => {
-          alert('update success');
-        })
-        .catch((error) => {
-          alert(`error in update${error}`);
-        });
+      await updateProfile({ ...objUser });
     } catch (e) {
       alert(e);
     }
@@ -151,7 +97,7 @@ const Profile = () => {
                     <Form.Control
                       type="text"
                       placeholder="Name"
-                      value={objUser?.name || user?.name}
+                      value={objUser?.name || user?.name || ''}
                       onChange={(e: any) => {
                         onChangeUserInfo({ name: e.target.value });
                       }}
@@ -161,7 +107,7 @@ const Profile = () => {
                     <Form.Label>Biography</Form.Label>
                     <Form.Control
                       as="textarea"
-                      value={objUser?.biography}
+                      value={objUser?.biography || user?.biography || ''}
                       onChange={(e: any) => {
                         onChangeUserInfo({ biography: e.target.value });
                       }}
@@ -173,7 +119,7 @@ const Profile = () => {
                     <Form.Label>City</Form.Label>
                     <Form.Control
                       type="text"
-                      value={objUser?.city}
+                      value={objUser?.city || user?.city || ''}
                       onChange={(e: any) => {
                         onChangeUserInfo({ city: e.target.value });
                       }}
@@ -184,7 +130,7 @@ const Profile = () => {
                     <Form.Label>Twitter</Form.Label>
                     <Form.Control
                       type="text"
-                      value={objUser?.twitter}
+                      value={objUser?.twitter || user?.twitter || ''}
                       onChange={(e: any) => {
                         onChangeUserInfo({ twitter: e.target.value });
                       }}
@@ -196,7 +142,7 @@ const Profile = () => {
                     <Form.Label>Instagram</Form.Label>
                     <Form.Control
                       type="text"
-                      value={objUser?.instagram}
+                      value={objUser?.instagram || user?.instagram || ''}
                       onChange={(e: any) => {
                         onChangeUserInfo({ instagram: e.target.value });
                       }}
@@ -209,7 +155,7 @@ const Profile = () => {
                     <Form.Label>Discord</Form.Label>
                     <Form.Control
                       type="text"
-                      value={objUser?.discord}
+                      value={objUser?.discord || user?.discord || ''}
                       onChange={(e: any) => {
                         onChangeUserInfo({ discord: e.target.value });
                       }}
@@ -237,7 +183,7 @@ const Profile = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Current password</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="password"
                     placeholder="Current Password"
                     value={updatePasswordState.currentPassword}
                     onChange={(e: any) => {
@@ -249,7 +195,7 @@ const Profile = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>New Password</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="password"
                     placeholder="Enter Password"
                     value={updatePasswordState.newPassword}
                     onChange={(e: any) => {
@@ -261,12 +207,11 @@ const Profile = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Confirm New Password</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="password"
                     placeholder="Confirm Password"
-                    id="confirm_new_password"
                     value={updatePasswordState.confirmNewPassword}
                     onChange={(e: any) => {
-                      onPasswordStateChange({ ConfirmNewPassword: e.target.value });
+                      onPasswordStateChange({ confirmNewPassword: e.target.value });
                     }}
                   />
                 </Form.Group>

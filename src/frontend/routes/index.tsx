@@ -1,4 +1,5 @@
 // import { useSnackbar } from 'notistack5';
+import AuthGuard from 'frontend/guards/AuthGuard';
 import GuestGuard from 'frontend/guards/GuestGuard';
 import MainLayout from 'frontend/layouts/main';
 import Home from 'frontend/pages/Home/Home';
@@ -46,7 +47,14 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { path: '/', element: <Home /> },
-        { path: '/profile', element: <Profile /> }
+        {
+          path: '/profile',
+          element: (
+            <AuthGuard>
+              <Profile />
+            </AuthGuard>
+          )
+        }
       ]
     }
   ]);

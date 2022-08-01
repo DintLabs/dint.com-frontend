@@ -38,5 +38,6 @@ export type FirebaseContextType = {
   loginWithGoogle: () => Promise<UserCredential>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
-  updateProfile: VoidFunction;
+  updateProfile: (objUser: AuthUser) => Promise<void>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
 };

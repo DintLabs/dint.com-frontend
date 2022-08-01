@@ -109,9 +109,9 @@ const MainNavBar = () => {
                     <div className="profile_hide_mobile">
                       <Dropdown>
                         <Dropdown.Toggle id="dropdown-basic">
-                          <button id="profile_btn" type="button">
+                          <span id="profile_btn">
                             <CgProfile size={35} />
-                          </button>
+                          </span>
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
@@ -165,7 +165,6 @@ const MainNavBar = () => {
                         onClick={() => navigate('/login/')}
                         style={{ background: 'transparent', border: '0', color: 'white' }}
                       >
-                        {' '}
                         <MdOutlineAccountBalanceWallet size={35} />{' '}
                       </button>
                     </li>

@@ -1,15 +1,19 @@
 /* eslint-disable import/no-duplicates */
 import {
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   onIdTokenChanged,
+  reauthenticateWithCredential,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signOut
+  signOut,
+  updatePassword,
+  User
 } from 'firebase/auth';
-import { child, get, ref } from 'firebase/database';
+import { child, get, ref, update } from 'firebase/database';
 import { collection, doc, DocumentData, setDoc } from 'firebase/firestore';
 import { createContext, ReactNode, useEffect, useReducer, useState } from 'react';
 // @types
@@ -120,6 +124,19 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(authInstance, provider);
   };
+  const updateProfile = async (objUser: AuthUser) =>
+    update(ref(databaseInstance, `users/${authInstance?.currentUser?.uid || ''}`), {
+      ...objUser
+    });
+  const changePassword = async (currentPassword: string, newPassword: string) => {
+    const objCurrentUser = authInstance.currentUser;
+    console.log(objCurrentUser);
+    const credential = EmailAuthProvider.credential(objCurrentUser?.email || '', currentPassword);
+
+    await reauthenticateWithCredential(objCurrentUser as User, credential);
+    await signInWithEmailAndPassword(authInstance, objCurrentUser?.uid || '', currentPassword);
+    return updatePassword(objCurrentUser as User, newPassword);
+  };
 
   const register = (
     email: string,
@@ -172,7 +189,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
         loginWithGoogle,
         logout,
         resetPassword,
-        updateProfile: () => {}
+        updateProfile,
+        changePassword
       }}
     >
       {children}

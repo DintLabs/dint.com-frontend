@@ -1,74 +1,24 @@
-import { child, get, getDatabase, ref, set, update } from 'firebase/database';
+import { child, get, getDatabase, ref, set } from 'firebase/database';
 import { authInstance, databaseInstance } from 'frontend/contexts/FirebaseInstance';
+import { fetchAdminEvents, fetchVanues, setAdminSliceChanges } from 'frontend/redux/slices/admin';
+import { dispatch, RootState, useSelector } from 'frontend/redux/store';
 import $ from 'jquery';
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Tab, Table, Tabs } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { Tab, Tabs } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import '../../material/admin.css';
-import polygonlogo from '../../material/polygon_logo.svg';
-import solanalogo from '../../material/solana_logo.svg';
 import mainlogo from '../../material/white.png';
-import { IS_TOKEN, OPTIONS_NETWORK_STAD } from '../../utils';
-import { NETWORKS } from '../../web3/model';
+import { IS_TOKEN } from '../../utils';
 import { fetchTokenDetails } from '../../web3/service';
-
-const DisplaynetworkLogo = (props: { networkName: string }) => {
-  if (props.networkName === 'Polygon') {
-    return (
-      <>
-        <img src={polygonlogo} alt="" height="17px" style={{ marginBottom: '2px' }} />
-      </>
-    );
-  }
-  if (props.networkName === 'Solana') {
-    return (
-      <>
-        <img src={solanalogo} alt="" height="17px" style={{ marginBottom: '2px' }} />
-      </>
-    );
-  }
-  return (
-    <>
-      <p>token</p>
-    </>
-  );
-};
+import AdminEventList from './AdminEventList';
 
 const Admin = () => {
   const navigate = useNavigate();
-  const [eventslist, setEventsData] = useState([]);
-  const [SelectedeventNameFirebase, setSelectedEventNameFirebase] = useState('');
+  const { addEventForm, editEventForm, selectedEventNameForFirebase, tokenName } = useSelector(
+    (rootState: RootState) => rootState.admin
+  );
+
   // const [show, setShow] = useState(false);
-  const [tokenName, setTokenName] = useState('');
-  const [edittokenName, setEditTokenName] = useState('');
-
-  const [addEventForm, setEvent] = useState<any>({
-    network: 1,
-    tokenIcon: ''
-  });
-  const [editEventForm, setEditFormEvent] = useState<any>({
-    network: 1,
-    tokenIcon: ''
-  });
-
-  const onChangeEditForm = (e: { target: { id: string; value: string } }) => {
-    if (e.target.id === 'networkedit') {
-      setEditFormEvent({
-        ...editEventForm,
-        network: parseInt(e.target.value, 10)
-      });
-    } else if (e.target.id === 'token_typeedit') {
-      setEditFormEvent({
-        ...editEventForm,
-        token_type: e.target.value
-      });
-    } else if (e.target.id === 'tokenIconedit') {
-      setEditFormEvent({
-        ...editEventForm,
-        tokenIcon: e.target.value
-      });
-    }
-  };
 
   // React.useEffect(() => { -- nik
   //   if ($('#addressedit').val().length > 0) getpolygontokennameforEdit();
@@ -76,20 +26,32 @@ const Admin = () => {
 
   const onChange = (e: { target: { id: string; value: string } }) => {
     if (e.target.id === 'network') {
-      setEvent({
-        ...addEventForm,
-        network: parseInt(e.target.value, 10)
-      });
+      dispatch(
+        setAdminSliceChanges({
+          addEventForm: {
+            ...addEventForm,
+            network: parseInt(e.target.value, 10)
+          }
+        })
+      );
     } else if (e.target.id === 'token_type') {
-      setEvent({
-        ...addEventForm,
-        token_type: e.target.value
-      });
+      dispatch(
+        setAdminSliceChanges({
+          addEventForm: {
+            ...addEventForm,
+            token_type: e.target.value
+          }
+        })
+      );
     } else if (e.target.id === 'tokenIcon') {
-      setEvent({
-        ...addEventForm,
-        tokenIcon: e.target.value
-      });
+      dispatch(
+        setAdminSliceChanges({
+          addEventForm: {
+            ...addEventForm,
+            tokenIcon: e.target.value
+          }
+        })
+      );
     }
   };
 
@@ -109,86 +71,47 @@ const Admin = () => {
       .then((token_details) => {
         console.log('getpolygontokenname', token_details);
         if (!token_details || !token_details.name) {
-          setTokenName('');
-          setEvent({
-            ...addEventForm,
-            tokenSymbol: '',
-            tokenDecimal: null,
-            tokenIcon: ''
-          });
+          dispatch(
+            setAdminSliceChanges({
+              tokenName: '',
+              addEventForm: {
+                ...addEventForm,
+                tokenSymbol: '',
+                tokenDecimal: null,
+                tokenIcon: ''
+              }
+            })
+          );
         } else {
-          setTokenName(token_details.name);
+          const objChanges: any = {
+            tokenName: token_details.name
+          };
           if (IS_TOKEN(addEventForm.token_type)) {
-            setEvent({
+            objChanges.addEventForm = {
               ...addEventForm,
               tokenSymbol: token_details.symbol,
               tokenDecimal: token_details.decimals,
-              tokenIcon: ''
-            });
-            if (token_details.icon) {
-              setEvent({
-                ...addEventForm,
-                tokenSymbol: token_details.symbol,
-                tokenDecimal: token_details.decimals,
-                tokenIcon: token_details.icon
-              });
-            }
+              tokenIcon: token_details.icon || ''
+            };
           }
+          dispatch(setAdminSliceChanges({ ...objChanges }));
         }
       })
       .catch((error) => {
-        setTokenName('');
-        setEvent({
-          ...addEventForm,
-          tokenSymbol: '',
-          tokenDecimal: '',
-          tokenIcon: ''
-        });
+        dispatch(
+          setAdminSliceChanges({
+            tokenName: '',
+            addEventForm: {
+              ...addEventForm,
+              tokenSymbol: '',
+              tokenDecimal: '',
+              tokenIcon: ''
+            }
+          })
+        );
       });
   };
 
-  const getpolygontokennameforEdit = () => {
-    fetchTokenDetails(editEventForm.network, editEventForm.token_type, $('#addressedit').val())
-      .then((token_details) => {
-        console.log('token_details', token_details);
-        if (!token_details || !token_details.name) {
-          setEditTokenName('');
-          setEditFormEvent({
-            ...editEventForm,
-            tokenSymbol: '',
-            tokenDecimal: null,
-            tokenIcon: ''
-          });
-        } else {
-          setEditTokenName(token_details.name);
-          if (IS_TOKEN(editEventForm.token_type)) {
-            setEditFormEvent({
-              ...editEventForm,
-              tokenSymbol: token_details.symbol,
-              tokenDecimal: token_details.decimals,
-              tokenIcon: ''
-            });
-            if (token_details.icon) {
-              setEditFormEvent({
-                ...editEventForm,
-                tokenSymbol: token_details.symbol,
-                tokenDecimal: token_details.decimals,
-                tokenIcon: token_details.icon
-              });
-            }
-          }
-        }
-      })
-      .catch((error) => {
-        setEditTokenName('');
-        setEditFormEvent({
-          ...editEventForm,
-          tokenSymbol: '',
-          tokenDecimal: '',
-          tokenIcon: ''
-        });
-      });
-  };
   const createEvent = () => {
     console.log('balanceRequired');
     const ename = $('#eventName').val();
@@ -214,8 +137,8 @@ const Admin = () => {
     };
 
     if (IS_TOKEN(tokenType)) {
-      tokenData.tokenSymbol = addEventForm.tokenSymbol;
-      tokenData.tokenDecimal = addEventForm.tokenDecimal;
+      tokenData.tokenSymbol = addEventForm.tokenSymbol || '';
+      tokenData.tokenDecimal = addEventForm.tokenDecimal || '';
       tokenData.tokenIcon = addEventForm.tokenIcon;
     }
     // const
@@ -248,33 +171,13 @@ const Admin = () => {
       set(ref(databaseInstance, `events/${ename}`), eventData)
         .then(() => {
           alert('Event Saved Success');
-          getEvents();
+          // getEvents();
         })
         .catch((e) => {
           console.error(e);
           alert('Error in event Save');
         });
     } else alert('please fill all fields');
-  };
-
-  const getEvents = () => {
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, `events/`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const events = Object.keys(snapshot.val());
-          const dataarray: any = [];
-          for (let i = 0; i < events.length; i++) {
-            dataarray.push(snapshot.val()[events[i]]);
-          }
-          setEventsData(dataarray);
-        } else {
-          console.log('No data available');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   };
 
   const createVanue = () => {
@@ -343,87 +246,6 @@ const Admin = () => {
       });
   };
 
-  const editEventShow = (data: any) => {
-    $('#event_edit_div').css('display', 'block');
-    $('#eventNameedit').val(data.eventName);
-    setEditTokenName(data.tokenName);
-    setSelectedEventNameFirebase(data.eventName);
-    $('#vanueDropdownedit').val(data.venueName);
-    $('#eventdescriptionedit').val(data.eventDescription);
-    $('#eventDateedit').val(data.eventDate);
-    $('#startTimeedit').val(data.eventStartTime);
-    $('#endTimeedit').val(data.eventEndTime);
-    $('#networkedit').val(data.network);
-    $('#token_typeedit').val(data.tokenType);
-
-    $('#addressedit').val(data.tokenaddress);
-    $('#EventFrequencyedit').val(data.EventFrequency);
-    $('#balanceRequirededit').val(data.balanceRequired);
-
-    setEditFormEvent({
-      ...editEventForm,
-      network: parseInt(data.network, 10),
-      token_type: data.tokenType,
-      tokenIcon: data.tokenIcon
-    });
-
-    // setShow(true);
-  };
-
-  const eventEdit = () => {
-    const updatedename = $('#eventNameedit').val();
-    const updatedvanue = $('#vanueDropdownedit').val();
-    const updatededesc = $('#eventdescriptionedit').val();
-    const updatededate = $('#eventDateedit').val();
-    const updatedstarttime = $('#startTimeedit').val();
-    const updatedendtime = $('#endTimeedit').val();
-    const updatenetwork = $('#networkedit').val();
-    const updateaddress = $('#addressedit').val();
-    const updatebalancerequired = $('#balanceRequirededit').val();
-    const updateEventFrequency = $('#EventFrequencyedit').val();
-
-    const tokenName = $('#tokennameedit').val();
-    const tokenType = $('#token_typeedit').val() as string;
-
-    const tokenData = {
-      tokenName,
-      tokenType,
-      tokenSymbol: '',
-      tokenDecimal: '',
-      tokenIcon: ''
-    };
-
-    if (IS_TOKEN(tokenType)) {
-      tokenData.tokenSymbol = editEventForm.tokenSymbol;
-      tokenData.tokenDecimal = editEventForm.tokenDecimal;
-      tokenData.tokenIcon = editEventForm.tokenIcon;
-    }
-
-    console.log('update', tokenData);
-    update(ref(databaseInstance, `events/${SelectedeventNameFirebase}`), {
-      eventName: updatedename,
-      venueName: updatedvanue,
-      eventDescription: updatededesc,
-      eventDate: updatededate,
-      eventStartTime: updatedstarttime,
-      eventEndTime: updatedendtime,
-      network: updatenetwork,
-      tokenaddress: updateaddress,
-      balanceRequired: updatebalancerequired,
-      EventFrequency: updateEventFrequency,
-
-      ...tokenData
-    })
-      .then(() => {
-        alert('update success');
-        getEvents();
-        closeEventEdit();
-      })
-      .catch((error) => {
-        alert(`error in update${error}`);
-      });
-  };
-
   const closeEventEdit = () => {
     $('#event_edit_div').css('display', 'none');
   };
@@ -440,17 +262,13 @@ const Admin = () => {
       });
   };
 
-  const geteditTokenName = async () => {
-    getpolygontokennameforEdit();
-  };
-
   const adminLogoClicked = () => {
     navigate('/');
   };
 
   useEffect(() => {
-    getEvents();
-    getVanues();
+    dispatch(fetchAdminEvents());
+    dispatch(fetchVanues());
   }, []);
 
   return (
@@ -483,448 +301,7 @@ const Admin = () => {
 
           <Tabs defaultActiveKey="eventshow" id="uncontrolled-tab-example" className="mb-3">
             <Tab eventKey="eventshow" title="Event List">
-              <div className="wallet_info_div">
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th> Name</th>
-                      <th> Venue</th>
-                      <th> Description</th>
-                      <th> Date</th>
-                      <th> Start Time </th>
-                      <th> End Time</th>
-                      <th> Created At</th>
-                      <th> Balance Required</th>
-                      <th> Image</th>
-                      <th> Edit </th>
-                    </tr>
-                  </thead>
-                  <tbody id="eventtable_body">
-                    {eventslist.map((data: any, index: number) => (
-                      <>
-                        <tr key={index}>
-                          <td>{index + 1}</td>
-                          <td> {data.eventName}</td>
-                          <td> {data.venueName}</td>
-                          <td> {data.eventDescription}</td>
-                          <td> {data.eventDate}</td>
-                          <td> {data.eventStartTime}</td>
-                          <td> {data.eventEndTime}</td>
-                          <td> {data.eventdateCreated}</td>
-                          <td>
-                            {data.balanceRequired}&nbsp;{data.tokenName}{' '}
-                            <DisplaynetworkLogo networkName={data.network} />
-                          </td>
-                          <td>
-                            <img
-                              src={data.eventPhoto}
-                              style={{ height: '80px', width: '80px' }}
-                              alt="eventPhoto"
-                            />
-                          </td>
-                          <td>
-                            <Button variant="primary" onClick={() => editEventShow(data)}>
-                              Edit
-                            </Button>
-                          </td>
-                        </tr>
-                      </>
-                    ))}
-                  </tbody>
-                </Table>
-
-                {/* Edit Event Page */}
-                <div style={{ display: 'none', marginTop: '50px' }} id="event_edit_div">
-                  <Button variant="danger" onClick={closeEventEdit} className="mb-3">
-                    Close
-                  </Button>
-                  <div>
-                    <>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Event Name</Form.Label>
-                        <Form.Control
-                          type="text"
-                          id="eventNameedit"
-                          placeholder="Event Name Here"
-                        />
-                      </Form.Group>
-
-                      <Form.Label>Select Venue</Form.Label>
-                      <Form.Select
-                        className="mb-3"
-                        aria-label="Default select example"
-                        id="vanueDropdownedit"
-                      />
-
-                      <Form.Group className="mb-3">
-                        <Form.Label>Event Description</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          id="eventdescriptionedit"
-                          placeholder="Description"
-                          rows={3}
-                        />
-                      </Form.Group>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Event Date</Form.Label>
-                        <Form.Control id="eventDateedit" type="date" />
-                      </Form.Group>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Start Time</Form.Label>
-                        <Form.Control type="time" id="startTimeedit" />
-                      </Form.Group>
-                      <Form.Group className="mb-3">
-                        <Form.Label>End Time</Form.Label>
-                        <Form.Control type="time" id="endTimeedit" />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3">
-                        <Form.Label>Event Frequency</Form.Label>
-                        <Form.Select
-                          className="mb-3"
-                          aria-label="Default select example"
-                          id="EventFrequencyedit"
-                        >
-                          <option>Once</option>
-                          <option>Year</option>
-                          <option>Monthly</option>
-                          <option>Weekly</option>
-                          <option>Quarterly</option>
-                        </Form.Select>
-                      </Form.Group>
-
-                      <h4>Settings</h4>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Network</Form.Label>
-                        <Form.Select
-                          className="mb-3"
-                          aria-label="Default select example"
-                          id="networkedit"
-                          onChange={onChangeEditForm}
-                          // value={editEventForm.network}
-                        >
-                          {/* <option>Solana</option> */}
-                          {Object.entries(NETWORKS).map((item, index) => (
-                            <option value={item[0]} key={index}>
-                              {item[1].name}
-                            </option>
-                          ))}
-                        </Form.Select>
-                      </Form.Group>
-                      <Form.Group className="mb-3">
-                        <Form.Label>Type</Form.Label>
-                        <Form.Select
-                          className="mb-3"
-                          aria-label="Default select example"
-                          id="token_typeedit"
-                          onChange={onChangeEditForm}
-                          value={editEventForm.token_type}
-                        >
-                          <option value="">Select Type</option>
-                          {editEventForm &&
-                            editEventForm.network &&
-                            Object.entries(OPTIONS_NETWORK_STAD).map((item, index) => {
-                              if (item[1].networks.includes(editEventForm.network)) {
-                                return (
-                                  <option value={item[0]} key={index}>
-                                    {item[1].name}
-                                  </option>
-                                );
-                              }
-                              return null;
-                            })}
-                        </Form.Select>
-                      </Form.Group>
-
-                      <Form.Group className="mb-3">
-                        <Form.Label>Token Address</Form.Label>
-                        <Form.Control type="text" id="addressedit" onChange={geteditTokenName} />
-                      </Form.Group>
-
-                      <Form.Group className="mb-3">
-                        <Form.Label>Token Name</Form.Label>
-                        <Form.Control
-                          type="text"
-                          value={edittokenName}
-                          id="tokennameedit"
-                          disabled={edittokenName.length > 0}
-                        />
-                      </Form.Group>
-                      {console.log('editEventForm ', editEventForm)}
-
-                      {IS_TOKEN(editEventForm.token_type) && (
-                        <>
-                          <Form.Group className="mb-3">
-                            <Form.Label>Token Symbol</Form.Label>
-                            <Form.Control
-                              type="text"
-                              disabled={IS_TOKEN(editEventForm.token_type)}
-                              id="tokenSymboledit"
-                              value={editEventForm.tokenSymbol}
-                            />
-                          </Form.Group>
-
-                          <Form.Group className="mb-3">
-                            <Form.Label>Token Decimal</Form.Label>
-                            <Form.Control
-                              type="number"
-                              disabled={IS_TOKEN(editEventForm.token_type)}
-                              id="tokenDecimaledit"
-                              value={editEventForm.tokenDecimal}
-                            />
-                          </Form.Group>
-                          <Form.Group className="mb-3">
-                            <Form.Label>Token Icon</Form.Label>
-
-                            <div className="d-flex text-center">
-                              <img
-                                src={editEventForm.tokenIcon}
-                                alt={editEventForm.tokenSymbol}
-                                className="tokenIcon m-2"
-                                onError={({ currentTarget }) => {
-                                  currentTarget.onerror = null; // prevents looping
-                                  currentTarget.src = '/images/logo.png';
-                                }}
-                              />
-                              <Form.Control
-                                onChange={onChangeEditForm}
-                                type="text"
-                                id="tokenIconedit"
-                                value={editEventForm.tokenIcon}
-                                className="ml-2"
-                              />
-                            </div>
-                          </Form.Group>
-                        </>
-                      )}
-                      <Form.Group className="mb-3">
-                        <Form.Label>Balance Required</Form.Label>
-                        <Form.Control type="number" min={1} id="balanceRequirededit" />
-                      </Form.Group>
-
-                      <Button variant="primary" onClick={eventEdit}>
-                        Update event
-                      </Button>
-                    </>
-                  </div>
-                </div>
-              </div>
-            </Tab>
-
-            <Tab eventKey="eventadd" title="Add Events">
-              <h1>Add Event</h1>
-              <Form.Group className="mb-3">
-                <Form.Label>Event Name</Form.Label>
-                <Form.Control type="text" id="eventName" placeholder="Event Name Here" />
-              </Form.Group>
-
-              <Form.Label>Select Venue</Form.Label>
-              <Form.Select
-                className="mb-3"
-                aria-label="Default select example"
-                id="vanueDropdown"
-              />
-
-              <Form.Group className="mb-3">
-                <Form.Label>Event Description</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  id="eventdescription"
-                  placeholder="Description"
-                  rows={3}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Event Date</Form.Label>
-                <Form.Control id="eventDate" type="date" />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Start Time</Form.Label>
-                <Form.Control type="time" id="startTime" />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>End Time</Form.Label>
-                <Form.Control type="time" id="endTime" />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Event Frequency</Form.Label>
-                <Form.Select
-                  className="mb-3"
-                  aria-label="Default select example"
-                  id="EventFrequency"
-                >
-                  <option>Once</option>
-                  <option>Year</option>
-                  <option>Monthly</option>
-                  <option>Weekly</option>
-                  <option>Quarterly</option>
-                </Form.Select>
-              </Form.Group>
-
-              <br />
-              <h4>Settings</h4>
-              {/* settings */}
-              <Form.Group className="mb-3">
-                <Form.Label>Network</Form.Label>
-                <Form.Select
-                  className="mb-3"
-                  aria-label="Default select example"
-                  id="network"
-                  onChange={onChange}
-                >
-                  {Object.entries(NETWORKS).map((item, index) => (
-                    <option value={item[0]} key={index}>
-                      {item[1].name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-
-              {/* settings */}
-              <Form.Group className="mb-3">
-                <Form.Label>Type</Form.Label>
-                <Form.Select
-                  className="mb-3"
-                  aria-label="Default select example"
-                  id="token_type"
-                  onChange={onChange}
-                >
-                  <option value="" selected>
-                    Select Type
-                  </option>
-                  {addEventForm &&
-                    addEventForm.network &&
-                    Object.entries(OPTIONS_NETWORK_STAD).map((item, index) => {
-                      if (item[1].networks.includes(addEventForm.network)) {
-                        return (
-                          <option value={item[0]} key={index}>
-                            {item[1].name}
-                          </option>
-                        );
-                      }
-                      return null;
-                    })}
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Token Address</Form.Label>
-                <Form.Control type="text" id="address" onChange={getpolygontokenname} />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Token Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  disabled={tokenName.length > 0}
-                  value={tokenName}
-                  id="tokenname"
-                  onChange={(e: any) => {
-                    setTokenName(e.target.value);
-                  }}
-                />
-              </Form.Group>
-
-              {IS_TOKEN(addEventForm.token_type) && (
-                <>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Token Symbol</Form.Label>
-                    <Form.Control
-                      type="text"
-                      disabled={IS_TOKEN(addEventForm.token_type)}
-                      id="tokenSymbol"
-                      value={addEventForm.tokenSymbol}
-                    />
-                  </Form.Group>
-
-                  <Form.Group className="mb-3">
-                    <Form.Label>Token Decimal</Form.Label>
-                    <Form.Control
-                      type="number"
-                      disabled={IS_TOKEN(addEventForm.token_type)}
-                      id="tokenDecimal"
-                      value={addEventForm.tokenDecimal}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Token Icon</Form.Label>
-
-                    <div className="d-flex text-center">
-                      <img
-                        src={addEventForm.tokenIcon}
-                        alt={addEventForm.tokenSymbol}
-                        className="tokenIcon m-2"
-                        onError={({ currentTarget }) => {
-                          currentTarget.onerror = null; // prevents looping
-                          currentTarget.src = '/images/logo.png';
-                        }}
-                      />
-                      <Form.Control
-                        value={addEventForm.tokenIcon}
-                        type="text"
-                        id="tokenIcon"
-                        onChange={onChange}
-                        className="ml-2"
-                      />
-                    </div>
-                  </Form.Group>
-                </>
-              )}
-              <Form.Group className="mb-3">
-                <Form.Label>Balance Required</Form.Label>
-                <Form.Control
-                  disabled={!IS_TOKEN(addEventForm.token_type)}
-                  type="number"
-                  min={1}
-                  id="balanceRequired"
-                  defaultValue={1}
-                />
-              </Form.Group>
-
-              <Button variant="primary" onClick={createEvent}>
-                Submit
-              </Button>
-            </Tab>
-
-            <Tab eventKey="vanueadd" title="Add Venue">
-              <h1>Add Venue</h1>
-              <Form.Group className="mb-3">
-                <Form.Label>Venue Name</Form.Label>
-                <Form.Control type="text" id="addvenuename" placeholder="Venue Name Here" />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Address</Form.Label>
-                <Form.Control type="text" id="addvanueAddress" placeholder="Address Here" />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Address Link (Optional)</Form.Label>
-                <Form.Control
-                  type="text"
-                  id="addvanueGmap"
-                  placeholder="Add Google map Link Here"
-                />
-              </Form.Group>
-
-              <Button variant="primary" onClick={createVanue}>
-                Submit
-              </Button>
-            </Tab>
-
-            <Tab eventKey="vanueshow" title="Venue List">
-              <h1>Show Venue</h1>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th> Venue Name</th>
-                    <th> Venue Address</th>
-                    <th> Google Map</th>
-                  </tr>
-                </thead>
-                <tbody id="vanuetable_body" />
-              </Table>
+              <AdminEventList />
             </Tab>
           </Tabs>
         </div>

@@ -18,3 +18,10 @@ export interface IEvent {
   tokenaddress: string;
   venueName: string;
 }
+
+export interface IVanue {
+  venueName: string;
+  venueAddress: string;
+  venueGmap: string;
+  venuedateCreated: string;
+}

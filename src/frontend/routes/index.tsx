@@ -1,8 +1,10 @@
 // import { useSnackbar } from 'notistack5';
+import AdminAuthGuard from 'frontend/guards/AdminAuthGuard';
 import AuthGuard from 'frontend/guards/AuthGuard';
 import GuestGuard from 'frontend/guards/GuestGuard';
 import MainLayout from 'frontend/layouts/main';
 import MarketPlaceLayout from 'frontend/layouts/marketPlace';
+import Admin from 'frontend/pages/Admin/Admin';
 import Events from 'frontend/pages/Events/Events';
 import Home from 'frontend/pages/Home/Home';
 import Login from 'frontend/pages/Login/Login';
@@ -70,6 +72,14 @@ export default function Router() {
     {
       path: '/marketplace',
       element: <MarketPlaceLayout />
+    },
+    {
+      path: '/admin',
+      element: (
+        <AdminAuthGuard>
+          <Admin />
+        </AdminAuthGuard>
+      )
     }
   ]);
 }

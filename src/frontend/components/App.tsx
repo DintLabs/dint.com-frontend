@@ -1,10 +1,7 @@
 import { store } from 'frontend/redux/store';
 import Router from 'frontend/routes';
-// import { SnackbarProvider } from 'notistack5';
-import { useState } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from '../pages/Home/Home';
+import { BrowserRouter } from 'react-router-dom';
 // import AdminProtaction from './AdminProtaction';
 import './App.css';
 // import EventForAll from './EventForAll.js';
@@ -47,12 +44,6 @@ function App() {
       <BrowserRouter>
         {/* <SnackbarProvider> */}
         <Router />
-        {/* <Routes>
-          <Route
-            path="/*"
-            element={<Home logout={setLoginfalse} isAdmin={isadmin} islogin={loggedin} />}
-          />
-        </Routes> */}
         {/* </SnackbarProvider> */}
       </BrowserRouter>
     </ReduxProvider>
@@ -68,31 +59,6 @@ export default App;
 //   path="/marketplace/*"
 //   element={
 //     <Routes_Marketplace logout={setLoginfalse} isAdmin={isadmin} islogin={loggedin} />
-//   }
-// />
-
-// <Route
-//   path="/events"
-//   element={
-//     <Protected
-//       cmp={Events}
-//       logout={setLoginfalse}
-//       isAdmin={isadmin}
-//       islogin={loggedin}
-//     />
-//   }
-// />
-
-// <Route
-//   path="/profile"
-//   element={
-//     <Protected
-//       cmp={Profile}
-//       pagename="profile"
-//       logout={setLoginfalse}
-//       isAdmin={isadmin}
-//       islogin={loggedin}
-//     />
 //   }
 // />
 

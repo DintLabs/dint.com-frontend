@@ -9,7 +9,6 @@ import NFTAddress from '../contractsData/NFT-address.json';
 import NFTAbi from '../contractsData/NFT.json';
 import './App.css';
 import Create from './Create.jsx';
-import Footer from './Footer';
 import Marketplace from './Marketplace.jsx';
 import Navigation from './MarketplaceNavbar';
 import MyListedItems from './MyListedItems.jsx';
@@ -124,8 +123,6 @@ function Marketplace_app() {
             </Routes>
           )}
         </div>
-
-        <Footer />
       </div>
     </>
   );

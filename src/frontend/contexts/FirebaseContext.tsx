@@ -157,6 +157,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     await signOut(authInstance);
+    window.location.reload();
   };
 
   const resetPassword = async (email: string) => {

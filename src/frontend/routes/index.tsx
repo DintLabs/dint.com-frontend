@@ -2,6 +2,7 @@
 import AuthGuard from 'frontend/guards/AuthGuard';
 import GuestGuard from 'frontend/guards/GuestGuard';
 import MainLayout from 'frontend/layouts/main';
+import MarketPlaceLayout from 'frontend/layouts/marketPlace';
 import Events from 'frontend/pages/Events/Events';
 import Home from 'frontend/pages/Home/Home';
 import Login from 'frontend/pages/Login/Login';
@@ -39,8 +40,6 @@ export default function Router() {
             </GuestGuard>
           )
         }
-        // { path: 'reset-password', element: <ResetPassword /> },
-        // { path: 'verify', element: <VerifyCode /> }
       ]
     },
 
@@ -67,6 +66,10 @@ export default function Router() {
           )
         }
       ]
+    },
+    {
+      path: '/marketplace',
+      element: <MarketPlaceLayout />
     }
   ]);
 }

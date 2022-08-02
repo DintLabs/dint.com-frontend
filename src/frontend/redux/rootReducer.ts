@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import storage from 'redux-persist/lib/storage';
 import eventReducer from './slices/event';
 import userProfileReducer from './slices/userProfile';
+import marketplaceReducer from './slices/marketplace';
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +15,8 @@ const rootPersistConfig = {
 
 const rootReducer = combineReducers({
   event: eventReducer,
-  userProfile: userProfileReducer
+  userProfile: userProfileReducer,
+  marketplace: marketplaceReducer
 });
 
 export { rootPersistConfig, rootReducer };

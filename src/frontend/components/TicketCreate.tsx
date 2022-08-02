@@ -4,12 +4,10 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../material/tickets.css';
 // import { db } from './Firebase';
-import NavbarHome from './NavbarHome';
-
 const TicketCreate = (props: {
   // islogin: any; -- nik
-  logout: any;
-  isAdmin: any;
+  // logout: any;
+  // isAdmin: any;
   // setaddress: any; -- nik
   // setchain: any; -- nik
 }) => {
@@ -55,13 +53,13 @@ const TicketCreate = (props: {
 
   return (
     <>
-      <NavbarHome
+      {/* <NavbarHome
       // isloggedin={props.islogin} -- nik
       // logout={props.logout}
       // isadmin={props.isAdmin}
       // setaddress={props.setaddress} -- nik
       // setchain={props.setchain} -- nik
-      />
+      /> */}
       <div style={{ textAlign: 'center' }}>
         {' '}
         <div id="ticket_parent_div">

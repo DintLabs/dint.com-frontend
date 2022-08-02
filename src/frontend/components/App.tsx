@@ -61,28 +61,7 @@ function App() {
 
 export default App;
 
-// <Route path="/signup" element={<Signup />} />
-
 // <Route path="/buytoken" element={<h1>Buy Ticket</h1>} />
-
-// <Route
-//   path="/event"
-//   element={<EventForAll logout={setLoginfalse} isAdmin={isadmin} islogin={loggedin} />}
-// />
-
-// {/* Login Page Route */}
-// <Route
-//   path="/login/*"
-//   element={
-//     <Login
-//       islogin={loggedin}
-//       loginStateChange={setLogintrue}
-//       logout={setLoginfalse}
-//       isadmin={setAdmin}
-//       setemail={setEmail}
-//     />
-//   }
-// />
 
 // {/* if You Want to Make Any Page Password Protacted with Login Then Do Routing Like This */}
 // <Route

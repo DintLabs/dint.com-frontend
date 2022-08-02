@@ -1,3 +1,4 @@
+// import Login from 'frontend/pages/Login/Login';
 import { ReactNode, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -29,7 +30,12 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       cancelButtonText: 'Home'
     }).then((result: any) => {
       if (result.isConfirmed) {
-        navigate(`/auth/login${pathname}`);
+        navigate(`/auth/login`, {
+          state: {
+            redirectUrl: pathname
+          }
+        });
+        // return <Login />;
       } else {
         navigate('/', { replace: true });
       }
@@ -38,7 +44,6 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     if (pathname !== requestedLocation) {
       setRequestedLocation(pathname);
     }
-    // return <Login />;
   }
 
   if (requestedLocation && pathname !== requestedLocation) {

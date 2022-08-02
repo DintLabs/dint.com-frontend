@@ -123,7 +123,6 @@ const EventForAll = (props: { logout: () => void; isAdmin: any }) => {
                       <br />
 
                       <Link to="/login/events">
-                        {' '}
                         <Button>Get Tickets</Button>{' '}
                       </Link>
                     </Card.Body>

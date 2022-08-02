@@ -96,7 +96,7 @@ const MainNavBar = () => {
                   </li>
                 ) : (
                   <li className="no_effect_li">
-                    <Link id="no_effect" to="/event" state={{ from: 'events' }}>
+                    <Link id="no_effect" to="/public/events" state={{ from: 'events' }}>
                       Events
                     </Link>
                   </li>

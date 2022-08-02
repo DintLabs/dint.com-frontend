@@ -17,13 +17,14 @@ import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
 
 const Login = (props: any) => {
   const { login } = useAuth();
-  const previousPage = window.location.pathname.split('/');
-  console.log(previousPage);
+  const location: Location = useLocation();
+  const { redirectUrl }: any = location.state;
+
   const navigate = useNavigate();
 
   const [error_msg_login, setLoginErr] = useState('');
@@ -35,8 +36,11 @@ const Login = (props: any) => {
     try {
       await setPersistence(authInstance, browserSessionPersistence);
       await login(login_email, login_password);
-
-      navigate('/');
+      if (redirectUrl) {
+        navigate(redirectUrl);
+      } else {
+        navigate('/');
+      }
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         console.log(`User is Not Found`);
@@ -89,7 +93,7 @@ const Login = (props: any) => {
               // This gives you a Google Access Token. You can use it to access Google APIs.
               // const credential = GoogleAuthProvider.credentialFromResult(result);
               // const token = credential.accessToken;
-              navigate(`/${previousPage[2]}`);
+              navigate(redirectUrl);
               // The signed-in user info.
               // const { user } = result;
             })
@@ -119,7 +123,7 @@ const Login = (props: any) => {
           props.setemail(user.email);
           // sessionStorage.setItem('logged', true);
           // sessionStorage.setItem('user_email', user.email);
-          navigate(`/${previousPage[2]}`);
+          navigate(redirectUrl);
         })
         .catch((error) => {
           // Handle Errors here.
@@ -191,7 +195,7 @@ const Login = (props: any) => {
   useEffect(() => {
     onAuthStateChanged(authInstance, (user) => {
       if (user) {
-        navigate(`/${previousPage[2]}`);
+        navigate(redirectUrl);
       } else {
         console.log('user is not loggedin');
       }

@@ -5,7 +5,6 @@ import { IEvent } from 'frontend/types/event';
 type IEventState = {
   isLoading: boolean;
   lstEvent: IEvent[];
-  selectedEvent?: IEvent;
   error: any;
 };
 
@@ -53,11 +52,5 @@ export function fetchEvents() {
       console.log(error);
       dispatch(slice.actions.hasError(error));
     }
-  };
-}
-
-export function onSelectEvent(objEvent: IEvent) {
-  return async (dispatch: any) => {
-    dispatch(slice.actions.setSliceChanges({ selectedEvent: objEvent }));
   };
 }

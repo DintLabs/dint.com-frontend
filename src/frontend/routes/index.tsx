@@ -6,6 +6,7 @@ import Events from 'frontend/pages/Events/Events';
 import Home from 'frontend/pages/Home/Home';
 import Login from 'frontend/pages/Login/Login';
 import Profile from 'frontend/pages/Profile/Profile';
+import PublicEvents from 'frontend/pages/PublicEvents/PublicEvents';
 import Register from 'frontend/pages/Register/Register';
 import { useNavigate, useRoutes } from 'react-router-dom';
 
@@ -48,7 +49,15 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         { path: '/', element: <Home /> },
-        { path: '/events', element: <Events /> },
+        { path: '/public/events', element: <PublicEvents /> },
+        {
+          path: '/events',
+          element: (
+            <AuthGuard>
+              <Events />
+            </AuthGuard>
+          )
+        },
         {
           path: '/profile',
           element: (

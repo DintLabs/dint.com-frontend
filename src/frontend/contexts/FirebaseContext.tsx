@@ -54,10 +54,11 @@ type FirebaseActions = ActionMap<FirebaseAuthPayload>[keyof ActionMap<FirebaseAu
 
 const reducer = (state: AuthState, action: FirebaseActions) => {
   if (action.type === 'INITIALISE') {
-    const { isAuthenticated, user } = action.payload;
+    const { isAuthenticated, user, isAdmin } = action.payload;
     return {
       ...state,
       isAuthenticated,
+      isAdmin,
       isInitialized: true,
       user
     };
@@ -75,6 +76,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(
     () =>
       onAuthStateChanged(authInstance, async (user) => {
+        // console.log(user, 'redirectUrl');
         if (user) {
           const idToken = await user.getIdToken();
           localStorage.setItem('firebaseToken', idToken);
@@ -97,6 +99,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
               console.error(error);
             });
 
+          // console.log(snapshot.val(), snapshot.val() === 'admin');
           dispatch({
             type: Types.Initial,
             payload: {
@@ -107,6 +110,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
             }
           });
         } else {
+          // console.log('Else');
           localStorage.removeItem('firebaseToken');
           dispatch({
             type: Types.Initial,

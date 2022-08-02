@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // import useAuth from 'frontend/hooks/useAuth';
+import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -10,8 +11,8 @@ import '../../material/homepage.css';
 import { isIPhone, isMetamask } from '../../utils';
 
 const Home = () => {
-  // const { user } = useAuth();
-  // console.log(user);
+  const { user } = useAuth();
+  console.log(user);
   // const navigate = useNavigate();
   const back_to_top = $('#back_to_top');
 

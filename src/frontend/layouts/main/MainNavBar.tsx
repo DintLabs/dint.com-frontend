@@ -140,7 +140,7 @@ const MainNavBar = () => {
 
                     <div className="profile_hide_pc">
                       <li className="no_effect_li">
-                        <Link id="no_effect" to="/login/ " onClick={onLogout}>
+                        <Link id="no_effect" to="/auth/login/" onClick={onLogout}>
                           Logout
                         </Link>
                       </li>
@@ -162,7 +162,7 @@ const MainNavBar = () => {
                     <li className="no_effect_li">
                       <button
                         type="button"
-                        onClick={() => navigate('/login/')}
+                        onClick={() => navigate('/auth/login')}
                         style={{ background: 'transparent', border: '0', color: 'white' }}
                       >
                         <MdOutlineAccountBalanceWallet size={35} />{' '}

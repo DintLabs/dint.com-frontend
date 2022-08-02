@@ -25,7 +25,7 @@ export default function AdminAuthGuard({ children }: AdminAuthGuardProps) {
   const { pathname } = useLocation();
   const [requestedLocation, setRequestedLocation] = useState<string | null>(null);
   const navigate = useNavigate();
-  console.log(pathname);
+  console.log(!isAuthenticated, isInitialized, '----------', isAdmin);
 
   if (!isAuthenticated && isInitialized) {
     if (pathname !== requestedLocation) {

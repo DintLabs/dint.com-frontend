@@ -23,8 +23,8 @@ import '../../material/signup.css';
 const Login = (props: any) => {
   const { login } = useAuth();
   const location: Location = useLocation();
-  const { redirectUrl }: any = location.state;
-
+  const { redirectUrl }: any = location.state ? location.state : {};
+  console.log(redirectUrl);
   const navigate = useNavigate();
 
   const [error_msg_login, setLoginErr] = useState('');
@@ -200,7 +200,7 @@ const Login = (props: any) => {
         console.log('user is not loggedin');
       }
     });
-  });
+  }, []);
 
   return (
     <>

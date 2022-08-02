@@ -53,10 +53,10 @@ const Register = () => {
                   console.log(e);
                 });
             }
-            navigate('/login/ ');
+            navigate('/auth/login');
           })
           .catch((error) => {
-            const errorCode = error.code;
+            // const errorCode = error.code;
 
             switch (error.code) {
               case 'auth/email-already-in-use':

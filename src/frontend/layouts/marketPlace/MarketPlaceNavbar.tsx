@@ -71,7 +71,7 @@ const MarketPlaceNavbar = () => {
               <>
                 <div>
                   {' '}
-                  <Link id="no_effect" to="/login/marketplace">
+                  <Link id="no_effect" to="/auth/login" state={{ redirectUrl: '/marketplace' }}>
                     login
                   </Link>
                 </div>

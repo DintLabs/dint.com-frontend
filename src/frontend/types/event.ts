@@ -19,7 +19,7 @@ export interface IEvent {
   venueName: string;
 }
 
-export interface IVanue {
+export interface IVenue {
   venueName: string;
   venueAddress: string;
   venueGmap: string;

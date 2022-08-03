@@ -1,53 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { child, get, getDatabase, ref, update } from 'firebase/database';
+import { child, get, getDatabase, ref, set, update } from 'firebase/database';
 import { databaseInstance } from 'frontend/contexts/FirebaseInstance';
-import { IEvent, IVanue } from 'frontend/types/event';
+import { IEvent, IVenue } from 'frontend/types/event';
 import { dispatch } from '../store';
 
 type IAdminState = {
   isLoading: boolean;
   isVenueLoading: boolean;
   lstEvent: IEvent[];
-  lstVanue: IVanue[];
-  tokenName: string;
-  selectedEventNameForFirebase: string;
+  lstVanue: IVenue[];
   error: any;
-  addEventForm: {
-    network: number;
-    tokenIcon: string;
-    tokenSymbol: string;
-    tokenDecimal: string;
-    token_type: string;
-  };
-  editEventForm: {
-    network: number;
-    tokenIcon: string;
-    token_type: string;
-    tokenSymbol: string;
-    tokenDecimal: string;
-  };
 };
 
 const initialState: IAdminState = {
   isLoading: false,
   isVenueLoading: false,
-  addEventForm: {
-    network: 1,
-    tokenIcon: '',
-    tokenDecimal: '',
-    tokenSymbol: '',
-    token_type: ''
-  },
-  editEventForm: {
-    network: 1,
-    tokenIcon: '',
-    token_type: '',
-    tokenDecimal: '',
-    tokenSymbol: ''
-  },
-
-  tokenName: '',
-  selectedEventNameForFirebase: '',
   lstEvent: [],
   lstVanue: [],
   error: false
@@ -62,6 +29,10 @@ const slice = createSlice({
     },
     startVanueLoading(state) {
       state.isVenueLoading = true;
+    },
+    stopLoading(state) {
+      state.isLoading = false;
+      state.isVenueLoading = false;
     },
     hasError(state, action) {
       state.isLoading = false;
@@ -131,6 +102,28 @@ export async function updateAdminEvent(IO: IEvent) {
   } catch (error) {
     console.log(error);
     alert(`error in update${error}`);
+    dispatch(slice.actions.hasError(error));
+  }
+}
+
+export async function crateEvent(IO: IEvent) {
+  try {
+    dispatch(slice.actions.startLoading());
+    await set(ref(databaseInstance, `events/${IO.eventName}`), { ...IO });
+  } catch (error) {
+    console.log(error);
+    alert(`error in event save ${error}`);
+    dispatch(slice.actions.hasError(error));
+  }
+}
+
+export async function createVenue(IO: IVenue) {
+  try {
+    dispatch(slice.actions.startVanueLoading());
+    await set(ref(databaseInstance, `venues/${IO.venueName}`), IO);
+  } catch (error) {
+    console.log(error);
+    alert('Error in Vanue Save');
     dispatch(slice.actions.hasError(error));
   }
 }

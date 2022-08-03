@@ -19,7 +19,7 @@ const EditEvent = ({
   onComplete: () => void;
 }) => {
   const [objEvent, setObjEvent] = useState<IEvent>(selectedEvent);
-  const { editEventForm, lstVanue } = useSelector((rootState: RootState) => rootState.admin);
+  const { lstVanue } = useSelector((rootState: RootState) => rootState.admin);
 
   const eventEdit = async () => {
     const {
@@ -270,10 +270,10 @@ const EditEvent = ({
                     value={objEvent.tokenType}
                   >
                     <option value="">Select Type</option>
-                    {editEventForm &&
-                      editEventForm.network &&
+                    {objEvent &&
+                      objEvent.network &&
                       Object.entries(OPTIONS_NETWORK_STAD).map((item, index) => {
-                        if (item[1].networks.includes(editEventForm.network)) {
+                        if (item[1].networks.includes(objEvent.network)) {
                           return (
                             <option value={item[0]} key={index}>
                               {item[1].name}

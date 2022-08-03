@@ -78,6 +78,7 @@ export function checkConnectionForMarketPlace() {
 }
 
 function handleAccountsChanged(accounts: any) {
+  console.log(accounts);
   dispatch(slice.actions.setSliceChanges({ account: accounts[0] }));
   if (accounts.length !== 0) {
     winEthereum.on('accountsChanged', async (resAccounts: any) => {

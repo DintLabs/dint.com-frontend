@@ -8,6 +8,7 @@ import Admin from 'frontend/pages/Admin/Admin';
 import Events from 'frontend/pages/Events/Events';
 import Home from 'frontend/pages/Home/Home';
 import Login from 'frontend/pages/Login/Login';
+import MarketPlaceCreate from 'frontend/pages/MarketPlace/MarketPlaceCreate/MarketPlaceCreate';
 import Profile from 'frontend/pages/Profile/Profile';
 import PublicEvents from 'frontend/pages/PublicEvents/PublicEvents';
 import Register from 'frontend/pages/Register/Register';
@@ -71,7 +72,8 @@ export default function Router() {
     },
     {
       path: '/marketplace',
-      element: <MarketPlaceLayout />
+      element: <MarketPlaceLayout />,
+      children: [{ path: '/marketplace/create', element: <MarketPlaceCreate /> }]
     },
     {
       path: '/admin',

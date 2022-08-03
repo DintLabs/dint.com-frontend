@@ -46,9 +46,7 @@ const MarketPlaceNavbar = () => {
                     id="dropdown-basic"
                     style={{ backgroundColor: 'transparent', border: 0, marginLeft: '15px' }}
                   >
-                    <button id="profile_btn" type="button">
-                      <CgProfile size={35} />
-                    </button>
+                    <CgProfile size={35} />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>

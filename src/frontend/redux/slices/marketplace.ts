@@ -1,11 +1,14 @@
+/* eslint-disable no-await-in-loop */
 import { createSlice } from '@reduxjs/toolkit';
 import { ethers } from 'ethers';
+import { IMarketPlace } from 'frontend/types/marketPlace';
+import { IPurchases } from 'frontend/types/purchases';
 import Swal from 'sweetalert2';
-import { dispatch } from '../store';
 import MarketplaceAddress from '../../contractsData/Marketplace-address.json';
 import MarketplaceAbi from '../../contractsData/Marketplace.json';
 import NFTAddress from '../../contractsData/NFT-address.json';
 import NFTAbi from '../../contractsData/NFT.json';
+import { dispatch, RootState } from '../store';
 
 const winEthereum = window.ethereum as any;
 
@@ -15,14 +18,20 @@ type IMarketPlaceState = {
   nft: any;
   marketplace: any;
   error: any;
+  isPurchaseLoading: boolean;
+  lstPurchase: IPurchases[];
+  lstMarketPlace: IMarketPlace[];
 };
 
 const initialState: IMarketPlaceState = {
   isLoading: false,
+  isPurchaseLoading: false,
   account: null,
   nft: {},
   marketplace: {},
-  error: false
+  error: false,
+  lstPurchase: [],
+  lstMarketPlace: []
 };
 
 const slice = createSlice({
@@ -34,6 +43,7 @@ const slice = createSlice({
     },
     hasError(state, action) {
       state.isLoading = false;
+      state.isPurchaseLoading = false;
       state.error = action.payload;
     },
     setSliceChanges(state, action) {
@@ -115,3 +125,85 @@ const loadContracts = async (signer: ethers.Signer) => {
   const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer);
   dispatch(slice.actions.setSliceChanges({ nft, isLoading: false, marketplace }));
 };
+
+export function loadPurchasedItems() {
+  return async (dispatch: any, getStore: () => RootState) => {
+    try {
+      const { marketplace, account, nft } = getStore().marketplace;
+
+      dispatch(slice.actions.setSliceChanges({ isPurchaseLoading: true }));
+
+      // Fetch purchased items from marketplace by quering Offered events with the buyer set as the user
+      const filter = marketplace.filters.Bought(null, null, null, null, null, account);
+      const results = await marketplace.queryFilter(filter);
+      // Fetch metadata of each nft and add that to listedItem object.
+      const purchases = await Promise.all(
+        results.map(async (i: { args: any; tokenId: any; itemId: any; price: any }) => {
+          // fetch arguments from each result
+          i = i.args;
+          // get uri url from nft contract
+          const uri = await nft.tokenURI(i.tokenId);
+          // use uri to fetch the nft metadata stored on ipfs
+          const response = await fetch(uri);
+          const metadata = await response.json();
+          // get total price of item (item price + fee)
+          const totalPrice = await marketplace.getTotalPrice(i.itemId);
+          // define listed item object
+          const purchasedItem = {
+            totalPrice,
+            price: i.price,
+            itemId: i.itemId,
+            name: metadata.name,
+            description: metadata.description,
+            image: metadata.image
+          };
+          return purchasedItem;
+        })
+      );
+
+      dispatch(slice.actions.setSliceChanges({ isPurchaseLoading: false, lstPurchase: purchases }));
+    } catch (error) {
+      console.log(error);
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function loadMarketplaceItems() {
+  return async (dispatch: any, getStore: () => RootState) => {
+    try {
+      const { marketplace, nft } = getStore().marketplace;
+
+      dispatch(slice.actions.setSliceChanges({ isLoading: true }));
+
+      const itemCount = await marketplace.itemCount();
+      const items = [];
+      for (let i = 1; i <= itemCount; i++) {
+        const item = await marketplace.items(i);
+        if (!item.sold) {
+          // get uri url from nft contract
+          const uri = await nft.tokenURI(item.tokenId);
+          // use uri to fetch the nft metadata stored on ipfs
+          const response = await fetch(uri);
+          const metadata = await response.json();
+          // get total price of item (item price + fee)
+          const totalPrice = await marketplace.getTotalPrice(item.itemId);
+          // Add item to items array
+          items.push({
+            totalPrice,
+            itemId: item.itemId,
+            seller: item.seller,
+            name: metadata.name,
+            description: metadata.description,
+            image: metadata.image
+          });
+        }
+      }
+
+      dispatch(slice.actions.setSliceChanges({ isLoading: false, lstMarketPlace: items }));
+    } catch (error) {
+      console.log(error);
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}

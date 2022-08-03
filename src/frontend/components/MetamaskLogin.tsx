@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import $ from 'jquery';
 import { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
@@ -16,8 +18,8 @@ const win = window as any;
 
 const MetamaskLogin = () => {
   const [walletConnected, SetWallet] = useState<boolean>();
-  const [mobileBalance, setmobileBalance] = useState('');
-  const [mobilechainId, setmobilechainId] = useState('');
+  const [mobileBalance] = useState('');
+  const [mobilechainId] = useState('');
 
   const [wallet, SetWallets] = useState<any>([]);
 
@@ -256,10 +258,11 @@ const MetamaskLogin = () => {
               </div>
             </div>
             <div className="wallets_parent_div">
-              <div className="wallets_div" onClick={connectMetamask}>
-                <img src={Metamask_icon} /> <p>Metamask</p>
+              <div className="wallets_div" onClick={connectMetamask} role="button">
+                <img src={Metamask_icon} alt="meta-mask-login" />
+                <p>Metamask</p>
               </div>
-              <div className="wallets_div last_wallet" onClick={other_wallet_clicked}>
+              <div className="wallets_div last_wallet" onClick={other_wallet_clicked} role="button">
                 <p>Other Wallets</p>
               </div>
             </div>

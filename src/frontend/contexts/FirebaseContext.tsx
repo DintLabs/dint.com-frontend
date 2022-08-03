@@ -13,13 +13,13 @@ import {
   updatePassword,
   User
 } from 'firebase/auth';
-import { child, get, ref, update } from 'firebase/database';
-import { collection, doc, DocumentData, setDoc } from 'firebase/firestore';
+import { child, get, ref, set, update } from 'firebase/database';
+import { DocumentData } from 'firebase/firestore';
 import { createContext, ReactNode, useEffect, useReducer, useState } from 'react';
 // @types
 import { ActionMap, AuthState, AuthUser, FirebaseContextType } from '../types/authentication';
 //
-import { authInstance, databaseInstance, fireStoreInstance } from './FirebaseInstance';
+import { authInstance, databaseInstance } from './FirebaseInstance';
 
 // ----------------------------------------------------------------------
 
@@ -134,7 +134,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
     });
   const changePassword = async (currentPassword: string, newPassword: string) => {
     const objCurrentUser = authInstance.currentUser;
-    console.log(objCurrentUser);
     const credential = EmailAuthProvider.credential(objCurrentUser?.email || '', currentPassword);
 
     await reauthenticateWithCredential(objCurrentUser as User, credential);
@@ -142,21 +141,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
     return updatePassword(objCurrentUser as User, newPassword);
   };
 
-  const register = (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    userType: string
-  ) =>
+  const register = (email: string, password: string, userData: any) =>
     createUserWithEmailAndPassword(authInstance, email, password).then(async (res) => {
-      const userRef = collection(fireStoreInstance, 'users');
-      await setDoc(doc(userRef, res.user?.uid), {
-        uid: res.user?.uid,
-        email,
-        displayName: `${firstName} ${lastName}`,
-        userType
-      });
+      await set(ref(databaseInstance, `users/${res.user?.uid}`), userData);
     });
 
   const logout = async () => {

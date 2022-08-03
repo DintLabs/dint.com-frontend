@@ -14,7 +14,6 @@ import {
 } from 'firebase/auth';
 import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import useAuth from 'frontend/hooks/useAuth';
-import $ from 'jquery';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
@@ -23,6 +22,8 @@ import '../../material/signup.css';
 const Login = (props: any) => {
   const { login } = useAuth();
   const location: Location = useLocation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { redirectUrl }: any = location.state ? location.state : {};
   console.log(redirectUrl);
   const navigate = useNavigate();
@@ -30,12 +31,9 @@ const Login = (props: any) => {
   const [error_msg_login, setLoginErr] = useState('');
 
   const loginClicked = async () => {
-    const login_email = $('#login_email').val() as string;
-    const login_password = $('#login_password').val() as string;
-
     try {
       await setPersistence(authInstance, browserSessionPersistence);
-      await login(login_email, login_password);
+      await login(email, password);
       if (redirectUrl) {
         navigate(redirectUrl);
       } else {
@@ -59,10 +57,9 @@ const Login = (props: any) => {
   };
 
   const forgotPassClicked = () => {
-    const login_email = $('#login_email').val() as string;
-    if (login_email !== '') {
+    if (email !== '') {
       const auth = getAuth();
-      sendPasswordResetEmail(auth, login_email)
+      sendPasswordResetEmail(auth, email)
         .then(() => {
           alert('Email Sent');
         })
@@ -220,12 +217,22 @@ const Login = (props: any) => {
 
           <div className="form-control">
             <label htmlFor="username">Email</label>
-            <input type="email" placeholder="Email" id="login_email" />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e: any) => setEmail(e.target.value)}
+            />
           </div>
 
           <div className="form-control">
             <label htmlFor="username">Password</label>
-            <input type="password" placeholder="Password" id="login_password" />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e: any) => setPassword(e.target.value)}
+            />
             <button id="forgotpassBtn" type="button" onClick={forgotPassClicked}>
               <span id="forgotPassText">Forgot Password?</span>{' '}
             </button>

@@ -8,7 +8,9 @@ import { AddResult } from 'ipfs-core-types/src/root';
 const client = ipfsHttpClient({ url: 'https://ipfs.infura.io:5001/api/v0' });
 
 const MarketPlaceCreate = () => {
-  const { marketplace, nft } = useSelector((rootState: RootState) => rootState.marketplace);
+  const { marketplaceContract, nftContract } = useSelector(
+    (rootState: RootState) => rootState.marketplace
+  );
 
   const [image, setImage] = useState('');
   const [price, setPrice] = useState<any>(null);
@@ -39,16 +41,18 @@ const MarketPlaceCreate = () => {
   };
 
   const mintThenList = async (result: AddResult) => {
+    if (!nftContract) return;
     const uri = `https://ipfs.infura.io/ipfs/${result.path}`;
     // mint nft
-    await (await nft.mint(uri)).wait();
+    await (await nftContract.mint(uri)).wait();
     // get tokenId of new nft
-    const id = await nft.tokenCount();
+    const id = await nftContract.tokenCount();
     // approve marketplace to spend nft
-    await (await nft.setApprovalForAll(marketplace.address, true)).wait();
+    await (await nftContract.setApprovalForAll(marketplaceContract?.address, true)).wait();
     // add nft to marketplace
     const listingPrice = ethers.utils.parseEther(price.toString());
-    await (await marketplace.makeItem(nft.address, id, listingPrice)).wait();
+    if (!marketplaceContract) return;
+    await (await marketplaceContract.makeItem(nftContract.address, id, listingPrice)).wait();
   };
   return (
     <>

@@ -9,10 +9,8 @@ import NFTAddress from '../contractsData/NFT-address.json';
 import NFTAbi from '../contractsData/NFT.json';
 import './App.css';
 import Create from './Create.jsx';
-import Marketplace from './Marketplace.jsx';
 import Navigation from './MarketplaceNavbar';
 import MyListedItems from './MyListedItems.jsx';
-import MyPurchases from './MyPurchases.jsx';
 
 const winEthereum = window.ethereum as any;
 
@@ -110,15 +108,10 @@ function Marketplace_app() {
             </div>
           ) : (
             <Routes>
-              <Route path="" element={<Marketplace marketplace={marketplace} nft={nft} />} />
               <Route path="create" element={<Create marketplace={marketplace} nft={nft} />} />
               <Route
                 path="my-listed-items"
                 element={<MyListedItems marketplace={marketplace} nft={nft} account={account} />}
-              />
-              <Route
-                path="my-purchases"
-                element={<MyPurchases marketplace={marketplace} nft={nft} account={account} />}
               />
             </Routes>
           )}

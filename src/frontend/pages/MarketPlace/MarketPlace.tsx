@@ -6,12 +6,13 @@ import { useEffect } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 
 const MarketPlace = () => {
-  const { lstMarketPlace, isLoading, marketplace } = useSelector(
+  const { lstMarketPlace, isLoading, marketplaceContract } = useSelector(
     (rootState: RootState) => rootState.marketplace
   );
 
   const buyMarketItem = async (item: { itemId: any; totalPrice: any }) => {
-    await (await marketplace.purchaseItem(item.itemId, { value: item.totalPrice })).wait();
+    if (!marketplaceContract) return null;
+    await (await marketplaceContract.purchaseItem(item.itemId, { value: item.totalPrice })).wait();
     dispatch(loadMarketplaceItems());
   };
 

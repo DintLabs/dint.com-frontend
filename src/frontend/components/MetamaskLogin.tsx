@@ -54,7 +54,7 @@ const MetamaskLogin = () => {
   const walletPhantom = async () => {
     try {
       const provider = phantom.getProvider();
-      console.log(provider);
+      console.log(provider, phantom);
       const afterConnect = async () => {
         const walletAddress = provider.publicKey.toString();
         const balanceOf = await fetchWalletBalance({
@@ -105,6 +105,7 @@ const MetamaskLogin = () => {
       }
       SetWallet(true);
       const chainId = await metamask.getChainId();
+      console.log(chainId);
       if (chainId == null) {
         // Alert metamask does not availible
         const config = Alert.configErrorAlert({
@@ -223,24 +224,22 @@ const MetamaskLogin = () => {
                           </div>
                           <small className="text_title">Account Balance</small>
                         </div>
-                        {data.map((item: { network: number; balance: number }) => {
+                        {data.map((item: { network: number; balance: number }, index: number) => {
                           const { network, balance: AccountBalance } = item;
                           return (
-                            <>
-                              <div className="wallets">
-                                <h4 className="p-1 d-flex w-100 justify-content-around">
-                                  <img
-                                    className=""
-                                    src={NETWORKS[network].icon}
-                                    alt="icon"
-                                    height="27px"
-                                    style={{ marginBottom: '2px' }}
-                                  />
-                                  {/* {EVM_NETWORKS[network] ? AccountBalance : balance?.solana} */}
-                                  {EVM_NETWORKS[network] ? AccountBalance : ''}
-                                </h4>
-                              </div>
-                            </>
+                            <div className="wallets" key={index}>
+                              <h4 className="p-1 d-flex w-100 justify-content-around">
+                                <img
+                                  className=""
+                                  src={NETWORKS[network].icon}
+                                  alt="icon"
+                                  height="27px"
+                                  style={{ marginBottom: '2px' }}
+                                />
+                                {/* {EVM_NETWORKS[network] ? AccountBalance : balance?.solana} */}
+                                {EVM_NETWORKS[network] ? AccountBalance : ''}
+                              </h4>
+                            </div>
                           );
                         })}
                       </div>

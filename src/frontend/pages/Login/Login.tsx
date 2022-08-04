@@ -4,9 +4,6 @@ import {
   getAuth,
   getRedirectResult,
   GoogleAuthProvider,
-  // FacebookAuthProvider,
-  // OAuthProvider
-  onAuthStateChanged,
   sendPasswordResetEmail,
   setPersistence,
   signInWithPopup,
@@ -15,7 +12,7 @@ import {
 import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
@@ -192,15 +189,16 @@ const Login = (props: any) => {
   //     });
   // };
 
-  useEffect(() => {
-    onAuthStateChanged(authInstance, (user) => {
-      if (user) {
-        navigate(redirectUrl);
-      } else {
-        console.log('user is not loggedin');
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   onAuthStateChanged(authInstance, (user) => {
+  //     if (user) {
+  //       navigate(redirectUrl);
+  //     } else {
+  //       console.log('user is not loggedin');
+  //     }
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <>

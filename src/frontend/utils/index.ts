@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import * as _ from 'lodash';
 import { ETHERIUM, POLYGON_MAINNET, SOLANA_MAINNET } from '../web3/model';
 
@@ -34,6 +35,7 @@ export const IS_TOKEN = (networkStandard: string) => ['ERC_20', 'SPL'].includes(
 export const IS_NFT = (networkStandard: string) =>
   ['NFT', 'ERC_721', 'ERC_1155'].includes(networkStandard);
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const CONTRACT_TYPE_MORALIS = {
   TOKEN_1155: 'ERC1155',
   TOKEN_721: 'ERC721'
@@ -83,6 +85,7 @@ export const isMetamask = isIPhone() && hasEthereum;
 
 export const isMobile = () => {
   let check = false;
+  // eslint-disable-next-line func-names
   (function (a) {
     if (
       /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(

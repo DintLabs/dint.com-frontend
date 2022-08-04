@@ -1,5 +1,4 @@
 import { API_KEY, SOLONA_TOKEN } from '../../config';
-import { ABI } from '../../web3/model';
 import { ICallMoralisParams } from '../EVM';
 
 export const getSolanaTokenDetails = (params: {

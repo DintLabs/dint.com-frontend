@@ -32,16 +32,16 @@ const MainNavBar = () => {
     navigate('/profile');
   };
 
-  // const select = (el: string, all = false) => { -- NIK
-  //   el = el.trim();
-  //   if (all) {
-  //     return [...document.querySelectorAll(el)];
-  //   }
-  //   return document.querySelector(el);
-  // };
+  const select = (el: string, all = false): any => {
+    el = el.trim();
+    if (all) {
+      return [...(document as any).querySelectorAll(el)];
+    }
+    return document.querySelector(el);
+  };
 
   const mobile_nav = () => {
-    // select('#navbar').classList.toggle('navbar-mobile'); -- nik
+    select('#navbar').classList.toggle('navbar-mobile');
     $('#navbar_icon').toggleClass('bi-list');
     $('#navbar_icon').toggleClass('bi-x');
   };

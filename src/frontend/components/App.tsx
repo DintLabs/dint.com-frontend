@@ -54,14 +54,6 @@ export default App;
 
 // <Route path="/buytoken" element={<h1>Buy Ticket</h1>} />
 
-// {/* if You Want to Make Any Page Password Protacted with Login Then Do Routing Like This */}
-// <Route
-//   path="/marketplace/*"
-//   element={
-//     <Routes_Marketplace logout={setLoginfalse} isAdmin={isadmin} islogin={loggedin} />
-//   }
-// />
-
 // <Route
 //   path="/ticketcreate"
 //   element={
@@ -73,10 +65,4 @@ export default App;
 //       islogin={loggedin}
 //     />
 //   }
-// />
-
-// {/* Admin Login Route */}
-// <Route
-//   path="/admin"
-//   element={<AdminProtaction loggedin={loggedin} isAdmin={isadmin} />}
 // />

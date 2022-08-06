@@ -78,8 +78,7 @@ const Home = () => {
                 <p style={{ textAlign: 'center' }}>
                   Revolutionizing The World of Entertainment Through NFTs and Membership Tokens
                 </p>
-                <Link to="/signup">
-                  {' '}
+                <Link to="/auth/signup">
                   <button type="button" className="submit-form btn btn-primary">
                     Join Us
                   </button>

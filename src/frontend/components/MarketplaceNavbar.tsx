@@ -8,7 +8,7 @@ import mainlogo from '../material/white.png';
 import MetamaskLogin from './MetamaskLogin';
 
 const Navigation = () => {
-  const [islogin, setLogin] = useState(false);
+  const [islogin] = useState(false);
   const navigate = useNavigate();
 
   const logout = () => {
@@ -27,14 +27,14 @@ const Navigation = () => {
     navigate('/profile');
   };
 
-  useEffect(() => {
-    onAuthStateChanged(authInstance, (user) => {
-      if (user) {
-        // const { uid } = user;
-        setLogin(true);
-      }
-    });
-  });
+  // useEffect(() => {
+  //   onAuthStateChanged(authInstance, (user) => {
+  //     if (user) {
+  //       // const { uid } = user;
+  //       setLogin(true);
+  //     }
+  //   });
+  // });
 
   return (
     <Navbar expand="lg" bg="dark" variant="dark" id="navmain">

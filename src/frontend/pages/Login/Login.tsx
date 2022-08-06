@@ -22,7 +22,7 @@ const Login = (props: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { redirectUrl }: any = location.state ? location.state : {};
-  console.log(redirectUrl);
+  // console.log(redirectUrl);
   const navigate = useNavigate();
 
   const [error_msg_login, setLoginErr] = useState('');
@@ -61,10 +61,8 @@ const Login = (props: any) => {
           alert('Email Sent');
         })
         .catch((error) => {
-          // const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorMessage);
-          // ..
         });
     }
   };
@@ -243,8 +241,7 @@ const Login = (props: any) => {
 
           <p id="signup_line">
             Not registered Yet?{' '}
-            <Link to="/signup">
-              {' '}
+            <Link to="/auth/signup">
               <span id="signup_here"> Sign Up</span>
             </Link>
           </p>

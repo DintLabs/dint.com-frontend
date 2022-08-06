@@ -14,6 +14,7 @@ import MyPurchases from 'frontend/pages/MarketPlace/MyPurchases/MyPurchases';
 import Profile from 'frontend/pages/Profile/Profile';
 import PublicEvents from 'frontend/pages/PublicEvents/PublicEvents';
 import Register from 'frontend/pages/Register/Register';
+import TicketCreate from 'frontend/pages/TicketCreate/TicketCreate';
 import { useNavigate, useRoutes } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
@@ -59,6 +60,14 @@ export default function Router() {
           element: (
             <AuthGuard>
               <Events />
+            </AuthGuard>
+          )
+        },
+        {
+          path: '/ticketcreate',
+          element: (
+            <AuthGuard>
+              <TicketCreate />
             </AuthGuard>
           )
         },

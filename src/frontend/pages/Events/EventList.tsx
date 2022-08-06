@@ -31,6 +31,7 @@ const EventList = () => {
 
   if (typeof win.ethereum !== 'undefined') {
     win.ethereum.on('chainChanged', async () => {
+      console.log('chainChanged');
       //  getmetamaskBalance();
     });
   }

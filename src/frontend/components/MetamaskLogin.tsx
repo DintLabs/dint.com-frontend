@@ -160,14 +160,14 @@ const MetamaskLogin = () => {
     }
   }, [wallet]);
 
-  useEffect(() => {
-    connectMetamask();
-    walletPhantom();
-    return () => {
-      SetWallets([]);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   // connectMetamask();
+  //   // walletPhantom();
+  //   return () => {
+  //     SetWallets([]);
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <>

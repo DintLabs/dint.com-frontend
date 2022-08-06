@@ -12,77 +12,84 @@ const CreateEvent = () => {
   const { lstVanue } = useSelector((rootState: RootState) => rootState.admin);
 
   const createEvent = async () => {
-    const {
-      eventName,
-      venueName,
-      eventDescription,
-      eventDate,
-      eventStartTime,
-      eventEndTime,
-      network,
-      balanceRequired,
-      EventFrequency,
-      tokenName,
-      tokenType,
-      tokenSymbol,
-      tokenDecimal,
-      tokenIcon
-    } = objEvent;
+    try {
+      const {
+        eventName,
 
-    const eventId = Math.floor(Math.random() * 100000 + 999999);
-    const tokenaddress: any = document.getElementById('tokenaddress');
-    if (
-      eventName === '' ||
-      venueName === '' ||
-      eventDescription === '' ||
-      eventDate === '' ||
-      eventStartTime === '' ||
-      eventEndTime === ''
-    ) {
-      return alert('Please fill all fields');
+        eventDescription,
+        eventDate,
+        eventStartTime,
+        eventEndTime,
+        network,
+        balanceRequired,
+        tokenName,
+        tokenType,
+        tokenSymbol,
+        tokenDecimal,
+        EventFrequency,
+        tokenIcon
+      } = objEvent;
+
+      let { venueName } = objEvent;
+      const eventId = Math.floor(Math.random() * 100000 + 999999);
+      const tokenaddress: any = document.getElementById('tokenaddress');
+      if (typeof venueName === 'undefined') venueName = lstVanue[0].venueName;
+
+      if (
+        eventName === '' ||
+        venueName === '' ||
+        eventDescription === '' ||
+        eventDate === '' ||
+        eventStartTime === '' ||
+        eventEndTime === ''
+      ) {
+        return alert('Please fill all fields');
+      }
+
+      const tokenData = {
+        tokenName,
+        tokenType,
+        tokenSymbol: '',
+        tokenDecimal: '',
+        tokenIcon: ''
+      };
+
+      if (IS_TOKEN(tokenType)) {
+        tokenData.tokenSymbol = tokenSymbol;
+        tokenData.tokenDecimal = tokenDecimal as any;
+        tokenData.tokenIcon = tokenIcon;
+      }
+
+      const today = new Date();
+      const dd = String(today.getDate()).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+      const yyyy = today.getFullYear();
+
+      const io: any = {
+        eventId,
+        eventName,
+        venueName,
+        eventDescription,
+        eventDate,
+        eventStartTime,
+        eventEndTime,
+        eventPhoto:
+          'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        eventdateCreated: `${yyyy}-${mm}-${dd}`,
+        network,
+        tokenaddress: tokenaddress?.value,
+        balanceRequired: balanceRequired || 1,
+        EventFrequency: EventFrequency || 'Once',
+        ...tokenData
+      };
+
+      await crateEvent(io);
+      dispatch(fetchAdminEvents());
+      setObjEvent({} as IEvent);
+      return null;
+    } catch (ex) {
+      console.log(ex, 'Error Occurred in Create event');
     }
-
-    const tokenData = {
-      tokenName,
-      tokenType,
-      tokenSymbol: '',
-      tokenDecimal: '',
-      tokenIcon: ''
-    };
-
-    if (IS_TOKEN(tokenType)) {
-      tokenData.tokenSymbol = tokenSymbol;
-      tokenData.tokenDecimal = tokenDecimal as any;
-      tokenData.tokenIcon = tokenIcon;
-    }
-
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-    const yyyy = today.getFullYear();
-
-    const io: any = {
-      eventId,
-      eventName,
-      venueName,
-      eventDescription,
-      eventDate,
-      eventStartTime,
-      eventEndTime,
-      eventPhoto:
-        'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      eventdateCreated: `${yyyy}-${mm}-${dd}`,
-      network,
-      tokenaddress: tokenaddress?.value,
-      balanceRequired: balanceRequired || 1,
-      EventFrequency,
-      ...tokenData
-    };
-
-    await crateEvent(io);
-    dispatch(fetchAdminEvents());
-    setObjEvent({} as IEvent);
-    return null;
   };
 
   const onTokenAddressChange = async (e: any) => {

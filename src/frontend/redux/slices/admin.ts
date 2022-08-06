@@ -109,6 +109,7 @@ export async function updateAdminEvent(IO: IEvent) {
 export async function crateEvent(IO: IEvent) {
   try {
     dispatch(slice.actions.startLoading());
+    console.log(IO);
     await set(ref(databaseInstance, `events/${IO.eventName}`), { ...IO });
   } catch (error) {
     console.log(error);

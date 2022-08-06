@@ -20,7 +20,6 @@ const CreateEvent = () => {
       eventStartTime,
       eventEndTime,
       network,
-      tokenaddress,
       balanceRequired,
       EventFrequency,
       tokenName,
@@ -31,6 +30,7 @@ const CreateEvent = () => {
     } = objEvent;
 
     const eventId = Math.floor(Math.random() * 100000 + 999999);
+    const tokenaddress: any = document.getElementById('tokenaddress');
     if (
       eventName === '' ||
       venueName === '' ||
@@ -73,7 +73,7 @@ const CreateEvent = () => {
         'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
       eventdateCreated: `${yyyy}-${mm}-${dd}`,
       network,
-      tokenaddress,
+      tokenaddress: tokenaddress?.value,
       balanceRequired: balanceRequired || 1,
       EventFrequency,
       ...tokenData
@@ -98,8 +98,7 @@ const CreateEvent = () => {
           tokenName: '',
           tokenSymbol: '',
           tokenDecimal: '' as any,
-          tokenIcon: '',
-          tokenaddress: e.target.value
+          tokenIcon: ''
         });
       } else {
         const objChanges: any = {
@@ -110,20 +109,20 @@ const CreateEvent = () => {
           objChanges.tokenDecimal = tokenDetails.decimals;
           objChanges.tokenIcon = tokenDetails.icon || '';
         }
+        console.log(e.target.value);
         setObjEvent({
           ...objEvent,
-          ...objChanges,
-          tokenaddress: e.target.value
+          ...objChanges
         });
       }
     } catch (ex) {
+      console.log(e.target.value);
       setObjEvent({
         ...objEvent,
         tokenName: '',
         tokenSymbol: '',
         tokenDecimal: '' as any,
-        tokenIcon: '',
-        tokenaddress: e.target.value
+        tokenIcon: ''
       });
     }
   };
@@ -300,11 +299,7 @@ const CreateEvent = () => {
           <Col>
             <Form.Group className="mb-3">
               <Form.Label>Token Address</Form.Label>
-              <Form.Control
-                type="text"
-                onChange={onTokenAddressChange}
-                value={objEvent.tokenaddress || ''}
-              />
+              <Form.Control type="text" onChange={onTokenAddressChange} id="tokenaddress" />
             </Form.Group>
           </Col>
           <Col>

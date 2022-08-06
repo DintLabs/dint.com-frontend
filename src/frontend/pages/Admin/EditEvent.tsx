@@ -19,18 +19,17 @@ const EditEvent = ({
   onComplete: () => void;
 }) => {
   const [objEvent, setObjEvent] = useState<IEvent>(selectedEvent);
+  const [selectedEventName] = useState<string>(selectedEvent.eventName);
   const { lstVanue } = useSelector((rootState: RootState) => rootState.admin);
 
   const eventEdit = async () => {
     const {
       eventName,
-      venueName,
       eventDescription,
       eventDate,
       eventStartTime,
       eventEndTime,
       network,
-      tokenaddress,
       balanceRequired,
       EventFrequency,
       tokenName,
@@ -39,6 +38,10 @@ const EditEvent = ({
       tokenDecimal,
       tokenIcon
     } = objEvent;
+
+    let { venueName } = objEvent;
+    const tokenaddress: any = document.getElementById('tokenaddress');
+    if (typeof venueName === 'undefined') venueName = lstVanue[0].venueName;
 
     const tokenData = {
       tokenName,
@@ -54,21 +57,24 @@ const EditEvent = ({
       tokenData.tokenIcon = tokenIcon;
     }
 
-    console.log('update', tokenData);
+    // console.log('update', tokenData);
 
-    await updateAdminEvent({
-      eventName,
-      venueName,
-      eventDescription,
-      eventDate,
-      eventStartTime,
-      eventEndTime,
-      network,
-      tokenaddress,
-      balanceRequired,
-      EventFrequency,
-      ...tokenData
-    } as unknown as IEvent);
+    await updateAdminEvent(
+      {
+        eventName,
+        venueName,
+        eventDescription,
+        eventDate,
+        eventStartTime,
+        eventEndTime,
+        network,
+        tokenaddress: tokenaddress?.value,
+        EventFrequency: EventFrequency || 'Once',
+        balanceRequired,
+        ...tokenData
+      } as unknown as IEvent,
+      selectedEventName
+    );
     onComplete();
   };
 
@@ -85,8 +91,7 @@ const EditEvent = ({
           tokenName: '',
           tokenSymbol: '',
           tokenDecimal: '' as any,
-          tokenIcon: '',
-          tokenaddress: e.target.value
+          tokenIcon: ''
         });
       } else {
         const objChanges: any = {
@@ -99,8 +104,7 @@ const EditEvent = ({
         }
         setObjEvent({
           ...objEvent,
-          ...objChanges,
-          tokenaddress: e.target.value
+          ...objChanges
         });
       }
     } catch (ex) {
@@ -109,8 +113,7 @@ const EditEvent = ({
         tokenName: '',
         tokenSymbol: '',
         tokenDecimal: '' as any,
-        tokenIcon: '',
-        tokenaddress: e.target.value
+        tokenIcon: ''
       });
     }
   };
@@ -290,11 +293,7 @@ const EditEvent = ({
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Label>Token Address</Form.Label>
-                  <Form.Control
-                    type="text"
-                    onChange={onTokenAddressChange}
-                    value={objEvent.tokenaddress}
-                  />
+                  <Form.Control type="text" onChange={onTokenAddressChange} id="tokenaddress" />
                 </Form.Group>
               </Col>
               <Col>

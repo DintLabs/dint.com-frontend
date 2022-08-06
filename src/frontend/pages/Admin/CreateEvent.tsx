@@ -15,7 +15,6 @@ const CreateEvent = () => {
     try {
       const {
         eventName,
-
         eventDescription,
         eventDate,
         eventStartTime,
@@ -78,8 +77,8 @@ const CreateEvent = () => {
         eventdateCreated: `${yyyy}-${mm}-${dd}`,
         network,
         tokenaddress: tokenaddress?.value,
-        balanceRequired: balanceRequired || 1,
         EventFrequency: EventFrequency || 'Once',
+        balanceRequired: balanceRequired || 1,
         ...tokenData
       };
 
@@ -123,7 +122,7 @@ const CreateEvent = () => {
         });
       }
     } catch (ex) {
-      console.log(e.target.value);
+      // console.log(e.target.value);
       setObjEvent({
         ...objEvent,
         tokenName: '',

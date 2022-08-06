@@ -95,10 +95,10 @@ export function fetchVanues() {
   };
 }
 
-export async function updateAdminEvent(IO: IEvent) {
+export async function updateAdminEvent(IO: IEvent, selectedEventName: string) {
   try {
     dispatch(slice.actions.startLoading());
-    await update(ref(databaseInstance, `events/${IO.eventName}`), { ...IO });
+    await update(ref(databaseInstance, `events/${selectedEventName}`), { ...IO });
   } catch (error) {
     console.log(error);
     alert(`error in update${error}`);

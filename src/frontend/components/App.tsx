@@ -15,36 +15,10 @@ import './App.css';
 // import TicketCreate from './TicketCreate.js';
 
 function App() {
-  // const [userEmail, setuserEmail] = useState('');
-  // const [chainId, serChainId] = useState('');
-  // const [WalletAddress, setWalletAddress] = useState('');
-
-  // const setLogintrue = () => {
-  //   setLoggedin(true);
-  // };
-
-  // const setAdmin = () => {
-  //   setisAdmin(true);
-  // };
-
-  // const setEmail = (email) => {
-  //   setuserEmail(email);
-  // };
-
-  // const setmychainId = (chainId) => {
-  //   serChainId(chainId);
-  // };
-
-  // const setmywalletaddress = (address) => {
-  //   setWalletAddress(address);
-  // };
-
   return (
     <ReduxProvider store={store}>
       <BrowserRouter>
-        {/* <SnackbarProvider> */}
         <Router />
-        {/* </SnackbarProvider> */}
       </BrowserRouter>
     </ReduxProvider>
   );

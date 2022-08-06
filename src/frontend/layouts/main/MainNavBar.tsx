@@ -1,5 +1,6 @@
 import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
+import { useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { CgProfile } from 'react-icons/cg';
 import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
@@ -45,6 +46,14 @@ const MainNavBar = () => {
     $('#navbar_icon').toggleClass('bi-list');
     $('#navbar_icon').toggleClass('bi-x');
   };
+
+  useEffect(() => {
+    $('#navbar li').on('click', () => {
+      if ($('#navbar').hasClass('navbar-mobile')) {
+        mobile_nav();
+      }
+    });
+  }, []);
 
   return (
     <>

@@ -70,7 +70,7 @@ const Home = () => {
               )}
               <div className="overlay" />
               <div className="caption-video">
-                <h1>Dint Club Society</h1>{' '}
+                <h1>Dint Club</h1>{' '}
                 <p style={{ textAlign: 'center' }}>
                   Revolutionizing Creator and Fan Connections Through NFTs and Membership Tokens
                 </p>

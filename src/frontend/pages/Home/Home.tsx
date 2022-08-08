@@ -2,7 +2,6 @@
 // import useAuth from 'frontend/hooks/useAuth';
 import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import blacklogo from '../../material/black.png';
 import homeImage from '../../material/home-miami.jpg';

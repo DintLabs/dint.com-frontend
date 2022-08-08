@@ -1,10 +1,13 @@
 // import { createStyles, makeStyles } from '@material-ui/styles';
 import { isIPhone } from 'frontend/utils';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import MainFooter from './MainFooter';
 import MainNavbar from './MainNavBar';
 
 export default function MainLayout() {
+  const { pathname } = useLocation();
+
+  const shouldHideFooter = !pathname.includes('/new-home');
   return (
     <div
       style={{
@@ -19,12 +22,9 @@ export default function MainLayout() {
       <div id="page-body">
         <div>
           <Outlet />
-          <MainFooter />
+          {shouldHideFooter && <MainFooter />}
         </div>
-        {/* {!getCookie(cookieKey) && <ManageCookie />} */}
-        {/* <ScrollToTopButton /> */}
       </div>
-      {/* <div className={classes.pageFooter}>{!isCheckout && <MainFooterNew />}</div> */}
     </div>
   );
 }

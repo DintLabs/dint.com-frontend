@@ -11,6 +11,7 @@ import Login from 'frontend/pages/Login/Login';
 import MarketPlace from 'frontend/pages/MarketPlace/MarketPlace';
 import MarketPlaceCreate from 'frontend/pages/MarketPlace/MarketPlaceCreate/MarketPlaceCreate';
 import MyPurchases from 'frontend/pages/MarketPlace/MyPurchases/MyPurchases';
+import NewHome from 'frontend/pages/NewHome/NewHome';
 import Profile from 'frontend/pages/Profile/Profile';
 import PublicEvents from 'frontend/pages/PublicEvents/PublicEvents';
 import Register from 'frontend/pages/Register/Register';
@@ -55,6 +56,7 @@ export default function Router() {
       children: [
         { path: '/', element: <Home /> },
         { path: '/public/events', element: <PublicEvents /> },
+        { path: '/new-home', element: <NewHome /> },
         {
           path: '/events',
           element: (

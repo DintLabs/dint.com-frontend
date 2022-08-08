@@ -1,5 +1,6 @@
 import { store } from 'frontend/redux/store';
 import Router from 'frontend/routes';
+import ThemeConfig from 'frontend/theme';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 // import AdminProtaction from './AdminProtaction';
@@ -18,7 +19,9 @@ function App() {
   return (
     <ReduxProvider store={store}>
       <BrowserRouter>
-        <Router />
+        <ThemeConfig>
+          <Router />
+        </ThemeConfig>
       </BrowserRouter>
     </ReduxProvider>
   );

@@ -34,7 +34,7 @@ const Login = (props: any) => {
       if (redirectUrl) {
         navigate(redirectUrl);
       } else {
-        navigate('/');
+        navigate('/new-home');
       }
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {

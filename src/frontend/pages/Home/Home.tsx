@@ -59,8 +59,8 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Dint Club</title>
-        <meta name="description" content="Dint Club" />
+        <title>Dint | Dint Club</title>
+        <meta name="description" content="Dint Club: Revolutionizing Creator and Fan Connections Through NFTs and Membership Tokens" />
       </Helmet>
       <div>
         {/* ======= Hero Section ======= */}
@@ -76,7 +76,7 @@ const Home = () => {
               <div className="caption-video">
                 <h1>Dint Club Society</h1>{' '}
                 <p style={{ textAlign: 'center' }}>
-                  Revolutionizing The World of Entertainment Through NFTs and Membership Tokens
+                Revolutionizing Creator and Fan Connections Through NFTs and Membership Tokens
                 </p>
                 <Link to="/auth/signup">
                   <button type="button" className="submit-form btn btn-primary">

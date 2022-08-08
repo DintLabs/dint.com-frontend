@@ -1,13 +1,10 @@
 // import { createStyles, makeStyles } from '@material-ui/styles';
 import { isIPhone } from 'frontend/utils';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import MainFooter from './MainFooter';
 import MainNavbar from './MainNavBar';
 
 export default function MainLayout() {
-  const { pathname } = useLocation();
-
-  const shouldHideFooter = !pathname.includes('/new-home');
   return (
     <div
       style={{
@@ -22,7 +19,7 @@ export default function MainLayout() {
       <div id="page-body">
         <div>
           <Outlet />
-          {shouldHideFooter && <MainFooter />}
+          <MainFooter />
         </div>
       </div>
     </div>

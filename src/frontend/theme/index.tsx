@@ -35,7 +35,7 @@ export default function ThemeConfig({ children }: ThemeConfigProps) {
     }),
     [isLight]
   );
-
+  console.log(themeOptions);
   const theme = createTheme(themeOptions);
 
   return (

@@ -4,13 +4,13 @@ function createGradient(color1: string, color2: string) {
   return `linear-gradient(to bottom, ${color1}, ${color2})`;
 }
 
-// indigo 700
 const PRIMARY = {
-  lighter: '#8c9eff',
-  light: '#666ad1',
-  main: '#303f9f',
-  dark: '#001970',
-  darker: '#000051'
+  lighter: '#EBD6FD',
+  light: '#B985F4',
+  main: '#7635dc',
+  dark: '#431A9E',
+  darker: '#200A69',
+  contrastText: '#fff'
 };
 
 const SECONDARY = {

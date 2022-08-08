@@ -4,6 +4,7 @@ import eventReducer from './slices/event';
 import userProfileReducer from './slices/userProfile';
 import marketplaceReducer from './slices/marketplace';
 import adminReducer from './slices/admin';
+import newHomeReducer from './slices/newHome';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   event: eventReducer,
   userProfile: userProfileReducer,
   marketplace: marketplaceReducer,
-  admin: adminReducer
+  admin: adminReducer,
+  newHome: newHomeReducer
 });
 
 export { rootPersistConfig, rootReducer };

@@ -3,6 +3,7 @@ import AdminAuthGuard from 'frontend/guards/AdminAuthGuard';
 import AuthGuard from 'frontend/guards/AuthGuard';
 import GuestGuard from 'frontend/guards/GuestGuard';
 import MainLayout from 'frontend/layouts/main';
+import SecondaryMainNavBar from 'frontend/layouts/main/SecondaryMainNavBar';
 import MarketPlaceLayout from 'frontend/layouts/marketPlace';
 import Admin from 'frontend/pages/Admin/Admin';
 import Events from 'frontend/pages/Events/Events';
@@ -56,7 +57,6 @@ export default function Router() {
       children: [
         { path: '/', element: <Home /> },
         { path: '/public/events', element: <PublicEvents /> },
-        { path: '/new-home', element: <NewHome /> },
         {
           path: '/events',
           element: (
@@ -78,6 +78,20 @@ export default function Router() {
           element: (
             <AuthGuard>
               <Profile />
+            </AuthGuard>
+          )
+        }
+      ]
+    },
+    {
+      path: '/',
+      element: <SecondaryMainNavBar />,
+      children: [
+        {
+          path: '/new-home',
+          element: (
+            <AuthGuard>
+              <NewHome />
             </AuthGuard>
           )
         }

@@ -53,6 +53,7 @@ const MainNavBar = () => {
         mobile_nav();
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

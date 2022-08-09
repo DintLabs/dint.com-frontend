@@ -67,7 +67,7 @@ const MainNavBar = () => {
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto" style={{ display: 'flex' }}>
               {/* <Link to={'/'}><h1 ><img src={mainlogo}  height="50px" className="" alt="" />  </h1></Link> */}
-              <Link to="/">
+              <Link to={isAuthenticated ? '/dashboard' : '/'}>
                 <h1>
                   <img src={mainlogo} alt="logo" id="logo_homepage" />{' '}
                 </h1>

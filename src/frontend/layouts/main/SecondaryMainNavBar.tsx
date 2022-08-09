@@ -9,7 +9,7 @@ import MainNavbar from './MainNavBar';
 export default function SecondaryMainNavBar() {
   const { pathname } = useLocation();
 
-  const shouldHideFooter = !pathname.includes('/new-home');
+  const shouldHideFooter = !pathname.includes('/dashboard');
   return (
     <div
       style={{

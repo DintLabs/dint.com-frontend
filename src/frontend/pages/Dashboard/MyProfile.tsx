@@ -1,16 +1,26 @@
 import LaunchRoundedIcon from '@mui/icons-material/LaunchRounded';
 import { Avatar, Badge, Box, IconButton, Stack, Tabs, Typography, useTheme } from '@mui/material';
 import Tab from '@mui/material/Tab';
+import useAuth from 'frontend/hooks/useAuth';
 import React from 'react';
 import userCoverImg from '../../assets/img/web3/images.jpeg';
 
 const MyProfile = () => {
+  const { user } = useAuth();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  console.log(user);
+  if (!user)
+    return (
+      <Typography variant="h2" sx={{ textAlign: 'center' }}>
+        Under Contruction
+      </Typography>
+    );
   return (
     <>
       <Box
@@ -52,7 +62,7 @@ const MyProfile = () => {
           </Box>
           <Box sx={{ px: 2 }}>
             <Typography variant="h3" sx={{ color: 'text.primary' }}>
-              Nikunj Maniya
+              {user.displayName || user.name}
             </Typography>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
               @iaammanik &#8226; Avaliable Now

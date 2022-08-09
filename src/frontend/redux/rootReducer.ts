@@ -5,6 +5,7 @@ import userProfileReducer from './slices/userProfile';
 import marketplaceReducer from './slices/marketplace';
 import adminReducer from './slices/admin';
 import newHomeReducer from './slices/newHome';
+import metamaskReducer from './slices/metamask';
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   userProfile: userProfileReducer,
   marketplace: marketplaceReducer,
   admin: adminReducer,
-  newHome: newHomeReducer
+  newHome: newHomeReducer,
+  metamask: metamaskReducer
 });
 
 export { rootPersistConfig, rootReducer };

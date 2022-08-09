@@ -12,7 +12,7 @@ import mainlogo from '../../material/white.png';
 
 const MainNavBar = () => {
   // var isLoggedin = props.isloggedin;
-  const { isAuthenticated, isAdmin, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
 
   const { pathname } = useLocation();
   const isEventsPage = pathname === '/events';
@@ -87,7 +87,7 @@ const MainNavBar = () => {
                   </Link>
                 </li>
 
-                {isAdmin ? (
+                {/* {isAdmin ? (
                   <li className="no_effect_li">
                     <Link to="/admin" style={{ padding: 0 }}>
                       Admin
@@ -95,8 +95,14 @@ const MainNavBar = () => {
                   </li>
                 ) : (
                   ''
+                )} */}
+                {isAuthenticated && (
+                  <li className="no_effect_li">
+                    <Link to="/dashboard" style={{ padding: 0 }}>
+                      Dashboard
+                    </Link>
+                  </li>
                 )}
-
                 {isAuthenticated ? (
                   <li className="no_effect_li">
                     <Link id="no_effect" to="/events" state={{ from: 'events' }}>

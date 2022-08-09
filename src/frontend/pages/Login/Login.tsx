@@ -16,7 +16,7 @@ import { Helmet } from 'react-helmet';
 import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
 
-const Login = (props: any) => {
+const Login = () => {
   const { login } = useAuth();
   const location: Location = useLocation();
   const [email, setEmail] = useState('');
@@ -34,7 +34,7 @@ const Login = (props: any) => {
       if (redirectUrl) {
         navigate(redirectUrl);
       } else {
-        navigate('/new-home');
+        navigate('/dashboard');
       }
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
@@ -85,7 +85,12 @@ const Login = (props: any) => {
               // This gives you a Google Access Token. You can use it to access Google APIs.
               // const credential = GoogleAuthProvider.credentialFromResult(result);
               // const token = credential.accessToken;
-              navigate(redirectUrl);
+              console.log(result);
+              if (redirectUrl) {
+                navigate(redirectUrl);
+              } else {
+                navigate('/dashboard');
+              }
               // The signed-in user info.
               // const { user } = result;
             })
@@ -111,11 +116,17 @@ const Login = (props: any) => {
           // const token = credential.accessToken;
           // The signed-in user info.
           const { user } = result;
-          props.loginStateChange();
-          props.setemail(user.email);
+          // props.loginStateChange();
+          // props.setemail(user.email);
           // sessionStorage.setItem('logged', true);
           // sessionStorage.setItem('user_email', user.email);
-          navigate(redirectUrl);
+          // navigate(redirectUrl);
+          console.log(result, user, 'Else');
+          if (redirectUrl) {
+            navigate(redirectUrl);
+          } else {
+            navigate('/dashboard');
+          }
         })
         .catch((error) => {
           // Handle Errors here.
@@ -208,7 +219,7 @@ const Login = (props: any) => {
         <div className="container">
           <div className="header">
             <h1>Login</h1>
-            <h1>{props.islogin}</h1>
+            {/* <h1>{props.islogin}</h1> */}
           </div>
 
           <div className="form-control">

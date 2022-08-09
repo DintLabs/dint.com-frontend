@@ -12,11 +12,12 @@ import Login from 'frontend/pages/Login/Login';
 import MarketPlace from 'frontend/pages/MarketPlace/MarketPlace';
 import MarketPlaceCreate from 'frontend/pages/MarketPlace/MarketPlaceCreate/MarketPlaceCreate';
 import MyPurchases from 'frontend/pages/MarketPlace/MyPurchases/MyPurchases';
-import NewHome from 'frontend/pages/NewHome/NewHome';
+import NewHome from 'frontend/pages/Dashboard/Dashboard';
 import Profile from 'frontend/pages/Profile/Profile';
 import PublicEvents from 'frontend/pages/PublicEvents/PublicEvents';
 import Register from 'frontend/pages/Register/Register';
 import TicketCreate from 'frontend/pages/TicketCreate/TicketCreate';
+import ThemeConfig from 'frontend/theme';
 import { useNavigate, useRoutes } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
@@ -85,10 +86,14 @@ export default function Router() {
     },
     {
       path: '/',
-      element: <SecondaryMainNavBar />,
+      element: (
+        <ThemeConfig>
+          <SecondaryMainNavBar />
+        </ThemeConfig>
+      ),
       children: [
         {
-          path: '/new-home',
+          path: '/dashboard',
           element: (
             <AuthGuard>
               <NewHome />

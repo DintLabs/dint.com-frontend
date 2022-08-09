@@ -17,6 +17,8 @@ import * as Alert from './common/alert';
 const win = window as any;
 
 const MetamaskLogin = () => {
+  // const { stopLoadingMetamask } = useSelector((rootState: RootState) => rootState.metamask);
+  const [shouldLoad, setShouldLoad] = useState<boolean>(false);
   const [walletConnected, SetWallet] = useState<boolean>();
   const [mobileBalance] = useState('');
   const [mobilechainId] = useState('');
@@ -24,6 +26,7 @@ const MetamaskLogin = () => {
   const [wallet, SetWallets] = useState<any>([]);
 
   const openNav = () => {
+    setShouldLoad(true);
     $('#mySidenav').css('width', '350px');
     $('#main').css('margin-left', '350px');
   };
@@ -161,13 +164,15 @@ const MetamaskLogin = () => {
   }, [wallet]);
 
   useEffect(() => {
-    connectMetamask();
-    walletPhantom();
-    return () => {
-      SetWallets([]);
-    };
+    if (shouldLoad) {
+      connectMetamask();
+      walletPhantom();
+      return () => {
+        SetWallets([]);
+      };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [shouldLoad]);
 
   return (
     <>

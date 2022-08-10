@@ -89,6 +89,7 @@ const CreateEvent = () => {
       await crateEvent(io);
       dispatch(fetchAdminEvents());
       setObjEvent({} as IEvent);
+      tokenAddressRef.current.value = '';
       return null;
     } catch (ex) {
       console.log(ex, 'Error Occurred in Create event');

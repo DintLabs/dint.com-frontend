@@ -3,7 +3,7 @@ import { RootState, useSelector } from 'frontend/redux/store';
 import { IEvent } from 'frontend/types/event';
 import { IS_TOKEN, OPTIONS_NETWORK_STAD } from 'frontend/utils';
 import { NETWORKS } from 'frontend/web3/model';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import { fetchTokenDetails } from '../../web3/service';
 
@@ -121,6 +121,11 @@ const EditEvent = ({
       });
     }
   };
+
+  useEffect(() => {
+    tokenAddressRef.current.value = selectedEvent.tokenaddress;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Modal size="lg" show={isOpen} onHide={toggleModal}>

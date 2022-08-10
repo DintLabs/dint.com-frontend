@@ -3,13 +3,14 @@ import { dispatch, RootState, useSelector } from 'frontend/redux/store';
 import { IEvent } from 'frontend/types/event';
 import { IS_TOKEN, OPTIONS_NETWORK_STAD } from 'frontend/utils';
 import { NETWORKS } from 'frontend/web3/model';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { fetchTokenDetails } from '../../web3/service';
 
 const CreateEvent = () => {
   const [objEvent, setObjEvent] = useState<IEvent>({} as IEvent);
   const { lstVanue } = useSelector((rootState: RootState) => rootState.admin);
+  const tokenAddressRef = useRef<any>();
 
   const createEvent = async () => {
     try {
@@ -31,7 +32,10 @@ const CreateEvent = () => {
 
       let { venueName } = objEvent;
       const eventId = Math.floor(Math.random() * 100000 + 999999);
-      const tokenaddress: any = document.getElementById('tokenaddress');
+
+      const tokenaddress: any = tokenAddressRef.current.value;
+
+      // const tokenaddress: any = document.getElementById('tokenaddress');
       if (typeof venueName === 'undefined') venueName = lstVanue[0].venueName;
 
       if (
@@ -76,7 +80,7 @@ const CreateEvent = () => {
           'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         eventdateCreated: `${yyyy}-${mm}-${dd}`,
         network,
-        tokenaddress: tokenaddress?.value,
+        tokenaddress,
         EventFrequency: EventFrequency || 'Once',
         balanceRequired: balanceRequired || 1,
         ...tokenData
@@ -305,7 +309,12 @@ const CreateEvent = () => {
           <Col>
             <Form.Group className="mb-3">
               <Form.Label>Token Address</Form.Label>
-              <Form.Control type="text" onChange={onTokenAddressChange} id="tokenaddress" />
+              <Form.Control
+                type="text"
+                onChange={onTokenAddressChange}
+                ref={tokenAddressRef}
+                id="tokenaddress"
+              />
             </Form.Group>
           </Col>
           <Col>

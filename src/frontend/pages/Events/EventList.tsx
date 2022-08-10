@@ -38,6 +38,7 @@ const EventList = () => {
 
   const getMetamaskBalance = async (selectedEvent: IEvent) => {
     const netWork: any = getNetworkByUniqueId(selectedEvent?.network || 0);
+    // console.log(netWork);
 
     const getBalance = async (walletAddress: string) =>
       fetchTokenBalance({
@@ -65,7 +66,7 @@ const EventList = () => {
           state: { eventid: selectedEvent.eventId, userid: authInstance?.currentUser?.uid || '' }
         });
       }
-      console.log('Accounts', balanceOf);
+      // console.log('Accounts', balanceOf);
     }
     if (netWork.uniqueId === SOLANA_MAINNET.uniqueId) {
       const provider = phantom.getProvider();
@@ -109,6 +110,7 @@ const EventList = () => {
         }
       }
       const chainId = await metamask.getChainId();
+      // console.log(chainId, 'chainId', toHex(netWork.chainId));
       if (chainId == null) {
         // Alert metamask does not availible
         const config = Alert.configErrorAlert({
@@ -127,6 +129,7 @@ const EventList = () => {
         Alert.alert(config);
       } else {
         const accounts = await metamask.getConnectedAccounts();
+        console.log(accounts);
         if (accounts && accounts.length) {
           const walletAddress = accounts[0];
           const balanceOf = await getBalance(walletAddress);

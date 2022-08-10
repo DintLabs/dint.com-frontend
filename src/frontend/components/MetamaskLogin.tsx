@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import $ from 'jquery';
@@ -230,8 +231,8 @@ const MetamaskLogin = () => {
                           </div>
                           <small className="text_title">Account Balance</small>
                         </div>
-                        {data.map((item: { network: number; balance: number }, index: number) => {
-                          const { network, balance: AccountBalance } = item;
+                        {data.map((item: { network: number; balance: any }, index: number) => {
+                          const { network, balance } = item;
                           return (
                             <div className="wallets" key={index}>
                               <h4 className="p-1 d-flex w-100 justify-content-around">
@@ -242,8 +243,7 @@ const MetamaskLogin = () => {
                                   height="27px"
                                   style={{ marginBottom: '2px' }}
                                 />
-                                {/* {EVM_NETWORKS[network] ? AccountBalance : balance?.solana} */}
-                                {EVM_NETWORKS[network] ? AccountBalance : ''}
+                                {EVM_NETWORKS.hasOwnProperty(network) ? balance : balance?.solana}
                               </h4>
                             </div>
                           );

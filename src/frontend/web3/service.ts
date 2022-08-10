@@ -120,7 +120,7 @@ export const fetchTokenBalance = async ({
       if (IS_TOKEN(Network_Standard)) {
         req.abi = Network_Standard;
         const result = await getEVMTokenBalance(req);
-        return convertBigNumberToDecimal(result.toString(), tokenDecimal);
+        return convertBigNumberToDecimal(result ? result.toString() : result, tokenDecimal);
       }
 
       req.rpcURL = `${ETHERIUM.rpcURL}${walletAddress}/nft/${Token_Address}?chain=${toHex(

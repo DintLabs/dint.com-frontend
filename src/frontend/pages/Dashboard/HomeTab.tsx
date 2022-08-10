@@ -4,7 +4,11 @@ import { Box, IconButton, Input, Stack, Typography, useTheme } from '@mui/materi
 import './navbarTab.css';
 import PostItem from './PostItem';
 
-const HomeTab = () => {
+interface Props {
+  widthScreen: number;
+}
+
+const HomeTab = ({ widthScreen }: Props) => {
   const theme = useTheme();
   return (
     <>
@@ -13,7 +17,7 @@ const HomeTab = () => {
           borderLeft: `1px solid ${theme.palette.grey[700]}`,
           borderRight: `1px solid ${theme.palette.grey[700]}`
         }}
-        sx={{ height: '90vh', overflowY: 'scroll' }}
+        sx={{ height: widthScreen >= 900 ? '90vh' : 'full', overflowY: 'scroll' }}
       >
         <Box
           style={{

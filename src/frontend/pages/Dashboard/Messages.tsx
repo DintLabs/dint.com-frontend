@@ -1,7 +1,11 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import React from 'react';
 
-const Messages = () => {
+interface Props {
+  widthScreen: number;
+}
+
+const Messages = ({ widthScreen }: Props) => {
   const theme = useTheme();
 
   return (
@@ -13,7 +17,7 @@ const Messages = () => {
           height: '95vh'
         }}
       >
-        <Box sx={{ pt: 10 }}>
+        <Box sx={{ pt: widthScreen >= 900 ? 10 : 2 }}>
           <Typography variant="h2" sx={{ textAlign: 'center', color: 'text.primary' }}>
             Under contrsution
           </Typography>

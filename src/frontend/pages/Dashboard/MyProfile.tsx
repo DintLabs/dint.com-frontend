@@ -65,7 +65,7 @@ const MyProfile = () => {
               {user.displayName || user.name}
             </Typography>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-              @iaammanik &#8226; Avaliable Now
+              @username &#8226; Avaliable Now
             </Typography>
           </Box>
         </Box>

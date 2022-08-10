@@ -13,7 +13,7 @@ const NewHome = () => {
   return (
     <>
       <Helmet>
-        <title>Din't Home</title>
+        <title>Dashboard</title>
         <meta
           name="description"
           content="Dint Events, buy event tickets. Use your digital assets to create event tickets"

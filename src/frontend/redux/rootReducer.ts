@@ -6,6 +6,7 @@ import marketplaceReducer from './slices/marketplace';
 import adminReducer from './slices/admin';
 import newHomeReducer from './slices/newHome';
 import metamaskReducer from './slices/metamask';
+import dashboardReducer from './slices/dashboard';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   marketplace: marketplaceReducer,
   admin: adminReducer,
   newHome: newHomeReducer,
-  metamask: metamaskReducer
+  metamask: metamaskReducer,
+  dashboard: dashboardReducer
 });
 
 export { rootPersistConfig, rootReducer };

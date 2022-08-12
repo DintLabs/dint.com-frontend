@@ -17,6 +17,7 @@ import { child, get, ref, set, update } from 'firebase/database';
 import { DocumentData } from 'firebase/firestore';
 import { createContext, ReactNode, useEffect, useReducer, useState } from 'react';
 // @types
+import axios from 'axios';
 import { ActionMap, AuthState, AuthUser, FirebaseContextType } from '../types/authentication';
 //
 import { authInstance, databaseInstance } from './FirebaseInstance';
@@ -25,7 +26,17 @@ import { authInstance, databaseInstance } from './FirebaseInstance';
 
 function initTokenChange() {
   onIdTokenChanged(authInstance, async (user) => {
-    if (user) localStorage.setItem('firebaseToken', await user.getIdToken());
+    if (user) {
+      localStorage.setItem('firebaseToken', await user.getIdToken());
+      await axios
+        .post('http://18.204.217.87:8000/api/auth/login', {
+          email: user.email,
+          fire_base_auth_key: user.uid
+        })
+        .then(({ data }) => {
+          localStorage.setItem('apiToken', data.data.token);
+        });
+    }
   });
 }
 

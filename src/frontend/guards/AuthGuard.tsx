@@ -17,7 +17,6 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   // const [requestedLocation, setRequestedLocation] = useState<string | null>(null);
   const navigate = useNavigate();
   console.log(pathname);
-
   if (!isAuthenticated) {
     Swal.fire({
       title: 'You are not logged in',

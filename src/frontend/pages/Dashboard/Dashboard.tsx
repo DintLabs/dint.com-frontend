@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { HOME_SIDE_MENU } from 'frontend/redux/slices/newHome';
 import { RootState, useDispatch, useSelector } from 'frontend/redux/store';
@@ -8,22 +8,23 @@ import Messages from './Messages';
 import MyProfile from './MyProfile';
 import Sidebar from './Sidebar';
 import SidebarMobile from './SidebarMobile';
-import { useHttp } from './httpReqHook';
-import { fetchPosts, postsCreated } from '../../redux/slices/dashboard';
+import { useHttp } from '../../hooks/httpReqHook';
+import { fetchPosts, postsCreated, postsDeleted, postsUpdate } from '../../redux/slices/dashboard';
 import { RequestMethods } from '../../types/request';
 import IPost from '../../types/dashboard';
+import useAuth from '../../hooks/useAuth';
 
 const NewHome = () => {
+  const { user } = useAuth();
   const { selectedMenu } = useSelector((rootState: RootState) => rootState.newHome);
   const [widthScreen, setWidthScreen] = useState<number>(window.screen.width);
   const dispatch = useDispatch();
   const { request } = useHttp();
   const { posts } = useSelector((rootState: RootState) => rootState.dashboard);
-  // const postsLoadingStatus = useSelector((rootState: RootState) => rootState.dashboard);
-  console.log(posts);
+  const postsLoadingStatus = useSelector((rootState: RootState) => rootState.dashboard);
 
   useEffect(() => {
-    fetchPosts();
+    dispatch(fetchPosts());
   }, []);
 
   useLayoutEffect(() => {
@@ -54,21 +55,70 @@ const NewHome = () => {
     mb: 8
   };
 
-  const onCreatePost = (e: any) => {
-    e.preventDefault();
-    const newPost: IPost = {
-      user: 1,
-      type: 'normal',
-      content: 'norm'
-    };
+  const onCreatePost = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      const newPost = {
+        user: 1,
+        type: 'Social',
+        content: 'norm',
+        likes: 0,
+        comments: []
+      };
 
-    request('http://localhost:3001/heroes', RequestMethods.POST, JSON.stringify(newPost))
-      .then((res) => console.log(res, 'Success'))
-      .then((res) => {
-        dispatch(postsCreated(newPost));
-      })
-      .catch((err) => console.log(err));
-  };
+      request('http://18.204.217.87:8000/api/posts/list', RequestMethods.GET)
+        .then((res) => console.log(res, 'Create'))
+        .then(() => {
+          dispatch(postsCreated(newPost));
+        })
+        .catch((err) => console.log(err));
+      console.log(posts);
+    },
+    [request]
+  );
+
+  const onDelete = useCallback(
+    (post: number) => {
+      request(`http://18.204.217.87:8000/api/posts/delete/${post}/`, RequestMethods.DELETE)
+        .then((data) => console.log(data, 'Deleted'))
+        .then(() => {
+          dispatch(postsDeleted(post));
+        })
+        .catch((err) => console.log(err));
+    },
+    [request]
+  );
+
+  const onUpdate = useCallback(
+    (post: number) => {
+      const newPost: IPost = {
+        user: 1,
+        type: 'normal',
+        content: 'norm',
+        likes: 0,
+        comments: []
+      };
+
+      request(
+        `http://18.204.217.87:8000/api/posts/update/${post}/`,
+        RequestMethods.PUT,
+        JSON.stringify(newPost)
+      )
+        .then((res) => console.log(res, 'Update'))
+        .then(() => {
+          dispatch(postsUpdate(newPost));
+        })
+        .catch((err) => console.log(err));
+    },
+    [request]
+  );
+
+  if (postsLoadingStatus === 'loading') {
+    return <></>;
+  }
+  if (postsLoadingStatus === 'error') {
+    return <h5>Error</h5>;
+  }
 
   return (
     <>

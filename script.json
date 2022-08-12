@@ -1,0 +1,14 @@
+{
+  "api": {
+    "posts": {
+      "create": {
+        "user":2,
+        "type":"Social",
+        "content":"This is my Second Post!"
+      },
+      "list": {
+
+      }
+    }
+  }
+}

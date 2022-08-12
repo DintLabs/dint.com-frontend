@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { RequestMethods } from '../../types/request';
+import { RequestMethods } from '../types/request';
 
 export const useHttp = () => {
   const request = useCallback(
@@ -7,7 +7,9 @@ export const useHttp = () => {
       url: string,
       method: RequestMethods = RequestMethods.GET,
       body: any = null,
-      headers = { 'Content-Type': 'application/json' }
+      headers = {
+        Authorization: `Bearer ${localStorage.getItem('apiToken')}`
+      }
     ) => {
       try {
         const response = await fetch(url, { method, body, headers });

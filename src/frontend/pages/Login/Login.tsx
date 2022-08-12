@@ -30,7 +30,8 @@ const Login = () => {
   const loginClicked = async () => {
     try {
       await setPersistence(authInstance, browserSessionPersistence);
-      await login(email, password);
+      const res = await login(email, password);
+
       if (redirectUrl) {
         navigate(redirectUrl);
       } else {

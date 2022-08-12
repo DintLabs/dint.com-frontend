@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { useHttp } from '../../pages/Dashboard/httpReqHook';
+import axios from 'axios';
+import { useHttp } from '../../hooks/httpReqHook';
 import IPost from '../../types/dashboard';
+import { RequestMethods } from '../../types/request';
 
 interface IDashboardState {
   posts: IPost[];
@@ -12,9 +14,40 @@ const initialState: IDashboardState = {
   postsLoadingStatus: 'idle'
 };
 
+export const loginToAPI = createAsyncThunk(
+  'posts/loginToAPI',
+  async (payload: { email: string; id: string }) => {
+    await axios
+      .post('http://18.204.217.87:8000/api/auth/login', {
+        headers: {
+          email: payload.email,
+          fire_base_auth_key: payload.id
+        }
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  }
+);
+
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', () => {
   const { request } = useHttp();
-  return request('https://www.getpostman.com/collections/e8f1d8a404bd17e0be11/api/posts/list/');
+  return request('http://18.204.217.87:8000/api/posts/list');
+});
+
+export const fetchPost = createAsyncThunk('posts/fetchPost', (post: number) => {
+  const { request } = useHttp();
+  return request(`http://localhost:3000/api/posts/list/${post}`);
+});
+
+export const likePost = createAsyncThunk('posts/likePost', () => {
+  const { request } = useHttp();
+  return request('/api/posts/like/', RequestMethods.POST);
+});
+
+export const commentPost = createAsyncThunk('posts/commentPost', () => {
+  const { request } = useHttp();
+  return request('/api/posts/comment/', RequestMethods.POST);
 });
 
 const postsSlice = createSlice({
@@ -33,8 +66,8 @@ const postsSlice = createSlice({
         item.user === user ? { ...item, user, type, content } : item
       );
     },
-    postsDeleted: (state, action: PayloadAction<{ user: number }>) => {
-      state.posts = state.posts.filter((item: { user: any }) => item.user !== action.payload);
+    postsDeleted: (state, action: PayloadAction<number>) => {
+      state.posts = state.posts.filter((item: IPost) => item.user !== action.payload);
     }
   },
   extraReducers: (builder: any) => {
@@ -53,6 +86,22 @@ const postsSlice = createSlice({
         }
       )
       .addCase(fetchPosts.rejected, (initialState: { postsLoadingStatus: string }) => {
+        initialState.postsLoadingStatus = 'error';
+      })
+      .addCase(fetchPost.pending, (initialState: { postsLoadingStatus: string }) => {
+        initialState.postsLoadingStatus = 'loading';
+      })
+      .addCase(
+        fetchPost.fulfilled,
+        (
+          initialState: { postsLoadingStatus: string; posts: IPost },
+          action: PayloadAction<IPost>
+        ) => {
+          initialState.postsLoadingStatus = 'idle';
+          initialState.posts = action.payload;
+        }
+      )
+      .addCase(fetchPost.rejected, (initialState: { postsLoadingStatus: string }) => {
         initialState.postsLoadingStatus = 'error';
       });
   }

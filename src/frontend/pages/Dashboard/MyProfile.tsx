@@ -14,6 +14,7 @@ const MyProfile = () => {
     setValue(newValue);
   };
 
+  console.log(user);
   if (!user)
     return (
       <Typography variant="h2" sx={{ textAlign: 'center' }}>

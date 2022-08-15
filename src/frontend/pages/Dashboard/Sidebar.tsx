@@ -6,11 +6,7 @@ import { HOME_SIDE_MENU, setNewHomeSliceChanges } from 'frontend/redux/slices/ne
 import { dispatch, RootState, useSelector } from 'frontend/redux/store';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
-interface Props {
-  onCreatePost: (e: any) => void;
-}
-
-const Sidebar = ({ onCreatePost }: Props) => {
+const Sidebar = () => {
   const { selectedMenu } = useSelector((rootState: RootState) => rootState.newHome);
 
   return (
@@ -60,13 +56,7 @@ const Sidebar = ({ onCreatePost }: Props) => {
         </ListItem>
 
         <ListItem sx={{ justifyContent: 'center', mt: 6 }}>
-          <Button
-            startIcon={<AddRoundedIcon />}
-            variant="contained"
-            onClick={(e) => {
-              onCreatePost(e);
-            }}
-          >
+          <Button startIcon={<AddRoundedIcon />} variant="contained">
             New Post
           </Button>
         </ListItem>

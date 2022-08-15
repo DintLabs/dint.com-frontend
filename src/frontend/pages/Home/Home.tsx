@@ -11,12 +11,10 @@ import Bgvideo from '../../material/home2.mp4';
 import '../../material/homepage.css';
 import { isIPhone, isMetamask } from '../../utils';
 
-
 const Home = () => {
   const { user } = useAuth();
   // const navigate = useNavigate();
   const back_to_top = $('#back_to_top');
-
 
   $(window).scroll(() => {
     const scroll = $(window).scrollTop();

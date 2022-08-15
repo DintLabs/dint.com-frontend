@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { useHttp } from '../../hooks/httpReqHook';
 import IPost from '../../types/dashboard';
 import { RequestMethods } from '../../types/request';
@@ -14,32 +13,9 @@ const initialState: IDashboardState = {
   postsLoadingStatus: 'idle'
 };
 
-export const loginToAPI = createAsyncThunk(
-  'posts/loginToAPI',
-  async (payload: { email: string; id: string }) => {
-    await axios
-      .post('http://18.204.217.87:8000/api/auth/login', {
-        headers: {
-          email: payload.email,
-          fire_base_auth_key: payload.id
-        }
-      })
-      .then((res) => {
-        console.log(res);
-      });
-  }
-);
-
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const { request } = useHttp();
-  return request('http://18.204.217.87:8000/api/posts/list')
-    .then((res) => {
-      initialState.postsLoadingStatus = 'idle';
-      initialState.posts = res.data;
-    })
-    .catch((initialState: { postsLoadingStatus: string }) => {
-      initialState.postsLoadingStatus = 'error';
-    });
+  return request('http://18.204.217.87:8000/api/posts/list');
 });
 
 export const fetchPost = createAsyncThunk('posts/fetchPost', (post: number) => {

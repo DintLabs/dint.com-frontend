@@ -22,8 +22,6 @@ const HomeTab = ({ widthScreen, onHandle, onDelete }: Props) => {
     onHandle(content);
   };
 
-  console.log(posts, 'fff');
-
   return (
     <>
       <Box

@@ -23,14 +23,13 @@ const NewHome = () => {
   const { posts } = useSelector((rootState: RootState) => rootState.dashboard);
   const postsLoadingStatus = useSelector((rootState: RootState) => rootState.dashboard);
 
-  const [content, setContent] = useState<string>('');
+  const [contentPost, setContentPost] = useState<string>('');
   const onHandle = (text: string) => {
-    setContent(text);
+    setContentPost(text);
   };
 
   useEffect(() => {
-    fetchPosts();
-    console.log(posts)
+    dispatch(fetchPosts());
   }, []);
 
   useLayoutEffect(() => {
@@ -41,8 +40,6 @@ const NewHome = () => {
     updateWidth();
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
-
-  console.log(user);
 
   const styleSidebarMobile = {
     display: widthScreen >= 900 ? 'none' : '',
@@ -69,7 +66,7 @@ const NewHome = () => {
       const newPost = {
         user: 1,
         type: 'Social',
-        content: 'ggg'
+        content: 'content'
       };
       request(
         'http://18.204.217.87:8000/api/posts/create/',

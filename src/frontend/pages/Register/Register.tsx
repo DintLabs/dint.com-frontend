@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
+import axios from 'axios';
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { register, user } = useAuth();
 
   const [email, setEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
@@ -35,7 +36,20 @@ const Register = () => {
             instagram: 'null',
             discord: 'null'
           };
+          await axios
+            .post('http://18.204.217.87:8000/api/auth/sign-up/', {
+              email,
+              fire_base_auth_key: password
+            })
+            .then(({ data }) => {
+              localStorage.setItem('apiToken', data.data.token);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+
           await register(email, password, userData);
+
           navigate('/auth/login');
         } catch (error: any) {
           switch (error.code) {

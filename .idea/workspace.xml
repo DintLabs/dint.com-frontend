@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91b2f79c-b342-4d4d-a050-44a0185e0885" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dint.com.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/pages/Dashboard/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/pages/Dashboard/Dashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/pages/Dashboard/HomeTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/pages/Dashboard/HomeTab.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/pages/Login/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/pages/Login/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/pages/Register/Register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/pages/Register/Register.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/redux/slices/dashboard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/redux/slices/dashboard.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -97,7 +93,7 @@
       <workItem from="1660119408691" duration="19119000" />
       <workItem from="1660205819395" duration="20572000" />
       <workItem from="1660284962458" duration="50310000" />
-      <workItem from="1660568665704" duration="532000" />
+      <workItem from="1660568665704" duration="6551000" />
     </task>
     <servers />
   </component>

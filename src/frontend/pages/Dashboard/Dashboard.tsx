@@ -15,18 +15,21 @@ import IPost from '../../types/dashboard';
 import useAuth from '../../hooks/useAuth';
 
 const NewHome = () => {
-  const { user } = useAuth();
   const { selectedMenu } = useSelector((rootState: RootState) => rootState.newHome);
   const [widthScreen, setWidthScreen] = useState<number>(window.screen.width);
   const dispatch = useDispatch();
   const { request } = useHttp();
   const { posts } = useSelector((rootState: RootState) => rootState.dashboard);
   const postsLoadingStatus = useSelector((rootState: RootState) => rootState.dashboard);
-
+  console.log(posts);
   const [contentPost, setContentPost] = useState<string>('');
   const onHandle = (text: string) => {
     setContentPost(text);
   };
+
+  useEffect(() => {
+    fetchPostsList();
+  }, []);
 
   useLayoutEffect(() => {
     function updateWidth() {
@@ -56,6 +59,17 @@ const NewHome = () => {
     mb: 8
   };
 
+  const fetchPostsList = useCallback(async () => {
+    await request('http://18.204.217.87:8000/api/posts/list', RequestMethods.GET)
+      .then(({ data }) => {
+        dispatch(fetchPosts({ data }));
+      })
+      .then(() => {
+        console.log('List');
+      })
+      .catch((err) => console.log(err));
+  }, [request]);
+
   const onCreatePost = useCallback(
     (content: string) => {
       const newPost = {
@@ -63,6 +77,7 @@ const NewHome = () => {
         type: 'Social',
         content
       };
+      console.log(posts);
       request(
         'http://18.204.217.87:8000/api/posts/create/',
         RequestMethods.POST,

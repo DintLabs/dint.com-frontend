@@ -28,10 +28,6 @@ const NewHome = () => {
     setContentPost(text);
   };
 
-  useEffect(() => {
-    dispatch(fetchPosts());
-  }, []);
-
   useLayoutEffect(() => {
     function updateWidth() {
       setWidthScreen(window.screen.width);
@@ -68,7 +64,7 @@ const NewHome = () => {
         content
       };
       request(
-        'https://18.204.217.87:8000/api/posts/create/',
+        'http://18.204.217.87:8000/api/posts/create/',
         RequestMethods.POST,
         JSON.stringify(newPost)
       )
@@ -85,7 +81,7 @@ const NewHome = () => {
 
   const onDelete = useCallback(
     (post: number) => {
-      request(`https://18.204.217.87:8000/api/posts/delete/${post}/`, RequestMethods.DELETE)
+      request(`http://18.204.217.87:8000/api/posts/delete/${post}/`, RequestMethods.DELETE)
         .then((data) => console.log(data, 'Deleted'))
         .then(() => {
           dispatch(postsDeleted(post));
@@ -104,7 +100,7 @@ const NewHome = () => {
       };
 
       request(
-        `https://18.204.217.87:8000/api/posts/update/${post}/`,
+        `http://18.204.217.87:8000/api/posts/update/${post}/`,
         RequestMethods.PUT,
         JSON.stringify(newPost)
       )

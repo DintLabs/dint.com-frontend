@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import useAuth from 'frontend/hooks/useAuth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
@@ -37,7 +37,7 @@ const Register = () => {
             discord: 'null'
           };
           await axios
-            .post('https://18.204.217.87:8000/api/auth/sign-up/', {
+            .post('http://18.204.217.87:8000/api/auth/sign-up/', {
               email,
               fire_base_auth_key: password
             })

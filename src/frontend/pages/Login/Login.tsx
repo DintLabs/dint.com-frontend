@@ -12,7 +12,7 @@ import {
 } from 'firebase/auth';
 import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import useAuth from 'frontend/hooks/useAuth';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
@@ -34,12 +34,12 @@ const Login = () => {
       await setPersistence(authInstance, browserSessionPersistence);
 
       await axios
-        .post('https://18.204.217.87:8000/api/auth/login', {
+        .post('http://18.204.217.87:8000/api/auth/login', {
           email,
           fire_base_auth_key: password
         })
         .then(({ data }) => {
-          console.log(data)
+          console.log(data);
           localStorage.setItem('apiToken', data.data.token);
         })
         .catch((err) => {

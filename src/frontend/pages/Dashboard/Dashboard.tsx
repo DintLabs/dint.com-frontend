@@ -23,8 +23,14 @@ const NewHome = () => {
   const { posts } = useSelector((rootState: RootState) => rootState.dashboard);
   const postsLoadingStatus = useSelector((rootState: RootState) => rootState.dashboard);
 
+  const [content, setContent] = useState<string>('');
+  const onHandle = (text: string) => {
+    setContent(text);
+  };
+
   useEffect(() => {
-    dispatch(fetchPosts());
+    fetchPosts();
+    console.log(posts)
   }, []);
 
   useLayoutEffect(() => {
@@ -35,6 +41,8 @@ const NewHome = () => {
     updateWidth();
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
+
+  console.log(user);
 
   const styleSidebarMobile = {
     display: widthScreen >= 900 ? 'none' : '',
@@ -61,18 +69,18 @@ const NewHome = () => {
       const newPost = {
         user: 1,
         type: 'Social',
-        content: 'norm',
-        likes: 0,
-        comments: []
+        content: 'ggg'
       };
-
-      request('http://18.204.217.87:8000/api/posts/list', RequestMethods.GET)
+      request(
+        'http://18.204.217.87:8000/api/posts/create/',
+        RequestMethods.POST,
+        JSON.stringify(newPost)
+      )
         .then((res) => console.log(res, 'Create'))
         .then(() => {
           dispatch(postsCreated(newPost));
         })
         .catch((err) => console.log(err));
-      console.log(posts);
     },
     [request]
   );
@@ -94,9 +102,7 @@ const NewHome = () => {
       const newPost: IPost = {
         user: 1,
         type: 'normal',
-        content: 'norm',
-        likes: 0,
-        comments: []
+        content: 'norm'
       };
 
       request(
@@ -141,7 +147,7 @@ const NewHome = () => {
             {HOME_SIDE_MENU.HOME === selectedMenu && (
               <Grid container>
                 <Grid item xs={12} md={8}>
-                  <HomeTab widthScreen={widthScreen} />
+                  <HomeTab widthScreen={widthScreen} onHandle={onHandle} onDelete={onDelete} />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Box sx={styleTerms}>

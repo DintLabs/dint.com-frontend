@@ -30,9 +30,16 @@ export const loginToAPI = createAsyncThunk(
   }
 );
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', () => {
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const { request } = useHttp();
-  return request('http://18.204.217.87:8000/api/posts/list');
+  return request('http://18.204.217.87:8000/api/posts/list')
+    .then((res) => {
+      initialState.postsLoadingStatus = 'idle';
+      initialState.posts = res.data;
+    })
+    .catch((initialState: { postsLoadingStatus: string }) => {
+      initialState.postsLoadingStatus = 'error';
+    });
 });
 
 export const fetchPost = createAsyncThunk('posts/fetchPost', (post: number) => {
@@ -87,23 +94,23 @@ const postsSlice = createSlice({
       )
       .addCase(fetchPosts.rejected, (initialState: { postsLoadingStatus: string }) => {
         initialState.postsLoadingStatus = 'error';
-      })
-      .addCase(fetchPost.pending, (initialState: { postsLoadingStatus: string }) => {
-        initialState.postsLoadingStatus = 'loading';
-      })
-      .addCase(
-        fetchPost.fulfilled,
-        (
-          initialState: { postsLoadingStatus: string; posts: IPost },
-          action: PayloadAction<IPost>
-        ) => {
-          initialState.postsLoadingStatus = 'idle';
-          initialState.posts = action.payload;
-        }
-      )
-      .addCase(fetchPost.rejected, (initialState: { postsLoadingStatus: string }) => {
-        initialState.postsLoadingStatus = 'error';
       });
+    // .addCase(fetchPost.pending, (initialState: { postsLoadingStatus: string }) => {
+    //   initialState.postsLoadingStatus = 'loading';
+    // })
+    // .addCase(
+    //   fetchPost.fulfilled,
+    //   (
+    //     initialState: { postsLoadingStatus: string; posts: IPost },
+    //     action: PayloadAction<IPost>
+    //   ) => {
+    //     initialState.postsLoadingStatus = 'idle';
+    //     initialState.posts = action.payload;
+    //   }
+    // )
+    // .addCase(fetchPost.rejected, (initialState: { postsLoadingStatus: string }) => {
+    //   initialState.postsLoadingStatus = 'error';
+    // });
   }
 });
 

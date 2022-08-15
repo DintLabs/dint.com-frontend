@@ -35,6 +35,9 @@ function initTokenChange() {
         })
         .then(({ data }) => {
           localStorage.setItem('apiToken', data.data.token);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     }
   });

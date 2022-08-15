@@ -8,7 +8,8 @@ export const useHttp = () => {
       method: RequestMethods = RequestMethods.GET,
       body: any = null,
       headers = {
-        Authorization: `Bearer ${localStorage.getItem('apiToken')}`
+        Authorization: `Bearer ${localStorage.getItem('apiToken')}`,
+        'Content-Type': 'application/json'
       }
     ) => {
       try {

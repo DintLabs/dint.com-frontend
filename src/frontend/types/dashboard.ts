@@ -5,16 +5,10 @@ class IPost {
 
   content: string;
 
-  likes: number;
-
-  comments: Array<string>;
-
-  constructor(user: number, type: string, content: string, likes: number, comments: Array<string>) {
+  constructor(user: number, type: string, content: string) {
     this.user = user;
     this.type = type;
     this.content = content;
-    this.likes = likes;
-    this.comments = comments;
   }
 }
 

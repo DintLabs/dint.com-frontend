@@ -18,7 +18,7 @@ const VenueList = () => {
           </tr>
         </thead>
         <tbody>
-          {lstVanue.map((item, index) => (
+          {lstVanue.map((item: any, index: number) => (
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{item.venueName}</td>

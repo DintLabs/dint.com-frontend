@@ -21,7 +21,6 @@ const NewHome = () => {
   const { request } = useHttp();
   const { posts } = useSelector((rootState: RootState) => rootState.dashboard);
   const postsLoadingStatus = useSelector((rootState: RootState) => rootState.dashboard);
-  console.log(posts);
   const [contentPost, setContentPost] = useState<string>('');
   const onHandle = (text: string) => {
     setContentPost(text);
@@ -77,7 +76,6 @@ const NewHome = () => {
         type: 'Social',
         content
       };
-      console.log(posts);
       request(
         'http://18.204.217.87:8000/api/posts/create/',
         RequestMethods.POST,
@@ -147,7 +145,7 @@ const NewHome = () => {
       <Box>
         <Grid container>
           <Grid item xs={0} md={3} sx={{ display: widthScreen >= 900 ? '' : 'none' }}>
-            <Sidebar onCreatePost={() => onCreatePost(contentPost)} />
+            <Sidebar />
           </Grid>
           <Grid item sx={styleSidebarMobile}>
             <SidebarMobile widthScreen={widthScreen} />
@@ -156,7 +154,12 @@ const NewHome = () => {
             {HOME_SIDE_MENU.HOME === selectedMenu && (
               <Grid container>
                 <Grid item xs={12} md={8}>
-                  <HomeTab widthScreen={widthScreen} onHandle={onHandle} onDelete={onDelete} />
+                  <HomeTab
+                    widthScreen={widthScreen}
+                    onHandle={onHandle}
+                    onDelete={onDelete}
+                    onCreatePost={() => onCreatePost(contentPost)}
+                  />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Box sx={styleTerms}>

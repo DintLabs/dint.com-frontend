@@ -128,7 +128,6 @@ export const fetchTokenBalance = async ({
       )}&format=decimal`;
       req.method = 'GET';
       const result: any = await callMoralis({ ...req });
-      console.log(result);
 
       return result.filter((nft: any) =>
         FILTER_OWNER_NFT_EVM(nft, { token_address: Token_Address, owner_of: walletAddress })

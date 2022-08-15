@@ -61,3 +61,17 @@
   width: 24px;
   height: 24px;
 }
+
+.css-m69qwo-MuiStack-root {
+  position: relative;
+}
+
+.css-m69qwo-MuiStack-root input[type='file'] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  opacity: 0;
+  width: 40px;
+}
+

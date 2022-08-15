@@ -159,7 +159,7 @@ const EditEvent = ({
                     setObjEvent({ ...objEvent, venueName: e.target.value });
                   }}
                 >
-                  {lstVanue.map((item, index) => (
+                  {lstVanue.map((item: any, index: number) => (
                     <option value={item.venueName} key={index}>
                       {item.venueName}
                     </option>

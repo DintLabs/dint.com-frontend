@@ -34,7 +34,7 @@ const Login = () => {
       await setPersistence(authInstance, browserSessionPersistence);
 
       await axios
-        .post('http://18.204.217.87:8000/api/auth/login', {
+        .post('https://18.204.217.87:8000/api/auth/login', {
           email,
           fire_base_auth_key: password
         })

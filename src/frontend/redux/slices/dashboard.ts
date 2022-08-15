@@ -15,12 +15,12 @@ const initialState: IDashboardState = {
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const { request } = useHttp();
-  return request('http://18.204.217.87:8000/api/posts/list');
+  return request('https://18.204.217.87:8000/api/posts/list');
 });
 
 export const fetchPost = createAsyncThunk('posts/fetchPost', (post: number) => {
   const { request } = useHttp();
-  return request(`http://localhost:3000/api/posts/list/${post}`);
+  return request(`https://localhost:3000/api/posts/list/${post}`);
 });
 
 export const likePost = createAsyncThunk('posts/likePost', () => {

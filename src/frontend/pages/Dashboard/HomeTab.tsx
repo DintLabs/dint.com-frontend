@@ -5,6 +5,7 @@ import './navbarTab.css';
 import { useState } from 'react';
 import { useSelector, RootState } from 'frontend/redux/store';
 import PostItem from './PostItem';
+import useAuth from '../../hooks/useAuth';
 
 interface Props {
   widthScreen: number;
@@ -16,6 +17,8 @@ const HomeTab = ({ widthScreen, onHandle, onDelete }: Props) => {
   const theme = useTheme();
   const [content, setContent] = useState<string>('');
   const { posts } = useSelector((rootState: RootState) => rootState.dashboard);
+  const { user } = useAuth();
+  console.log(posts);
 
   const onHandleChange = (e: any) => {
     setContent(e.target.value);
@@ -61,12 +64,12 @@ const HomeTab = ({ widthScreen, onHandle, onDelete }: Props) => {
             </IconButton>
           </Stack>
         </Box>
-        {posts.map(({ user, content }) => (
+        {posts.map(({ id, content }) => (
           <PostItem
-            key={user}
+            key={id}
             description={content}
-            userName={user}
-            onDelete={() => onDelete(user)}
+            userName={user.name}
+            onDelete={() => onDelete(id)}
           />
         ))}
       </Box>

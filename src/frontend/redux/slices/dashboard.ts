@@ -2,9 +2,10 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { useHttp } from '../../hooks/httpReqHook';
 import IPost from '../../types/dashboard';
 import { RequestMethods } from '../../types/request';
+import IGetPost from '../../types/getPost';
 
 interface IDashboardState {
-  posts: IPost[];
+  posts: IGetPost[];
   postsLoadingStatus: string;
 }
 
@@ -15,7 +16,7 @@ const initialState: IDashboardState = {
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const { request } = useHttp();
-  return request('https://18.204.217.87:8000/api/posts/list');
+  return await request('https://18.204.217.87:8000/api/posts/list')
 });
 
 export const fetchPost = createAsyncThunk('posts/fetchPost', (post: number) => {
@@ -37,8 +38,8 @@ const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postsCreated: (state, action: PayloadAction<IPost>) => {
-      state.posts.push(action.payload);
+    postsCreated: (state, action: PayloadAction<IGetPost>) => {
+      state.posts.unshift(action.payload);
     },
     postsUpdate: (state, action: PayloadAction<IPost>) => {
       const {
@@ -61,8 +62,8 @@ const postsSlice = createSlice({
       .addCase(
         fetchPosts.fulfilled,
         (
-          initialState: { postsLoadingStatus: string; posts: IPost },
-          action: PayloadAction<IPost>
+          initialState: { postsLoadingStatus: string; posts: IGetPost },
+          action: PayloadAction<IGetPost>
         ) => {
           initialState.postsLoadingStatus = 'idle';
           initialState.posts = action.payload;
@@ -91,4 +92,10 @@ const postsSlice = createSlice({
 });
 
 export default postsSlice.reducer;
-export const { postsCreated, postsUpdate, postsDeleted } = postsSlice.actions;
+export const {postsFetching,
+  postsFetched,
+  postsFetchingError,
+  postsCreated,
+  postsUpdate,
+  postsDeleted
+} = postsSlice.actions;

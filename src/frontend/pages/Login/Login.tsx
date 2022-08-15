@@ -39,6 +39,7 @@ const Login = () => {
           fire_base_auth_key: password
         })
         .then(({ data }) => {
+          console.log(data)
           localStorage.setItem('apiToken', data.data.token);
         })
         .catch((err) => {

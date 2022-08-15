@@ -1,10 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // import useAuth from 'frontend/hooks/useAuth';
-import { useEffect } from 'react';
-import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import blacklogo from '../../material/black.png';
 import homeImage from '../../material/home-miami.jpg';
 import Bgvideo from '../../material/home2.mp4';
@@ -12,7 +9,6 @@ import '../../material/homepage.css';
 import { isIPhone, isMetamask } from '../../utils';
 
 const Home = () => {
-  const { user } = useAuth();
   // const navigate = useNavigate();
   const back_to_top = $('#back_to_top');
 

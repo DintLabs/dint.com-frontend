@@ -61,21 +61,22 @@ const NewHome = () => {
   };
 
   const onCreatePost = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
+    (content: string) => {
       const newPost = {
         user: 1,
         type: 'Social',
-        content: 'content'
+        content
       };
       request(
-        'http://18.204.217.87:8000/api/posts/create/',
+        'https://18.204.217.87:8000/api/posts/create/',
         RequestMethods.POST,
         JSON.stringify(newPost)
       )
-        .then((res) => console.log(res, 'Create'))
+        .then(({ data }) => {
+          dispatch(postsCreated(data));
+        })
         .then(() => {
-          dispatch(postsCreated(newPost));
+          console.log('Create');
         })
         .catch((err) => console.log(err));
     },
@@ -84,7 +85,7 @@ const NewHome = () => {
 
   const onDelete = useCallback(
     (post: number) => {
-      request(`http://18.204.217.87:8000/api/posts/delete/${post}/`, RequestMethods.DELETE)
+      request(`https://18.204.217.87:8000/api/posts/delete/${post}/`, RequestMethods.DELETE)
         .then((data) => console.log(data, 'Deleted'))
         .then(() => {
           dispatch(postsDeleted(post));
@@ -103,7 +104,7 @@ const NewHome = () => {
       };
 
       request(
-        `http://18.204.217.87:8000/api/posts/update/${post}/`,
+        `https://18.204.217.87:8000/api/posts/update/${post}/`,
         RequestMethods.PUT,
         JSON.stringify(newPost)
       )
@@ -135,7 +136,7 @@ const NewHome = () => {
       <Box>
         <Grid container>
           <Grid item xs={0} md={3} sx={{ display: widthScreen >= 900 ? '' : 'none' }}>
-            <Sidebar onCreatePost={onCreatePost} />
+            <Sidebar onCreatePost={() => onCreatePost(contentPost)} />
           </Grid>
           <Grid item sx={styleSidebarMobile}>
             <SidebarMobile widthScreen={widthScreen} />

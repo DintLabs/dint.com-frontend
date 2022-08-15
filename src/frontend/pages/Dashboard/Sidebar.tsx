@@ -7,7 +7,7 @@ import { dispatch, RootState, useSelector } from 'frontend/redux/store';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 interface Props {
-  onCreatePost: (e: any) => void;
+  onCreatePost: () => void;
 }
 
 const Sidebar = ({ onCreatePost }: Props) => {
@@ -63,8 +63,8 @@ const Sidebar = ({ onCreatePost }: Props) => {
           <Button
             startIcon={<AddRoundedIcon />}
             variant="contained"
-            onClick={(e) => {
-              onCreatePost(e);
+            onClick={() => {
+              onCreatePost();
             }}
           >
             New Post

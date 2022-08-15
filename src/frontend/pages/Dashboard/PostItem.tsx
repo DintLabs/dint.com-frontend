@@ -16,7 +16,15 @@ import {
 } from '@mui/material';
 import postImg from '../../assets/img/web3/matic-token.png';
 
-const PostItem = ({ userName, description }: { userName: string; description: string }) => {
+const PostItem = ({
+  userName,
+  description,
+  onDelete
+}: {
+  userName: string;
+  description: string;
+  onDelete: () => void;
+}) => {
   const theme = useTheme();
   return (
     <>
@@ -43,7 +51,7 @@ const PostItem = ({ userName, description }: { userName: string; description: st
               }
             />
             <ListItemSecondaryAction>
-              <IconButton>
+              <IconButton onClick={onDelete}>
                 <MoreHorizIcon />
               </IconButton>
             </ListItemSecondaryAction>

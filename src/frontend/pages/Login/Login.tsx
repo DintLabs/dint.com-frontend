@@ -4,6 +4,7 @@ import {
   getAuth,
   getRedirectResult,
   GoogleAuthProvider,
+  onIdTokenChanged,
   sendPasswordResetEmail,
   setPersistence,
   signInWithPopup,
@@ -15,9 +16,10 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
+import axios from 'axios';
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const location: Location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +32,21 @@ const Login = () => {
   const loginClicked = async () => {
     try {
       await setPersistence(authInstance, browserSessionPersistence);
+
+      await axios
+        .post('http://18.204.217.87:8000/api/auth/login', {
+          email,
+          fire_base_auth_key: password
+        })
+        .then(({ data }) => {
+          localStorage.setItem('apiToken', data.data.token);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       await login(email, password);
+
       if (redirectUrl) {
         navigate(redirectUrl);
       } else {

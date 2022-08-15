@@ -23,12 +23,6 @@ import { authInstance, databaseInstance } from './FirebaseInstance';
 
 // ----------------------------------------------------------------------
 
-function initTokenChange() {
-  onIdTokenChanged(authInstance, async (user) => {
-    if (user) localStorage.setItem('firebaseToken', await user.getIdToken());
-  });
-}
-
 const initialState: AuthState = {
   isAuthenticated: false,
   isAdmin: false,
@@ -81,8 +75,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
           const idToken = await user.getIdToken();
           localStorage.setItem('firebaseToken', idToken);
 
-          initTokenChange();
-
           // for get role of loggedin user
           const snapshot = await get(child(ref(databaseInstance), `users/${user.uid}/role`));
 
@@ -112,6 +104,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           // console.log('Else');
           localStorage.removeItem('firebaseToken');
+          localStorage.removeItem('apiToken');
           dispatch({
             type: Types.Initial,
             payload: { isAuthenticated: false, isAdmin: false, user: null, idToken: '' }

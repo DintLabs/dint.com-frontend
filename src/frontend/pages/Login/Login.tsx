@@ -19,7 +19,7 @@ import '../../material/signup.css';
 import axios from 'axios';
 
 const Login = () => {
-  const { login, user } = useAuth();
+  const { login } = useAuth();
   const location: Location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

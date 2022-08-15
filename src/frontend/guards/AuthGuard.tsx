@@ -12,7 +12,7 @@ type AuthGuardProps = {
 };
 
 export default function AuthGuard({ children }: AuthGuardProps) {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { pathname } = useLocation();
   // const [requestedLocation, setRequestedLocation] = useState<string | null>(null);
   const navigate = useNavigate();

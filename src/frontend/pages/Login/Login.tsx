@@ -34,7 +34,7 @@ const Login = () => {
       await setPersistence(authInstance, browserSessionPersistence);
 
       await axios
-        .post('https://api.dint.com//api/auth/login', {
+        .post('http://api.dint.com//api/auth/login', {
           email,
           fire_base_auth_key: password
         })

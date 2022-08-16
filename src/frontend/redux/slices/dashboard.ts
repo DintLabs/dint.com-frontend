@@ -16,17 +16,17 @@ const initialState: IDashboardState = {
 
 export const fetchPost = createAsyncThunk('posts/fetchPost', (post: number) => {
   const { request } = useHttp();
-  return request(`https://api.dint.com//api/posts/get/${post}/`);
+  return request(`http://api.dint.com//api/posts/get/${post}/`);
 });
 
 export const likePost = createAsyncThunk('posts/likePost', () => {
   const { request } = useHttp();
-  return request('https://api.dint.com//api/posts/like/', RequestMethods.POST);
+  return request('http://api.dint.com//api/posts/like/', RequestMethods.POST);
 });
 
 export const commentPost = createAsyncThunk('posts/commentPost', () => {
   const { request } = useHttp();
-  return request('https://api.dint.com//api/posts/comment/', RequestMethods.POST);
+  return request('http://api.dint.com//api/posts/comment/', RequestMethods.POST);
 });
 
 const postsSlice = createSlice({

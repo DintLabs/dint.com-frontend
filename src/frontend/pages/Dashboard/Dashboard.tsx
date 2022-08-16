@@ -77,7 +77,7 @@ const NewHome = () => {
         content
       };
       request(
-        'http://api.dint.com/api/posts/create/',
+        'https://api.dint.com/api/posts/create/',
         RequestMethods.POST,
         JSON.stringify(newPost)
       )
@@ -94,7 +94,7 @@ const NewHome = () => {
 
   const onDelete = useCallback(
     (post: number) => {
-      request(`http://api.dint.com/api/posts/delete/${post}/`, RequestMethods.DELETE)
+      request(`https://api.dint.com/api/posts/delete/${post}/`, RequestMethods.DELETE)
         .then((data) => console.log(data, 'Deleted'))
         .then(() => {
           dispatch(postsDeleted(post));
@@ -113,7 +113,7 @@ const NewHome = () => {
       };
 
       request(
-        `http://api.dint.com/api/posts/update/${post}/`,
+        `https://api.dint.com/api/posts/update/${post}/`,
         RequestMethods.PUT,
         JSON.stringify(newPost)
       )

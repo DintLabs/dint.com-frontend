@@ -36,6 +36,7 @@ const Register = () => {
             instagram: 'null',
             discord: 'null'
           };
+
           await register(email, password, userData);
           console.log(window.userId);
           await axios

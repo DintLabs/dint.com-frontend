@@ -37,7 +37,7 @@ const Register = () => {
             discord: 'null'
           };
           await axios
-            .post('http://18.204.217.87:8000/api/auth/sign-up/', {
+            .post('https://api.dint.com//api/auth/sign-up/', {
               email,
               fire_base_auth_key: password
             })

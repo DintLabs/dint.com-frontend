@@ -36,20 +36,19 @@ const Register = () => {
             instagram: 'null',
             discord: 'null'
           };
+          await register(email, password, userData);
+          console.log(window.userId);
           await axios
             .post('http://api.dint.com/api/auth/sign-up/', {
               email,
-              fire_base_auth_key: password
+              fire_base_auth_key: window.userId
             })
             .then(({ data }) => {
-              alert('data send');
-              console.log(email);
               localStorage.setItem('apiToken', data.data.token);
             })
             .catch((err) => {
               console.log(err);
             });
-          await register(email, password, userData);
           navigate('/auth/login');
         } catch (error: any) {
           switch (error.code) {

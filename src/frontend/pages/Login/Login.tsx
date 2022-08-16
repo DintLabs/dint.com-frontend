@@ -18,7 +18,7 @@ import '../../material/signup.css';
 import axios from 'axios';
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const location: Location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,23 +31,24 @@ const Login = () => {
   const loginClicked = async () => {
     try {
       await setPersistence(authInstance, browserSessionPersistence);
+      const data = await login(email, password);
       await axios
         .post('http://api.dint.com/api/auth/login', {
           email,
-          fire_base_auth_key: password
+          fire_base_auth_key: data.user.uid
         })
         .then(({ data }) => {
+          console.log(data);
           localStorage.setItem('apiToken', data.data.token);
         })
         .catch((err) => {
           console.log(err);
         });
-      await login(email, password);
-      if (redirectUrl) {
-        navigate(redirectUrl);
-      } else {
-        navigate('/dashboard');
-      }
+      // if (redirectUrl) {
+      //   navigate(redirectUrl);
+      // } else {
+      //   navigate('/dashboard');
+      // }
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         console.log(`User is Not Found`);

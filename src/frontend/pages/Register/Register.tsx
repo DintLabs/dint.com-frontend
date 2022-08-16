@@ -40,7 +40,7 @@ const Register = () => {
           await register(email, password, userData);
           console.log(window.userId);
           await axios
-            .post('http://api.dint.com/api/auth/sign-up/', {
+            .post('https://api.dint.com/api/auth/sign-up/', {
               email,
               fire_base_auth_key: window.userId
             })

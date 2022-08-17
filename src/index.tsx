@@ -1,14 +1,30 @@
 import 'bootstrap/dist/css/bootstrap.css';
 // eslint-disable-next-line import/no-named-as-default
 import AuthProvider from 'frontend/contexts/FirebaseContext';
+import 'react-toastify/dist/ReactToastify.css';
+// @ts-ignore
+import { ToastContainer, toast } from 'react-toastify';
+
 import { render } from 'react-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './frontend/components/App';
+
 import * as serviceWorker from './serviceWorker';
 
 const rootElement = document.getElementById('root');
 render(
   <HelmetProvider>
+    <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+    />
     <AuthProvider>
       <App />
     </AuthProvider>

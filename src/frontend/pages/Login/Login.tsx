@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable */
 import {
   browserSessionPersistence,
   getAuth,
@@ -9,13 +9,13 @@ import {
   signInWithPopup,
   signInWithRedirect
 } from 'firebase/auth';
+import axios from 'axios';
 import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import useAuth from 'frontend/hooks/useAuth';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
-import axios from 'axios';
 
 const Login = () => {
   const { login, user } = useAuth();
@@ -33,22 +33,22 @@ const Login = () => {
       await setPersistence(authInstance, browserSessionPersistence);
       const data = await login(email, password);
       await axios
-        .post('http://api.dint.com/api/auth/login', {
+        .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
           email,
           fire_base_auth_key: data.user.uid
         })
-        .then(({ data }) => {
-          console.log(data);
+        .then(({ data }: any) => {
           localStorage.setItem('apiToken', data.data.token);
+          localStorage.setItem('userData', JSON.stringify(data.data));
         })
-        .catch((err) => {
+        .catch((err: any) => {
           console.log(err);
         });
-      // if (redirectUrl) {
-      //   navigate(redirectUrl);
-      // } else {
-      //   navigate('/dashboard');
-      // }
+      if (redirectUrl) {
+        navigate(redirectUrl);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         console.log(`User is Not Found`);

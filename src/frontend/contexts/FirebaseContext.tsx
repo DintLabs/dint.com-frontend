@@ -143,11 +143,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = (email: string, password: string, userData: any) =>
     createUserWithEmailAndPassword(authInstance, email, password).then(async (res) => {
+      // @ts-ignore
       window.userId = res.user.uid;
       await set(ref(databaseInstance, `users/${res.user?.uid}`), userData);
     });
 
   const logout = async () => {
+    localStorage.clear();
     await signOut(authInstance);
     window.location.reload();
   };

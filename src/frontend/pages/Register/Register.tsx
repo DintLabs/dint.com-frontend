@@ -1,9 +1,10 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable */
 import useAuth from 'frontend/hooks/useAuth';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
+// @ts-ignore
 import axios from 'axios';
 
 const Register = () => {
@@ -38,15 +39,18 @@ const Register = () => {
           };
 
           await register(email, password, userData);
-          console.log(window.userId);
           await axios
-            .post('http://api.dint.com/api/auth/sign-up/', {
+            .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, {
               email,
+              // @ts-ignore
               fire_base_auth_key: window.userId
             })
+            // @ts-ignore
             .then(({ data }) => {
               localStorage.setItem('apiToken', data.data.token);
+              localStorage.setItem('userData', JSON.stringify(data.data));
             })
+            // @ts-ignore
             .catch((err) => {
               console.log(err);
             });
@@ -54,7 +58,8 @@ const Register = () => {
         } catch (error: any) {
           switch (error.code) {
             case 'auth/email-already-in-use':
-              console.log(`Email address already in use.`);
+              const newLocal = `Email address already in use.`;
+              console.log(newLocal);
               setSignErr('Email Address is Already in use, Try Another');
               break;
             case 'auth/invalid-email':

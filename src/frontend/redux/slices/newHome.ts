@@ -8,7 +8,8 @@ type NewHomeState = {
 export enum HOME_SIDE_MENU {
   HOME = 'HOME',
   MESSAGES = 'MESSAGES',
-  MY_PROFILE = 'MY_PROFILE'
+  MY_PROFILE = 'MY_PROFILE',
+  ADD_POST = 'ADD_POST'
 }
 
 const initialState: NewHomeState = {

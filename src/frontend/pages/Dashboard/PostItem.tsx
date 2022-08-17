@@ -16,7 +16,15 @@ import {
 } from '@mui/material';
 import postImg from '../../assets/img/web3/matic-token.png';
 
-const PostItem = ({ userName, description }: { userName: string; description: string }) => {
+const PostItem = ({
+  userName,
+  description,
+  image
+}: {
+  image?: string;
+  userName: string;
+  description: string;
+}) => {
   const theme = useTheme();
   return (
     <>
@@ -54,9 +62,11 @@ const PostItem = ({ userName, description }: { userName: string; description: st
             {description}
           </Typography>
         </Box>
-        <Box sx={{ textAlign: 'center' }}>
-          <img src={postImg} alt="post" />
-        </Box>
+        {image && (
+          <Box sx={{ textAlign: 'center' }}>
+            <img src={postImg} alt="post" />
+          </Box>
+        )}
         <Box sx={{ p: 2 }}>
           <Stack direction="row">
             <IconButton>

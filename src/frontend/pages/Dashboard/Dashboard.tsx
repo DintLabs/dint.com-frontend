@@ -59,8 +59,10 @@ const NewHome = () => {
   };
 
   const fetchPostsList = async () => {
-    const { data } = await _axios.get('/api/posts/list');
-    setPosts(data.data.reverse());
+    try {
+      const { data } = await _axios.get('/api/posts/list');
+      setPosts(data.data.reverse());
+    } catch (err) {}
   };
 
   const createPost = async (data: any) => {

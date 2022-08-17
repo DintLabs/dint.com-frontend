@@ -107,7 +107,13 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
             onChange={(e) => setContent(e.target.value)}
             placeholder="Compose new post..."
           />
-          <img src={image} />
+          {image && (
+            <img
+              src={image}
+              style={{ width: 300, height: 300, objectFit: 'cover' }}
+              className="mb-3"
+            />
+          )}
           <div style={{ borderBottom: '1px solid grey' }} className="w-100" />
           <Stack className="d-flex justify-content-between align-items-center flex-row mt-2">
             <Stack className="d-flex align-items-center justify-content-center flex-row">

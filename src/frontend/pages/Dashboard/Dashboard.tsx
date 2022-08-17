@@ -59,13 +59,13 @@ const NewHome = () => {
   };
 
   const fetchPostsList = async () => {
-    const { data } = await _axios.get('https://api.dint.com/api/posts/list');
+    const { data } = await _axios.get('/api/posts/list');
     setPosts(data.data.reverse());
   };
 
   const createPost = async (data: any) => {
     try {
-      const { res } = await _axios.post('https://api.dint.com/api/posts/create/', data);
+      const { res } = await _axios.post('/api/posts/create/', data);
       toast.success('Post Created Successful!');
       dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.HOME }));
     } catch (err) {

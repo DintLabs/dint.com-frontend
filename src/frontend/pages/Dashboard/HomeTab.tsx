@@ -52,7 +52,7 @@ const HomeTab = ({ widthScreen, posts }: Props) => {
 
         {posts.map((item) => (
           <PostItem
-            key={item?.content}
+            key={item?.created_at}
             description={item?.content}
             createdAt={item?.created_at}
             userName={item.user.firstname}

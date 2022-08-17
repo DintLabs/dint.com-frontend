@@ -69,7 +69,8 @@ const NewHome = () => {
       toast.success('Post Created Successful!');
       dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.HOME }));
     } catch (err) {
-      toast.error(err);
+      // @ts-ignore
+      toast.error(err.toString());
     }
   };
 

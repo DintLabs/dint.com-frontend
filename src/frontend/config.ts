@@ -21,7 +21,7 @@ export const FIREBASE_CONFIG = {
 export const AWS_S3_CONFIG = {
   accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID || '',
   secretAccessKey:
-    process.env.REACT_APP_SECRET_ACCESS_KEY || 'process.env.REACT_APP_SECRET_ACCESS_KEY'
+    process.env.REACT_APP_SECRET_ACCESS_KEY || ''
 };
 
 export const ENV: 'dev' | 'test' = 'dev';

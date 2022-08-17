@@ -1,3 +1,4 @@
+/* eslint-disable */
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import MessageRoundedIcon from '@mui/icons-material/MessageRounded';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -15,15 +16,19 @@ import {
   useTheme
 } from '@mui/material';
 import postImg from '../../assets/img/web3/matic-token.png';
+// @ts-ignore
+import * as ta from 'time-ago';
 
 const PostItem = ({
   userName,
   description,
-  image
+  image,
+  createdAt
 }: {
   image?: string;
   userName: string;
   description: string;
+  createdAt: string;
 }) => {
   const theme = useTheme();
   return (
@@ -46,7 +51,7 @@ const PostItem = ({
               }
               secondary={
                 <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                  10 Day ago
+                  {ta.ago(new Date(createdAt))}
                 </Typography>
               }
             />

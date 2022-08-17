@@ -1,3 +1,4 @@
+/* eslint-disable */
 import ImageIcon from '@mui/icons-material/Image';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Box, IconButton, Input, Stack, Typography, useTheme } from '@mui/material';
@@ -53,6 +54,7 @@ const HomeTab = ({ widthScreen, posts }: Props) => {
           <PostItem
             key={item?.content}
             description={item?.content}
+            createdAt={item?.created_at}
             userName={item.user.firstname}
           />
         ))}

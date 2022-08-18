@@ -84,6 +84,7 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
         setIsFileUploaded(false);
         setImage('');
         setLoading(false);
+        setVideo('');
       }, 2000);
     }
   };

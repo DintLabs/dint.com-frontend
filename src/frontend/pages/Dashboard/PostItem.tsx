@@ -66,7 +66,7 @@ const PostItem = ({
         <List>
           <ListItem>
             <ListItemAvatar>
-              <Avatar src={post.profile_image}>{post.first_name ?? 'UN'}</Avatar>
+              <Avatar src={post.user.profile_image} />
             </ListItemAvatar>
             <ListItemText
               primary={

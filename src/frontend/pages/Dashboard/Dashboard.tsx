@@ -22,11 +22,16 @@ const NewHome = () => {
   const [widthScreen, setWidthScreen] = useState<number>(window.screen.width);
   const [contentPost, setContentPost] = useState<string>('');
   const [posts, setPosts] = React.useState([]);
+  const [userPosts, setUserPosts] = React.useState([]);
   const postsLoadingStatus = '';
 
   useEffect(() => {
     if (selectedMenu == HOME_SIDE_MENU.HOME) {
       fetchPostsList();
+    }
+
+    if (selectedMenu == HOME_SIDE_MENU.MY_PROFILE) {
+      fetUserPosts();
     }
   }, [selectedMenu]);
 
@@ -74,6 +79,19 @@ const NewHome = () => {
       // @ts-ignore
       toast.error(err.toString());
     }
+  };
+
+  const fetUserPosts = async (data: any) => {
+    try {
+      const user = JSON.parse(localStorage.getItem('userData') ?? '{}');
+      if (!user.id) {
+        toast.error("Can't find User");
+        return;
+      }
+
+      const { data } = await _axios.get(`/api/posts/list_by_user_id/${user.id}`);
+      setUserPosts(data.data.reverse());
+    } catch (err) {}
   };
 
   const onDelete = () => {};
@@ -136,7 +154,35 @@ const NewHome = () => {
                 </Grid>
               </Grid>
             )}
-            {HOME_SIDE_MENU.MY_PROFILE === selectedMenu && <MyProfile />}
+            {HOME_SIDE_MENU.MY_PROFILE === selectedMenu && (
+              <Grid container>
+                <Grid item xs={12} md={8}>
+                  <MyProfile posts={userPosts} widthScreen={widthScreen} />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <Box sx={styleTerms}>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
+                    >
+                      Privacy Policy
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
+                    >
+                      Cookie Notice
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
+                    >
+                      Terms of Service
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            )}
             {HOME_SIDE_MENU.MESSAGES === selectedMenu && <Messages widthScreen={widthScreen} />}
             {HOME_SIDE_MENU.ADD_POST === selectedMenu && (
               <AddPost widthScreen={widthScreen} createPost={createPost} />

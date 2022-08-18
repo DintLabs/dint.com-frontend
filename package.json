@@ -101,5 +101,8 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.7.0-next-9fcaf88d5-20220801",
     "prettier": "^2.3.2"
+  },
+  "browser": {
+    "crypto": false
   }
 }

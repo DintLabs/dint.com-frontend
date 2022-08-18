@@ -1123,7 +1123,7 @@ section.email-col {
     background: url(https://designsupply-web.com/samplecontent/vender/codepen/20181014.png) no-repeat center center/cover;
 }
 
-video {
+.bg-video-warp video {
     min-width : 100%;
     min-height: 140vh;
     z-index   : 1;

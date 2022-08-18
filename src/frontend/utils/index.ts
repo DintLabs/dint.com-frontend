@@ -99,3 +99,6 @@ export const isMobile = () => {
   })(navigator.userAgent || navigator.vendor || (window as any).opera);
   return check;
 };
+
+
+export const generateFromEmail = (email: string) =>  email.split("@").at(0);

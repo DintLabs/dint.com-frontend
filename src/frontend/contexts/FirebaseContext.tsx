@@ -145,13 +145,14 @@ function AuthProvider({ children }: { children: ReactNode }) {
     createUserWithEmailAndPassword(authInstance, email, password).then(async (res) => {
       // @ts-ignore
       window.userId = res.user.uid;
+      window.userData = res.user;
       await set(ref(databaseInstance, `users/${res.user?.uid}`), userData);
     });
 
   const logout = async () => {
     localStorage.clear();
     await signOut(authInstance);
-    window.location.reload();
+    // window.location.reload();
   };
 
   const resetPassword = async (email: string) => {

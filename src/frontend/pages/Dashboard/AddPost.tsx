@@ -19,6 +19,7 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
   const [file, setFile] = useState<any>({});
   const [isFileUploaded, setIsFileUploaded] = useState<boolean>(false);
   const [image, setImage] = React.useState('');
+  const [video, setVideo] = React.useState('');
   const theme = useTheme();
 
   const s3Config = {
@@ -35,21 +36,20 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
       return;
     }
 
-    if (content.length < 1) {
-      toast.error('Post Description is Required!');
-      return;
-    }
-
     if (isFileUploaded && file) {
-      console.log(s3Config);
+      if (content.length < 1) {
+        toast.error('Post Description is Required!');
+        return;
+      }
+
       const s3 = new ReactS3Client(s3Config);
       console.log(s3);
       try {
         const res = await s3.uploadFile(file);
-        console.log(res);
         createPost({
           type: 'Social',
           user: user.id,
+          media: res.location,
           content
         });
       } catch (exception) {
@@ -60,6 +60,7 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
       createPost({
         type: 'Social',
         user: user.id,
+        media: res.location,
         content
       });
     }
@@ -74,8 +75,26 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
     const file = event.target.files[0];
     setFile(file);
     setIsFileUploaded(true);
-    setImage(URL.createObjectURL(file));
+    if (getFileType(file) == 'image') {
+      setImage(URL.createObjectURL(file));
+      setVideo('');
+    } else if (getFileType(file) == 'video') {
+      setVideo(URL.createObjectURL(file));
+      setImage('');
+    }
   };
+
+  function getFileType(file) {
+    if (file.type.match('image.*')) return 'image';
+
+    if (file.type.match('video.*')) return 'video';
+
+    if (file.type.match('audio.*')) return 'audio';
+
+    // etc...
+
+    return 'other';
+  }
 
   return (
     <>
@@ -107,12 +126,14 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
             onChange={(e) => setContent(e.target.value)}
             placeholder="Compose new post..."
           />
-          {image && (
-            <img
-              src={image}
-              style={{ width: 300, height: 300, objectFit: 'cover' }}
-              className="mb-3"
-            />
+          {image && <img src={image} style={{ width: 300 }} className="mb-3" />}
+          {video && (
+            <div className="post_video" style={{ width: 300, height: 'auto !important' }}>
+              <video width="300px" controls>
+                <source src={video} id="video_here" />
+                Your browser does not support HTML5 video.
+              </video>
+            </div>
           )}
           <div style={{ borderBottom: '1px solid grey' }} className="w-100" />
           <Stack className="d-flex justify-content-between align-items-center flex-row mt-2">
@@ -132,9 +153,12 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
               </IconButton>
             </Stack>
 
-            <Button onClick={onCreatePost} variant="contained">
-              Publish
-            </Button>
+            {video.length > 0 ||
+              (image.length > 0 && (
+                <Button onClick={onCreatePost} variant="contained">
+                  Publish
+                </Button>
+              ))}
           </Stack>
         </Box>
       </Box>

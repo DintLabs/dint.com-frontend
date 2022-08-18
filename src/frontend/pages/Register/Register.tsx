@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
+import { generateFromEmail } from 'frontend/utils';
+
 // @ts-ignore
 import axios from 'axios';
 
@@ -28,27 +30,37 @@ const Register = () => {
           const userData = {
             email,
             role: 'simple',
-            name: 'user',
             biography: 'no biography yet',
-            city: 'null',
+            name: 'user',
+            city: '',
             profileImage:
               'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
-            twitter: 'null',
-            instagram: 'null',
-            discord: 'null'
+            twitter: '',
+            instagram: '',
+            discord: ''
           };
 
           await register(email, password, userData);
+          const user = window.userData;
+          const username = generateFromEmail(user.email);
+          const userData2 = {
+            ...user,
+            fire_base_auth_key: user?.uid,
+            role: 'simple',
+            biography: 'no biography yet',
+            custom_username: username ?? '',
+            profile_image:
+              user?.photoURL ??
+              'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
+            display_name: user?.displayName ?? ''
+          };
           await axios
-            .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, {
-              email,
-              // @ts-ignore
-              fire_base_auth_key: window.userId
-            })
+            .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData2)
             // @ts-ignore
             .then(({ data }) => {
               localStorage.setItem('apiToken', data.data.token);
               localStorage.setItem('userData', JSON.stringify(data.data));
+              window.location.reload();
             })
             // @ts-ignore
             .catch((err) => {

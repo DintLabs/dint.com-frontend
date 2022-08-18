@@ -4,6 +4,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Box, IconButton, Input, Stack, Typography, useTheme } from '@mui/material';
 import './navbarTab.css';
 import PostItem from './PostItem';
+import AddPost from './AddPost';
 
 interface Props {
   widthScreen: number;
@@ -32,7 +33,7 @@ const HomeTab = ({ widthScreen, posts }: Props) => {
           </Typography>
         </Box>
 
-        <Box sx={{ p: 1, borderBottom: `8px solid ${theme.palette.grey[700]}` }}>
+        {/* <Box sx={{ p: 1, borderBottom: `8px solid ${theme.palette.grey[700]}` }}>
           <Input
             multiline
             rows={4}
@@ -48,7 +49,8 @@ const HomeTab = ({ widthScreen, posts }: Props) => {
               <MoreHorizIcon />
             </IconButton>
           </Stack>
-        </Box>
+        </Box> */}
+        <AddPost />
 
         {posts.map((item) => (
           <PostItem
@@ -56,6 +58,8 @@ const HomeTab = ({ widthScreen, posts }: Props) => {
             description={item?.content}
             createdAt={item?.created_at}
             userName={item.user.firstname}
+            image={item?.media}
+            post={item}
           />
         ))}
         {/* <PostItem

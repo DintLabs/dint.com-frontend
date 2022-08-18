@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable */
 import {
   browserSessionPersistence,
   getAuth,
@@ -9,13 +9,15 @@ import {
   signInWithPopup,
   signInWithRedirect
 } from 'firebase/auth';
+import axios from 'axios';
 import { authInstance } from 'frontend/contexts/FirebaseInstance';
 import useAuth from 'frontend/hooks/useAuth';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
-import axios from 'axios';
+import { generateFromEmail } from 'frontend/utils';
+// @ts-ignore
 
 const Login = () => {
   const { login, user } = useAuth();
@@ -33,22 +35,23 @@ const Login = () => {
       await setPersistence(authInstance, browserSessionPersistence);
       const data = await login(email, password);
       await axios
-        .post('http://api.dint.com/api/auth/login', {
+        .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
           email,
           fire_base_auth_key: data.user.uid
         })
-        .then(({ data }) => {
-          console.log(data);
+        .then(({ data }: any) => {
           localStorage.setItem('apiToken', data.data.token);
+          localStorage.setItem('userData', JSON.stringify(data.data));
+          window.location.reload();
         })
-        .catch((err) => {
+        .catch((err: any) => {
           console.log(err);
         });
-      // if (redirectUrl) {
-      //   navigate(redirectUrl);
-      // } else {
-      //   navigate('/dashboard');
-      // }
+      if (redirectUrl) {
+        navigate(redirectUrl);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         console.log(`User is Not Found`);
@@ -80,7 +83,7 @@ const Login = () => {
     }
   };
 
-  const googleSignin = () => {
+  const googleSignin = async () => {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
 
@@ -94,47 +97,117 @@ const Login = () => {
             });
 
           getRedirectResult(auth)
-            .then((result) => {
+            .then(async (result) => {
               // This gives you a Google Access Token. You can use it to access Google APIs.
               // const credential = GoogleAuthProvider.credentialFromResult(result);
               // const token = credential.accessToken;
-              console.log(result);
+              // @ts-ignore
+              const { user } = result;
+              const username = generateFromEmail(user.email);
+              const userData = {
+                ...user,
+                fire_base_auth_key: user?.uid,
+                role: 'simple',
+                biography: 'no biography yet',
+                custom_username: username ?? '',
+                profile_image:
+                  user?.photoURL ??
+                  'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
+                display_name: user?.displayName ?? ''
+              };
+              await axios
+                .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+                  email: user.email,
+                  fire_base_auth_key: user.uid
+                })
+                .then(async ({ data }: any) => {
+                  if (data.code == 200) {
+                    localStorage.setItem('apiToken', data.data.token);
+                    localStorage.setItem('userData', JSON.stringify(data.data));
+                    window.location.reload();
+                  } else {
+                    await axios
+                      .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
+                      .then(async ({ data }) => {
+                        await axios
+                          .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+                            email: user.email,
+                            fire_base_auth_key: user.uid
+                          })
+                          .then(({ data }) => {
+                            localStorage.setItem('apiToken', data.data.token);
+                            localStorage.setItem('userData', JSON.stringify(data.data));
+                            window.location.reload();
+                          });
+                      });
+                  }
+                })
+                .catch((err: any) => {
+                  console.log(err);
+                });
               if (redirectUrl) {
                 navigate(redirectUrl);
               } else {
                 navigate('/dashboard');
               }
-              // The signed-in user info.
-              // const { user } = result;
             })
-            .catch((error) => {
-              // Handle Errors here.
-              // const errorCode = error.code;
-              // const errorMessage = error.message;
-              // // The email of the user's account used.
-              // const { email } = error.customData;
-              // // The AuthCredential type that was used.
-              // const credential = GoogleAuthProvider.credentialFromError(error);
-              // // ...
-            });
+            .catch((error) => {});
         })
         .catch((e) => {
           alert(e);
         });
     } else {
       signInWithPopup(auth, provider)
-        .then((result) => {
+        .then(async (result) => {
           // This gives you a Google Access Token. You can use it to access the Google API.
           // const credential = GoogleAuthProvider.credentialFromResult(result);
           // const token = credential.accessToken;
           // The signed-in user info.
           const { user } = result;
-          // props.loginStateChange();
-          // props.setemail(user.email);
-          // sessionStorage.setItem('logged', true);
-          // sessionStorage.setItem('user_email', user.email);
-          // navigate(redirectUrl);
-          console.log(result, user, 'Else');
+
+          console.log(user);
+          const username = generateFromEmail(user.email);
+          const userData = {
+            ...user,
+            fire_base_auth_key: user?.uid,
+            role: 'simple',
+            biography: 'no biography yet',
+            custom_username: username ?? '',
+            profile_image:
+              user?.photoURL ??
+              'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
+            display_name: user?.displayName ?? ''
+          };
+          await axios
+            .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+              email: user.email,
+              fire_base_auth_key: user.uid
+            })
+            .then(async ({ data }: any) => {
+              if (data.code == 200) {
+                localStorage.setItem('apiToken', data.data.token);
+                localStorage.setItem('userData', JSON.stringify(data.data));
+                window.location.reload();
+              } else {
+                await axios
+                  .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
+                  .then(async ({ data }) => {
+                    await axios
+                      .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+                        email: user.email,
+                        fire_base_auth_key: user.uid
+                      })
+                      .then(({ data }) => {
+                        localStorage.setItem('apiToken', data.data.token);
+                        localStorage.setItem('userData', JSON.stringify(data.data));
+                        window.location.reload();
+                      });
+                  });
+              }
+            })
+            .catch((err: any) => {
+              console.log(err);
+            });
           if (redirectUrl) {
             navigate(redirectUrl);
           } else {

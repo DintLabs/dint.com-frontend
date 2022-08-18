@@ -17,4 +17,15 @@ export const FIREBASE_CONFIG = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID || ''
 };
 
+
+export const AWS_S3_CONFIG = {
+  accessKeyId: "AKIAYHXC3DG7TLGGQC7I",
+  secretAccessKey: "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"
+};
+// export const AWS_S3_CONFIG = {
+//   accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID || '',
+//   secretAccessKey:
+//     process.env.REACT_APP_SECRET_ACCESS_KEY || ''
+// };
+
 export const ENV: 'dev' | 'test' = 'dev';

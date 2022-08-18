@@ -47,10 +47,12 @@
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "react-toastify": "^9.0.8",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.19",
     "swiper": "^8.2.5",
+    "time-ago": "^0.2.1",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
@@ -99,5 +101,8 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.7.0-next-9fcaf88d5-20220801",
     "prettier": "^2.3.2"
+  },
+  "browser": {
+    "crypto": false
   }
 }

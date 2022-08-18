@@ -4,8 +4,35 @@ import Tab from '@mui/material/Tab';
 import useAuth from 'frontend/hooks/useAuth';
 import React from 'react';
 import userCoverImg from '../../assets/img/web3/images.jpeg';
+import PostItem from './PostItem';
 
-const MyProfile = () => {
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+const MyProfile = ({ posts, widthScreen }: { posts: any; widthScreen: any }) => {
   const { user } = useAuth();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -26,8 +53,7 @@ const MyProfile = () => {
       <Box
         style={{
           borderLeft: `1px solid ${theme.palette.grey[700]}`,
-          borderRight: `1px solid ${theme.palette.grey[700]}`,
-          height: '95vh'
+          borderRight: `1px solid ${theme.palette.grey[700]}`
         }}
       >
         <Box
@@ -76,10 +102,23 @@ const MyProfile = () => {
             onChange={handleChange}
             sx={{ borderBottom: `1px solid ${theme.palette.grey[700]}` }}
           >
-            <Tab label="No Posts" />
+            <Tab label={`${posts.length ?? 0} Posts`} />
             <Tab label="No Media" />
           </Tabs>
         </Box>
+
+        <TabPanel value={value} index={0}>
+          {posts.map((item) => (
+            <PostItem
+              key={item?.created_at}
+              description={item?.content}
+              createdAt={item?.created_at}
+              userName={item.user.firstname}
+              image={item?.media}
+              post={item}
+            />
+          ))}
+        </TabPanel>
       </Box>
     </>
   );

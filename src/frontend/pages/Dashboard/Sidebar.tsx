@@ -56,7 +56,13 @@ const Sidebar = () => {
         </ListItem>
 
         <ListItem sx={{ justifyContent: 'center', mt: 6 }}>
-          <Button startIcon={<AddRoundedIcon />} variant="contained">
+          <Button
+            startIcon={<AddRoundedIcon />}
+            variant="contained"
+            onClick={() => {
+              dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.ADD_POST }));
+            }}
+          >
             New Post
           </Button>
         </ListItem>

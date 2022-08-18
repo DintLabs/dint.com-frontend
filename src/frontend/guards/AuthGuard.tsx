@@ -12,13 +12,13 @@ type AuthGuardProps = {
 };
 
 export default function AuthGuard({ children }: AuthGuardProps) {
-  const { isAuthenticated } = useAuth();
+  const { user } = useAuth();
   const { pathname } = useLocation();
   // const [requestedLocation, setRequestedLocation] = useState<string | null>(null);
   const navigate = useNavigate();
-  console.log(pathname);
+  const userData = localStorage.getItem('userData');
 
-  if (!isAuthenticated) {
+  if (!userData) {
     Swal.fire({
       title: 'You are not logged in',
       text: 'Click login button to Login',

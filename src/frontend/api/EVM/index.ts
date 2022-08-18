@@ -1,3 +1,4 @@
+// @ts-ignore
 import { ethers } from 'ethers';
 import { API_KEY } from '../../config';
 import { ABI } from '../../web3/model';

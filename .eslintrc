@@ -52,15 +52,15 @@
         "vars": "all",
         "args": "none"
       }
-    ],
-    "prettier/prettier": [
-      2,
-      {
-        "printWidth": 100,
-        "singleQuote": true,
-        "trailingComma": "none",
-        "tabWidth": 2
-      }
     ]
+    // "prettier/prettier": [
+    //   2,
+    //   {
+    //     "printWidth": 100,
+    //     "singleQuote": true,
+    //     "trailingComma": "none",
+    //     "tabWidth": 2
+    //   }
+    // ]
   }
 }

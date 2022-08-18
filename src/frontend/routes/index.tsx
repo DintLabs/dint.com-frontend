@@ -99,6 +99,22 @@ export default function Router() {
               <NewHome />
             </AuthGuard>
           )
+        },
+        {
+          path: '/dashboard/:page',
+          element: (
+            <AuthGuard>
+              <NewHome />
+            </AuthGuard>
+          )
+        },
+        {
+          path: '/dashboard/:page/:username',
+          element: (
+            <AuthGuard>
+              <NewHome />
+            </AuthGuard>
+          )
         }
       ]
     },

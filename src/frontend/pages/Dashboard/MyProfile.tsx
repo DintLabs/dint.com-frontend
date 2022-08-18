@@ -1,6 +1,10 @@
+// @ts-nocheck
+/* eslint-disable */
+
 import LaunchRoundedIcon from '@mui/icons-material/LaunchRounded';
 import { Avatar, Badge, Box, IconButton, Stack, Tabs, Typography, useTheme } from '@mui/material';
 import Tab from '@mui/material/Tab';
+import _axios from 'frontend/api/axios';
 import useAuth from 'frontend/hooks/useAuth';
 import React from 'react';
 import userCoverImg from '../../assets/img/web3/images.jpeg';
@@ -36,10 +40,16 @@ const MyProfile = ({ posts, widthScreen }: { posts: any; widthScreen: any }) => 
   const { user } = useAuth();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const [userDetails, setUserDetails] = React.useState([]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  React.useEffect(async () => {
+    const { data } = await _axios.get('/api/user/get-profile-by-token/');
+    setUserDetails(data.data);
+  }, []);
 
   console.log(user);
   if (!user)
@@ -91,7 +101,7 @@ const MyProfile = ({ posts, widthScreen }: { posts: any; widthScreen: any }) => 
               {user.displayName || user.name}
             </Typography>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-              @username &#8226; Avaliable Now
+              @{userDetails.custom_username} &#8226; Avaliable Now
             </Typography>
           </Box>
         </Box>

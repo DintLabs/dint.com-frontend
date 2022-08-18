@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable */
 import useAuth from 'frontend/hooks/useAuth';
 import { useState } from 'react';

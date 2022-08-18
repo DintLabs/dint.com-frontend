@@ -1,4 +1,5 @@
 /* eslint-disable */
+// @ts-nocheck
 import {
   browserSessionPersistence,
   getAuth,
@@ -122,23 +123,16 @@ const Login = () => {
                 })
                 .then(async ({ data }: any) => {
                   if (data.code == 200) {
-                    localStorage.setItem('apiToken', data.data.token);
+                    localStorage.setItem('', data.data.token);
                     localStorage.setItem('userData', JSON.stringify(data.data));
                     window.location.reload();
                   } else {
                     await axios
                       .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
                       .then(async ({ data }) => {
-                        await axios
-                          .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
-                            email: user.email,
-                            fire_base_auth_key: user.uid
-                          })
-                          .then(({ data }) => {
-                            localStorage.setItem('apiToken', data.data.token);
-                            localStorage.setItem('userData', JSON.stringify(data.data));
-                            window.location.reload();
-                          });
+                        localStorage.setItem('apiToken', data.data.token);
+                        localStorage.setItem('userData', JSON.stringify(data.data));
+                        window.location.reload();
                       });
                   }
                 })
@@ -192,16 +186,9 @@ const Login = () => {
                 await axios
                   .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
                   .then(async ({ data }) => {
-                    await axios
-                      .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
-                        email: user.email,
-                        fire_base_auth_key: user.uid
-                      })
-                      .then(({ data }) => {
-                        localStorage.setItem('apiToken', data.data.token);
-                        localStorage.setItem('userData', JSON.stringify(data.data));
-                        window.location.reload();
-                      });
+                    localStorage.setItem('apiToken', data.data.token);
+                    localStorage.setItem('userData', JSON.stringify(data.data));
+                    window.location.reload();
                   });
               }
             })

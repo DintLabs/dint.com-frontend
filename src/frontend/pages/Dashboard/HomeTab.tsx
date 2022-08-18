@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable */
 import ImageIcon from '@mui/icons-material/Image';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';

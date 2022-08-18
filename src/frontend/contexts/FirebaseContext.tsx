@@ -1,3 +1,5 @@
+// @ts-nocheck
+/* eslint-disable */
 /* eslint-disable import/no-duplicates */
 import {
   createUserWithEmailAndPassword,

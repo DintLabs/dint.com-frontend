@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable */
 import React, { useLayoutEffect, useEffect, useState, useCallback } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
@@ -16,14 +17,20 @@ import SidebarMobile from './SidebarMobile';
 import AddPost from './AddPost';
 // @ts-ignore
 import { dispatch } from 'frontend/redux/store';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 const NewHome = () => {
-  const { selectedMenu } = useSelector((rootState: RootState) => rootState.newHome);
+  const [selectedMenu, setSelectedMenu] = React.useState([]);
+  // const { selectedMenu } = useSelector((rootState: RootState) => rootState.newHome);
   const [widthScreen, setWidthScreen] = useState<number>(window.screen.width);
   const [contentPost, setContentPost] = useState<string>('');
   const [posts, setPosts] = React.useState([]);
   const [userPosts, setUserPosts] = React.useState([]);
+  const [profileUserPosts, setProfileUserPosts] = React.useState([]);
   const postsLoadingStatus = '';
+  const params = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedMenu == HOME_SIDE_MENU.HOME) {
@@ -34,6 +41,34 @@ const NewHome = () => {
       fetUserPosts();
     }
   }, [selectedMenu]);
+
+  const validPages = [
+    HOME_SIDE_MENU.ADD_POST,
+    HOME_SIDE_MENU.HOME,
+    HOME_SIDE_MENU.MY_PROFILE,
+    HOME_SIDE_MENU.MESSAGES
+  ];
+  React.useEffect(() => {
+    // alert(params.page);
+    if (params.page) {
+      if (!params.username) {
+        if (validPages.includes(params.page)) {
+          setSelectedMenu(params.page);
+        } else {
+          navigate('/404');
+        }
+      } else {
+        setSelectedMenu('userProfile');
+        fetchUserProfilePosts();
+      }
+    } else {
+      setSelectedMenu(HOME_SIDE_MENU.HOME);
+    }
+  }, [location]);
+
+  const fetchUserPorfilePosts = () => {
+    // const
+  };
 
   useLayoutEffect(() => {
     function updateWidth() {
@@ -70,10 +105,20 @@ const NewHome = () => {
     } catch (err) {}
   };
 
-  const createPost = async (data: any) => {
+  const createPost = async (toastId, data: any) => {
     try {
       const { res } = await _axios.post('/api/posts/create/', data);
-      toast.success('Post Created Successful!');
+      setTimeout(() => {
+        toast.update(toastId, {
+          render: 'Post Added Successful!',
+          type: 'success',
+          isLoading: false
+        });
+      }, 1000);
+
+      setTimeout(() => {
+        toast.dismiss();
+      }, 3000);
       fetchPostsList();
       dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.HOME }));
     } catch (err) {
@@ -156,6 +201,35 @@ const NewHome = () => {
               </Grid>
             )}
             {HOME_SIDE_MENU.MY_PROFILE === selectedMenu && (
+              <Grid container>
+                <Grid item xs={12} md={8}>
+                  <MyProfile posts={userPosts} widthScreen={widthScreen} />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <Box sx={styleTerms}>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
+                    >
+                      Privacy Policy
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
+                    >
+                      Cookie Notice
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
+                    >
+                      Terms of Service
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            )}
+            {HOME_SIDE_MENU.MY_PROFILE === 'userProfile' && (
               <Grid container>
                 <Grid item xs={12} md={8}>
                   <MyProfile posts={userPosts} widthScreen={widthScreen} />

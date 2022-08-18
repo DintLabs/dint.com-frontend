@@ -1,3 +1,5 @@
+// @ts-nocheck
+/* eslint-disable */
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { useHttp } from '../../hooks/httpReqHook';
 import IPost from '../../types/dashboard';

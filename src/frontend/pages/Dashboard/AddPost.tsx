@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable */
 import React, { useState } from 'react';
 import ImageIcon from '@mui/icons-material/Image';
@@ -33,18 +34,27 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
   const onCreatePost = async () => {
     if (!loading) {
       setLoading(true);
+      const toastId = toast.loading('Uploading File...');
       const user = JSON.parse(localStorage.getItem('userData') ?? '{}');
       if (!user.id) {
-        toast.error("Can't find User");
+        toast.update(toastId, {
+          type: 'error',
+          render: "Can't find User Id"
+        });
+        setTimeout(() => toast.dismiss(), 2000);
         return;
       }
 
       if (isFileUploaded && file) {
         const s3 = new ReactS3Client(s3Config);
-        console.log(s3);
         try {
           const res = await s3.uploadFile(file);
-          createPost({
+          toast.update(toastId, {
+            render: 'File Uploaded Successful',
+            type: 'success',
+            isLoading: false
+          });
+          createPost(toastId, {
             type: 'Social',
             user: user.id,
             media: res.location,
@@ -53,9 +63,14 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
         } catch (exception) {
           console.log(exception);
           console.debug(exception);
+          toast.update({
+            render: exception.toString(),
+            type: 'error'
+          });
+          setTimeout(() => toast.dismiss(), 2000);
         }
       } else {
-        createPost({
+        createPost(toastId, {
           type: 'Social',
           user: user.id,
           media: res.location,
@@ -63,11 +78,13 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
         });
       }
 
-      setContent('');
-      setFile(null);
-      setIsFileUploaded(false);
-      setImage('');
-      setLoading(false);
+      setTimeout(() => {
+        setContent('');
+        setFile(null);
+        setIsFileUploaded(false);
+        setImage('');
+        setLoading(false);
+      }, 2000);
     }
   };
 

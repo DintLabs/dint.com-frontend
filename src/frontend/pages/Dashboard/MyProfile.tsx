@@ -86,9 +86,7 @@ const MyProfile = ({ posts, widthScreen }: { posts: any; widthScreen: any }) => 
                   badgeContent=" "
                   variant="dot"
                 >
-                  <Avatar sx={{ width: 75, height: 75 }}>
-                    <Typography variant="h2">NM</Typography>
-                  </Avatar>
+                  <Avatar src={userDetails.profile_image} sx={{ width: 75, height: 75 }} />
                 </Badge>
               </Box>
               <IconButton>
@@ -98,7 +96,7 @@ const MyProfile = ({ posts, widthScreen }: { posts: any; widthScreen: any }) => 
           </Box>
           <Box sx={{ px: 2 }}>
             <Typography variant="h3" sx={{ color: 'text.primary' }}>
-              {user.displayName || user.name}
+              {userDetails.display_name}
             </Typography>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
               @{userDetails.custom_username} &#8226; Avaliable Now

@@ -62,6 +62,10 @@ const NewHome = () => {
         fetchUserProfilePosts();
       }
     } else {
+      // if (params.username) {
+      //   setSelectedMenu(HOME_SIDE_MENU.MY_PROFILE);
+      // } else {
+      // }
       setSelectedMenu(HOME_SIDE_MENU.HOME);
     }
   }, [location]);

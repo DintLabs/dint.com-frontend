@@ -9,9 +9,10 @@ import AddPost from './AddPost';
 interface Props {
   widthScreen: number;
   posts: Array<Object>;
+  createPost: Function;
 }
 
-const HomeTab = ({ widthScreen, posts }: Props) => {
+const HomeTab = ({ widthScreen, posts, createPost }: Props) => {
   const theme = useTheme();
   return (
     <>
@@ -50,7 +51,7 @@ const HomeTab = ({ widthScreen, posts }: Props) => {
             </IconButton>
           </Stack>
         </Box> */}
-        <AddPost />
+        <AddPost createPost={createPost} />
 
         {posts.map((item) => (
           <PostItem

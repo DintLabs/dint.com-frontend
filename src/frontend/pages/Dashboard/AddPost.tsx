@@ -21,6 +21,7 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
   const [image, setImage] = React.useState('');
   const [video, setVideo] = React.useState('');
   const theme = useTheme();
+  const [loading, setLoading] = React.useState(false);
 
   const s3Config = {
     bucketName: 'dint',
@@ -30,45 +31,44 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
   };
 
   const onCreatePost = async () => {
-    const user = JSON.parse(localStorage.getItem('userData') ?? '{}');
-    if (!user.id) {
-      toast.error("Can't find User");
-      return;
-    }
-
-    if (isFileUploaded && file) {
-      if (content.length < 1) {
-        toast.error('Post Description is Required!');
+    if (!loading) {
+      setLoading(true);
+      const user = JSON.parse(localStorage.getItem('userData') ?? '{}');
+      if (!user.id) {
+        toast.error("Can't find User");
         return;
       }
 
-      const s3 = new ReactS3Client(s3Config);
-      console.log(s3);
-      try {
-        const res = await s3.uploadFile(file);
+      if (isFileUploaded && file) {
+        const s3 = new ReactS3Client(s3Config);
+        console.log(s3);
+        try {
+          const res = await s3.uploadFile(file);
+          createPost({
+            type: 'Social',
+            user: user.id,
+            media: res.location,
+            content
+          });
+        } catch (exception) {
+          console.log(exception);
+          console.debug(exception);
+        }
+      } else {
         createPost({
           type: 'Social',
           user: user.id,
           media: res.location,
           content
         });
-      } catch (exception) {
-        console.log(exception);
-        console.debug(exception);
       }
-    } else {
-      createPost({
-        type: 'Social',
-        user: user.id,
-        media: res.location,
-        content
-      });
-    }
 
-    setContent('');
-    setFile(null);
-    setIsFileUploaded(false);
-    setImage('');
+      setContent('');
+      setFile(null);
+      setIsFileUploaded(false);
+      setImage('');
+      setLoading(false);
+    }
   };
 
   const handleFileChange = (event: any) => {
@@ -153,12 +153,11 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
               </IconButton>
             </Stack>
 
-            {video.length > 0 ||
-              (image.length > 0 && (
-                <Button onClick={onCreatePost} variant="contained">
-                  Publish
-                </Button>
-              ))}
+            {video.length > 0 || image.length > 0 ? (
+              <Button onClick={onCreatePost} variant="contained">
+                Publish
+              </Button>
+            ) : null}
           </Stack>
         </Box>
       </Box>

@@ -74,6 +74,7 @@ const NewHome = () => {
     try {
       const { res } = await _axios.post('/api/posts/create/', data);
       toast.success('Post Created Successful!');
+      fetchPostsList();
       dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.HOME }));
     } catch (err) {
       // @ts-ignore
@@ -128,7 +129,7 @@ const NewHome = () => {
             {HOME_SIDE_MENU.HOME === selectedMenu && (
               <Grid container>
                 <Grid item xs={12} md={8}>
-                  <HomeTab posts={posts} widthScreen={widthScreen} />
+                  <HomeTab posts={posts} widthScreen={widthScreen} createPost={createPost} />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Box sx={styleTerms}>

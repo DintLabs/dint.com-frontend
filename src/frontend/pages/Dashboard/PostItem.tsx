@@ -35,7 +35,7 @@ const PostItem = ({
   post: Object;
 }) => {
   const theme = useTheme();
-  const images = ['jpg', 'gif', 'png'];
+  const images = ['jpg', 'gif', 'png', 'svg', 'webp', 'ico', 'jpeg'];
   const videos = ['mp4', '3gp', 'ogg'];
 
   const url = new URL(image ?? 'https://google.com');
@@ -93,7 +93,7 @@ const PostItem = ({
         </Box>
         {image && images.includes(extension) && (
           <Box sx={{ textAlign: 'center' }}>
-            <img src={image} alt="post" />
+            <img src={image} alt="post" style={{ width: '100%' }} />
           </Box>
         )}
 

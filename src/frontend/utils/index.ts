@@ -100,5 +100,4 @@ export const isMobile = () => {
   return check;
 };
 
-
-export const generateFromEmail = (email: string) =>  email.split("@").at(0);
+export const generateFromEmail = (email: string) => `user${Math.floor(Math.random() * 100000)}`;

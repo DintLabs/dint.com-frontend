@@ -42,28 +42,15 @@ const PostItem = ({
   const url = new URL(image ?? 'https://google.com');
   const extension = url.pathname.split('.')[1];
 
-  const sendLike = async () => {
-    const user = JSON.parse(localStorage.getItem('userData') ?? '{}');
-    if (!user.id) {
-      toast.error("Can't find User");
-      return;
-    }
-    const data = {
-      user: user.id,
-      post: post.id
-    };
-    const { res } = await _axios.post('/api/posts/create/', data);
-    console.log(res);
-    toast.success('Like Added Successful!');
-  };
   return (
     <>
       <Box
+      className="mb-3"
         style={{
           borderBottom: `1px solid ${theme.palette.grey[700]}`
         }}
       >
-        <List>
+        {/* <List>
           <ListItem>
             <ListItemAvatar>
               <Avatar src={post.profile_image}>{post.first_name ?? 'UN'}</Avatar>
@@ -86,12 +73,12 @@ const PostItem = ({
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
-        </List>
-        <Box sx={{ p: 2 }}>
+        </List> */}
+        {/* <Box sx={{ p: 2 }}>
           <Typography variant="body2" sx={{ color: 'text.primary' }}>
             {description}
           </Typography>
-        </Box>
+        </Box> */}
         {image && images.includes(extension) && (
           <Box sx={{ textAlign: 'center' }}>
             <img src={image} alt="post" style={{ width: '100%' }} />
@@ -106,17 +93,16 @@ const PostItem = ({
             </video>
           </Box>
         )}
-        <Box sx={{ p: 2 }}>
+        {/* <Box sx={{ p: 2 }}>
           <Stack direction="row">
             <IconButton>
               <FavoriteBorderRoundedIcon />
-              {/* <h5>0</h5> */}
             </IconButton>
             <IconButton>
               <MessageRoundedIcon />
             </IconButton>
           </Stack>
-        </Box>
+        </Box> */}
       </Box>
     </>
   );

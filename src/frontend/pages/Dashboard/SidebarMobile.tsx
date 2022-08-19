@@ -1,3 +1,5 @@
+// @ts-nocheck
+/* eslint-disable */
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import OtherHousesIcon from '@mui/icons-material/OtherHouses';
 import TextsmsRoundedIcon from '@mui/icons-material/TextsmsRounded';
@@ -5,6 +7,7 @@ import { Button, List, ListItem, ListItemAvatar, ListItemText, Typography } from
 import { HOME_SIDE_MENU, setNewHomeSliceChanges } from 'frontend/redux/slices/newHome';
 import { dispatch, RootState, useSelector } from 'frontend/redux/store';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import { useNavigate } from 'react-router';
 
 interface Props {
   widthScreen: number;
@@ -12,6 +15,7 @@ interface Props {
 
 const SidebarMobile = ({ widthScreen }: Props) => {
   const { selectedMenu } = useSelector((rootState: RootState) => rootState.newHome);
+  const navigate = useNavigate();
 
   const styleListItem = {
     display: 'flex',
@@ -31,6 +35,7 @@ const SidebarMobile = ({ widthScreen }: Props) => {
           }}
           onClick={() => {
             dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.HOME }));
+            navigate('/dashboard/' + HOME_SIDE_MENU.HOME);
           }}
         >
           <ListItemAvatar sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -45,6 +50,7 @@ const SidebarMobile = ({ widthScreen }: Props) => {
           }}
           onClick={() => {
             dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.MESSAGES }));
+            navigate('/dashboard/' + HOME_SIDE_MENU.MESSAGES);
           }}
         >
           <ListItemAvatar sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -59,6 +65,7 @@ const SidebarMobile = ({ widthScreen }: Props) => {
           }}
           onClick={() => {
             dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.MY_PROFILE }));
+            navigate('/dashboard/' + HOME_SIDE_MENU.MY_PROFILE);
           }}
         >
           <ListItemAvatar sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -66,6 +73,10 @@ const SidebarMobile = ({ widthScreen }: Props) => {
           </ListItemAvatar>
         </ListItem>
         <ListItem
+          onClick={() => {
+            dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.ADD_POST }));
+            navigate('/dashboard/' + HOME_SIDE_MENU.ADD_POST);
+          }}
           sx={{
             ...styleListItem
           }}

@@ -11,9 +11,10 @@ interface Props {
   widthScreen: number;
   posts: Array<Object>;
   createPost: Function;
+  fetchPosts: Function;
 }
 
-const HomeTab = ({ widthScreen, posts, createPost }: Props) => {
+const HomeTab = ({ widthScreen, posts, createPost, fetchPosts }: Props) => {
   const theme = useTheme();
   return (
     <>
@@ -56,6 +57,8 @@ const HomeTab = ({ widthScreen, posts, createPost }: Props) => {
 
         {posts.map((item) => (
           <PostItem
+            canDeletePost={true}
+            fetchPosts={fetchPosts}
             key={item?.created_at}
             description={item?.content}
             createdAt={item?.created_at}

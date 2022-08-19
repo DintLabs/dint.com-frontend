@@ -9,6 +9,7 @@ import './navbarTab.css';
 import { toast } from 'react-toastify';
 import ReactS3Client from 'react-aws-s3-typescript';
 import { AWS_S3_CONFIG } from '../../config';
+import { MdClose } from 'react-icons/md';
 
 interface Props {
   widthScreen: number;
@@ -73,7 +74,6 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
         createPost(toastId, {
           type: 'Social',
           user: user.id,
-          media: res.location,
           content
         });
       }
@@ -144,9 +144,19 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
             onChange={(e) => setContent(e.target.value)}
             placeholder="Compose new post..."
           />
-          {image && <img src={image} style={{ width: 300 }} className="mb-3" />}
+          {image && (
+            <div className="position-relative" style={{ width: 300 }}>
+              <img src={image} style={{ width: 300 }} className="mb-3" />
+              <div className="position-absolute p-3 top-0 right-0">
+                <MdClose />
+              </div>
+            </div>
+          )}
           {video && (
-            <div className="post_video" style={{ width: 300, height: 'auto !important' }}>
+            <div
+              className="post_video"
+              style={{ minWidth: 100, width: 300, height: 'auto !important' }}
+            >
               <video width="300px" controls>
                 <source src={video} id="video_here" />
                 Your browser does not support HTML5 video.
@@ -171,7 +181,7 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
               </IconButton>
             </Stack>
 
-            {video.length > 0 || image.length > 0 ? (
+            {video.length > 0 || image.length.length > 0 || content.length > 0 ? (
               <Button onClick={onCreatePost} variant="contained">
                 Publish
               </Button>

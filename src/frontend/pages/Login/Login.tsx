@@ -18,6 +18,7 @@ import { Helmet } from 'react-helmet';
 import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
 import { generateFromEmail } from 'frontend/utils';
+import { toast } from 'react-toastify';
 // @ts-ignore
 
 const Login = () => {
@@ -41,18 +42,17 @@ const Login = () => {
           fire_base_auth_key: data.user.uid
         })
         .then(({ data }: any) => {
-          localStorage.setItem('apiToken', data.data.token);
-          localStorage.setItem('userData', JSON.stringify(data.data));
-          window.location.reload();
+          if (data.code === 400) {
+            toast.error('Invalid Credantials');
+          } else {
+            localStorage.setItem('apiToken', data.data.token);
+            localStorage.setItem('userData', JSON.stringify(data.data));
+            window.location.reload();
+          }
         })
         .catch((err: any) => {
           console.log(err);
         });
-      if (redirectUrl) {
-        navigate(redirectUrl);
-      } else {
-        navigate('/dashboard');
-      }
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         console.log(`User is Not Found`);
@@ -88,12 +88,13 @@ const Login = () => {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
 
-    if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i)) {
+    if ((false && navigator.userAgent.match(/Android/i)) || navigator.userAgent.match(/iPhone/i)) {
       setPersistence(auth, browserSessionPersistence)
         .then(() => {
           signInWithRedirect(auth, provider)
             .then(() => {})
             .catch((e) => {
+              console.log(e);
               alert(e);
             });
 
@@ -104,6 +105,7 @@ const Login = () => {
               // const token = credential.accessToken;
               // @ts-ignore
               const { user } = result;
+              // alert(JSON)
               const username = generateFromEmail(user.email);
               const userData = {
                 ...user,
@@ -122,17 +124,21 @@ const Login = () => {
                   fire_base_auth_key: user.uid
                 })
                 .then(async ({ data }: any) => {
-                  if (data.code == 200) {
-                    localStorage.setItem('', data.data.token);
+                  console.log(data);
+                  if (data.data.token) {
+                    localStorage.setItem('apiToken', data.data.token);
                     localStorage.setItem('userData', JSON.stringify(data.data));
                     window.location.reload();
                   } else {
                     await axios
                       .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
                       .then(async ({ data }) => {
-                        localStorage.setItem('apiToken', data.data.token);
-                        localStorage.setItem('userData', JSON.stringify(data.data));
-                        window.location.reload();
+                        console.log(data);
+                        if (data.code == 200) {
+                          localStorage.setItem('apiToken', data.data.token);
+                          localStorage.setItem('userData', JSON.stringify(data.data));
+                          window.location.reload();
+                        }
                       });
                   }
                 })
@@ -159,7 +165,6 @@ const Login = () => {
           // The signed-in user info.
           const { user } = result;
 
-          console.log(user);
           const username = generateFromEmail(user.email);
           const userData = {
             ...user,
@@ -172,34 +177,37 @@ const Login = () => {
               'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
             display_name: user?.displayName ?? ''
           };
+          console.log(userData);
           await axios
             .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
               email: user.email,
               fire_base_auth_key: user.uid
             })
             .then(async ({ data }: any) => {
-              if (data.code == 200) {
+              console.log(data);
+              if (data) {
                 localStorage.setItem('apiToken', data.data.token);
                 localStorage.setItem('userData', JSON.stringify(data.data));
-                window.location.reload();
+                // window.location.reload();
               } else {
                 await axios
                   .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
                   .then(async ({ data }) => {
+                    console.log(data);
                     localStorage.setItem('apiToken', data.data.token);
                     localStorage.setItem('userData', JSON.stringify(data.data));
-                    window.location.reload();
+                    // window.location.reload();
                   });
               }
             })
             .catch((err: any) => {
               console.log(err);
             });
-          if (redirectUrl) {
-            navigate(redirectUrl);
-          } else {
-            navigate('/dashboard');
-          }
+          // if (redirectUrl) {
+          //   navigate(redirectUrl);
+          // } else {
+          //   navigate('/dashboard');
+          // }
         })
         .catch((error) => {
           // Handle Errors here.
@@ -329,7 +337,7 @@ const Login = () => {
               <span id="signup_here"> Sign Up</span>
             </Link>
           </p>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <button
               type="button"
               onClick={googleSignin}
@@ -338,7 +346,7 @@ const Login = () => {
             >
               Google
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

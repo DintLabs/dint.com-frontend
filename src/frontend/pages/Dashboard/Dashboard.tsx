@@ -28,6 +28,10 @@ const NewHome = () => {
   const [userPosts, setUserPosts] = React.useState([]);
   const [profileUserPosts, setProfileUserPosts] = React.useState([]);
   const postsLoadingStatus = '';
+  const [mediaPosts, setMediaPosts] = React.useState([]);
+  const [textPosts, setTextPosts] = React.useState([]);
+  const [videoPosts, setVideoPosts] = React.useState([]);
+  const [photoPosts, setPhotoPosts] = React.useState([]);
   const params = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -124,12 +128,20 @@ const NewHome = () => {
         toast.dismiss();
       }, 3000);
       fetchPostsList();
+      navigate('/dashboard/home');
       dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.HOME }));
     } catch (err) {
       // @ts-ignore
       toast.error(err.toString());
     }
   };
+
+  const images = ['jpg', 'gif', 'png', 'svg', 'webp', 'ico', 'jpeg'];
+  const videos = ['mp4', '3gp', 'ogg'];
+
+  function get_url_extension(url) {
+    return url.split(/[#?]/)[0].split('.').pop().trim();
+  }
 
   const fetUserPosts = async (data: any) => {
     try {
@@ -140,9 +152,29 @@ const NewHome = () => {
       }
 
       const { data } = await _axios.get(`/api/posts/list_by_user_id/${user.id}`);
-      setUserPosts(data.data.reverse());
+      setUserPosts(data.data);
+      setTextPosts(data.data.filter((item) => !item.media));
+      setVideoPosts(
+        data.data.filter((item) => item.media && videos.includes(get_url_extension(item.media)))
+      );
+      setPhotoPosts(
+        data.data.filter((item) => item.media && images.includes(get_url_extension(item.media)))
+      );
+      // alert(photoPosts.length);
     } catch (err) {}
   };
+
+  function getFileType(file) {
+    if (file.type.match('image.*')) return 'image';
+
+    if (file.type.match('video.*')) return 'video';
+
+    if (file.type.match('audio.*')) return 'audio';
+
+    // etc...
+
+    return 'other';
+  }
 
   const onDelete = () => {};
 
@@ -178,7 +210,12 @@ const NewHome = () => {
             {HOME_SIDE_MENU.HOME === selectedMenu && (
               <Grid container>
                 <Grid item xs={12} md={8}>
-                  <HomeTab posts={posts} widthScreen={widthScreen} createPost={createPost} />
+                  <HomeTab
+                    fetchPosts={fetchPostsList}
+                    posts={posts}
+                    widthScreen={widthScreen}
+                    createPost={createPost}
+                  />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Box sx={styleTerms}>
@@ -207,7 +244,14 @@ const NewHome = () => {
             {HOME_SIDE_MENU.MY_PROFILE === selectedMenu && (
               <Grid container>
                 <Grid item xs={12} md={8}>
-                  <MyProfile posts={userPosts} widthScreen={widthScreen} />
+                  <MyProfile
+                    textPosts={textPosts}
+                    videoPosts={videoPosts}
+                    photoPosts={photoPosts}
+                    fetchPosts={fetchPostsList}
+                    posts={userPosts}
+                    widthScreen={widthScreen}
+                  />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Box sx={styleTerms}>
@@ -236,7 +280,11 @@ const NewHome = () => {
             {HOME_SIDE_MENU.MY_PROFILE === 'userProfile' && (
               <Grid container>
                 <Grid item xs={12} md={8}>
-                  <MyProfile posts={userPosts} widthScreen={widthScreen} />
+                  <MyProfile
+                    fetchPosts={fetchPostsList}
+                    posts={userPosts}
+                    widthScreen={widthScreen}
+                  />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Box sx={styleTerms}>

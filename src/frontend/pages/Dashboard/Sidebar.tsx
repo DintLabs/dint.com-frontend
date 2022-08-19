@@ -62,7 +62,7 @@ const Sidebar = () => {
           <ListItemText primary={<Typography variant="subtitle1">My Profile</Typography>} />
         </ListItem>
 
-        <ListItem sx={{ justifyContent: 'center', mt: 6 }}>
+        {/* <ListItem sx={{ justifyContent: 'center', mt: 6 }}>
           <Button
             startIcon={<AddRoundedIcon />}
             variant="contained"
@@ -73,7 +73,7 @@ const Sidebar = () => {
           >
             New Post
           </Button>
-        </ListItem>
+        </ListItem> */}
       </List>
     </>
   );

@@ -10,10 +10,11 @@ type GuestGuardProps = {
 };
 
 export default function GuestGuard({ children }: GuestGuardProps) {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
+  const userData = localStorage.getItem('userData');
 
-  if (isAuthenticated) {
-    return <Navigate to="/" />;
+  if (userData) {
+    return <Navigate to="/dashboard" />;
   }
 
   return <>{children}</>;

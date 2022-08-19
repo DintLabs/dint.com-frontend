@@ -2,13 +2,27 @@
 /* eslint-disable */
 
 import LaunchRoundedIcon from '@mui/icons-material/LaunchRounded';
-import { Avatar, Badge, Box, IconButton, Stack, Tabs, Typography, useTheme } from '@mui/material';
+import {
+  Select,
+  Avatar,
+  Badge,
+  Box,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Stack,
+  Tabs,
+  Typography,
+  useTheme
+} from '@mui/material';
 import Tab from '@mui/material/Tab';
 import _axios from 'frontend/api/axios';
 import useAuth from 'frontend/hooks/useAuth';
 import React from 'react';
 import userCoverImg from '../../assets/img/web3/images.jpeg';
 import PostItem from './PostItem';
+import MediaItem from './MediaItem';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -36,11 +50,26 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-const MyProfile = ({ posts, widthScreen }: { posts: any; widthScreen: any }) => {
+const MyProfile = ({
+  posts,
+  widthScreen,
+  fetchPosts,
+  textPosts,
+  photoPosts,
+  videoPosts
+}: {
+  posts: any;
+  videoPosts: any;
+  photoPosts: any;
+  widthScreen: any;
+  textPosts: any;
+  fetchPosts: Function;
+}) => {
   const { user } = useAuth();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const [userDetails, setUserDetails] = React.useState([]);
+  const [filter, setFilter] = React.useState('posts');
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -50,6 +79,11 @@ const MyProfile = ({ posts, widthScreen }: { posts: any; widthScreen: any }) => 
     const { data } = await _axios.get('/api/user/get-profile-by-token/');
     setUserDetails(data.data);
   }, []);
+
+  const onChangeFilter = (e) => {
+    const type = e.target.value;
+    setFilter(type);
+  };
 
   console.log(user);
   if (!user)
@@ -110,14 +144,89 @@ const MyProfile = ({ posts, widthScreen }: { posts: any; widthScreen: any }) => 
             onChange={handleChange}
             sx={{ borderBottom: `1px solid ${theme.palette.grey[700]}` }}
           >
-            <Tab label={`${posts.length ?? 0} Posts`} />
-            <Tab label="No Media" />
+            <Tab label={`All Posts (${posts.length ?? 0})`} />
+            <Tab label={`Text Posts (${textPosts.length ?? 0})`} />
+            <Tab label={`Photo Posts (${photoPosts.length ?? 0})`} />
+            <Tab label={`Video Posts (${videoPosts.length ?? 0})`} />
           </Tabs>
         </Box>
+
+        <div className="d-flex align-items-center justify-content-end p-3">
+          {/* <h3 className="text-white me-5 m-0" style={{ whiteSpace: 'nowrap' }}>
+            Filter :{' '}
+          </h3> */}
+          {/* <select class="form-select" onChange={onChangeFilter}>
+            <option value="posts">All Posts</option>
+            <option value="textPosts">Text Posts</option>
+            <option value="videoPosts">Video Posts</option>
+            <option value="photoPosts">Photo Posts</option>
+          </select> */}
+          {/* <FormControl sx={{ m: 1, minWidth: 80 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">Filter</InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={filter}
+              onChange={onChangeFilter}
+              autoWidth
+              label="All Posts"
+            >
+              <MenuItem value={'posts'}>All Posts</MenuItem>
+              <MenuItem value={'textPosts'}>Text Posts</MenuItem>
+              <MenuItem value={'videoPosts'}>Video Posts</MenuItem>
+              <MenuItem value={'photoPosts'}>Photo Posts</MenuItem>
+            </Select>
+          </FormControl> */}
+        </div>
 
         <TabPanel value={value} index={0}>
           {posts.map((item) => (
             <PostItem
+              fetchPosts={fetchPosts}
+              canDeletePost={true}
+              key={item?.created_at}
+              description={item?.content}
+              createdAt={item?.created_at}
+              userName={item.user.firstname}
+              image={item?.media}
+              post={item}
+            />
+          ))}
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          {textPosts.map((item) => (
+            <PostItem
+              fetchPosts={fetchPosts}
+              canDeletePost={true}
+              key={item?.created_at}
+              description={item?.content}
+              createdAt={item?.created_at}
+              userName={item.user.firstname}
+              image={item?.media}
+              post={item}
+            />
+          ))}
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          {photoPosts.map((item) => (
+            <PostItem
+              fetchPosts={fetchPosts}
+              canDeletePost={true}
+              key={item?.created_at}
+              description={item?.content}
+              createdAt={item?.created_at}
+              userName={item.user.firstname}
+              image={item?.media}
+              post={item}
+            />
+          ))}
+        </TabPanel>
+
+        <TabPanel value={value} index={3}>
+          {videoPosts.map((item) => (
+            <PostItem
+              fetchPosts={fetchPosts}
+              canDeletePost={true}
               key={item?.created_at}
               description={item?.content}
               createdAt={item?.created_at}

@@ -59,6 +59,7 @@ const Register = () => {
             .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData2)
             // @ts-ignore
             .then(({ data }) => {
+              console.log(data);
               localStorage.setItem('apiToken', data.data.token);
               localStorage.setItem('userData', JSON.stringify(data.data));
               window.location.reload();
@@ -67,7 +68,6 @@ const Register = () => {
             .catch((err) => {
               console.log(err);
             });
-          navigate('/auth/login');
         } catch (error: any) {
           switch (error.code) {
             case 'auth/email-already-in-use':

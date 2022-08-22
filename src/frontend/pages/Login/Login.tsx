@@ -1,4 +1,5 @@
 /* eslint-disable */
+// @ts-nocheck
 import {
   browserSessionPersistence,
   getAuth,
@@ -17,6 +18,7 @@ import { Helmet } from 'react-helmet';
 import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import '../../material/signup.css';
 import { generateFromEmail } from 'frontend/utils';
+import { toast } from 'react-toastify';
 // @ts-ignore
 
 const Login = () => {
@@ -26,7 +28,64 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const { redirectUrl }: any = location.state ? location.state : {};
   // console.log(redirectUrl);
+  const auth = getAuth();
   const navigate = useNavigate();
+
+  getRedirectResult(auth)
+    .then(async (result) => {
+      // This gives you a Google Access Token. You can use it to access Google APIs.
+      // const credential = GoogleAuthProvider.credentialFromResult(result);
+      // const token = credential.accessToken;
+      // @ts-ignore
+      if (result?.user == null) return;
+      const { user } = result;
+      // alert(JSON)
+      const username = generateFromEmail(user.email);
+      const userData = {
+        ...user,
+        fire_base_auth_key: user?.uid,
+        role: 'simple',
+        biography: 'no biography yet',
+        custom_username: username ?? '',
+        profile_image:
+          user?.photoURL ??
+          'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
+        display_name: user?.displayName ?? ''
+      };
+      console.log(userData);
+      await axios
+        .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+          email: user.email,
+          fire_base_auth_key: user.uid
+        })
+        .then(async ({ data }: any) => {
+          if (data.code !== 400) {
+            localStorage.setItem('apiToken', data.data.token);
+            localStorage.setItem('userData', JSON.stringify(data.data));
+            toast.success('User Login Successful!');
+            navigate('/dashboard');
+          } else {
+            await axios
+              .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
+              .then(async ({ data }) => {
+                if (data.code !== 400) {
+                  localStorage.setItem('apiToken', data.data.token);
+                  localStorage.setItem('userData', JSON.stringify(data.data));
+                  toast.success('User Login Successful!');
+                  navigate('/dashboard');
+                } else {
+                  toast.error('User Not Found');
+                }
+              });
+          }
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+    })
+    .catch((error) => {
+      alert(error);
+    });
 
   const [error_msg_login, setLoginErr] = useState('');
 
@@ -40,18 +99,18 @@ const Login = () => {
           fire_base_auth_key: data.user.uid
         })
         .then(({ data }: any) => {
-          localStorage.setItem('apiToken', data.data.token);
-          localStorage.setItem('userData', JSON.stringify(data.data));
-          window.location.reload();
+          if (data.code === 400) {
+            toast.error('Invalid Credantials');
+          } else {
+            localStorage.setItem('apiToken', data.data.token);
+            localStorage.setItem('userData', JSON.stringify(data.data));
+            toast.success('User Login Successful!');
+            navigate('/dashboard');
+          }
         })
         .catch((err: any) => {
           console.log(err);
         });
-      if (redirectUrl) {
-        navigate(redirectUrl);
-      } else {
-        navigate('/dashboard');
-      }
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         console.log(`User is Not Found`);
@@ -84,78 +143,13 @@ const Login = () => {
   };
 
   const googleSignin = async () => {
-    const auth = getAuth();
     const provider = new GoogleAuthProvider();
 
     if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i)) {
-      setPersistence(auth, browserSessionPersistence)
-        .then(() => {
-          signInWithRedirect(auth, provider)
-            .then(() => {})
-            .catch((e) => {
-              alert(e);
-            });
-
-          getRedirectResult(auth)
-            .then(async (result) => {
-              // This gives you a Google Access Token. You can use it to access Google APIs.
-              // const credential = GoogleAuthProvider.credentialFromResult(result);
-              // const token = credential.accessToken;
-              // @ts-ignore
-              const { user } = result;
-              const username = generateFromEmail(user.email);
-              const userData = {
-                ...user,
-                fire_base_auth_key: user?.uid,
-                role: 'simple',
-                biography: 'no biography yet',
-                custom_username: username ?? '',
-                profile_image:
-                  user?.photoURL ??
-                  'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
-                display_name: user?.displayName ?? ''
-              };
-              await axios
-                .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
-                  email: user.email,
-                  fire_base_auth_key: user.uid
-                })
-                .then(async ({ data }: any) => {
-                  if (data.code == 200) {
-                    localStorage.setItem('apiToken', data.data.token);
-                    localStorage.setItem('userData', JSON.stringify(data.data));
-                    window.location.reload();
-                  } else {
-                    await axios
-                      .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
-                      .then(async ({ data }) => {
-                        await axios
-                          .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
-                            email: user.email,
-                            fire_base_auth_key: user.uid
-                          })
-                          .then(({ data }) => {
-                            localStorage.setItem('apiToken', data.data.token);
-                            localStorage.setItem('userData', JSON.stringify(data.data));
-                            window.location.reload();
-                          });
-                      });
-                  }
-                })
-                .catch((err: any) => {
-                  console.log(err);
-                });
-              if (redirectUrl) {
-                navigate(redirectUrl);
-              } else {
-                navigate('/dashboard');
-              }
-            })
-            .catch((error) => {});
-        })
-        .catch((e) => {
-          alert(e);
-        });
+      await setPersistence(authInstance, browserSessionPersistence);
+      signInWithRedirect(auth, provider)
+        .then(() => {})
+        .catch((e) => console.log(e));
     } else {
       signInWithPopup(auth, provider)
         .then(async (result) => {
@@ -165,7 +159,6 @@ const Login = () => {
           // The signed-in user info.
           const { user } = result;
 
-          console.log(user);
           const username = generateFromEmail(user.email);
           const userData = {
             ...user,
@@ -178,41 +171,40 @@ const Login = () => {
               'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
             display_name: user?.displayName ?? ''
           };
+          console.log(userData);
           await axios
             .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
               email: user.email,
               fire_base_auth_key: user.uid
             })
             .then(async ({ data }: any) => {
-              if (data.code == 200) {
+              console.log(user.email, user.uid);
+              if (data.code !== 400) {
                 localStorage.setItem('apiToken', data.data.token);
                 localStorage.setItem('userData', JSON.stringify(data.data));
-                window.location.reload();
+                toast.success('User Login Successful!');
+                navigate('/dashboard');
               } else {
                 await axios
                   .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
                   .then(async ({ data }) => {
-                    await axios
-                      .post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
-                        email: user.email,
-                        fire_base_auth_key: user.uid
-                      })
-                      .then(({ data }) => {
-                        localStorage.setItem('apiToken', data.data.token);
-                        localStorage.setItem('userData', JSON.stringify(data.data));
-                        window.location.reload();
-                      });
+                    if (data.code !== 400) {
+                      localStorage.setItem('apiToken', data.data.token);
+                      localStorage.setItem('userData', JSON.stringify(data.data));
+                      toast.success('User Login Successful!');
+                      navigate('/dashboard');
+                    }
                   });
               }
             })
             .catch((err: any) => {
               console.log(err);
             });
-          if (redirectUrl) {
-            navigate(redirectUrl);
-          } else {
-            navigate('/dashboard');
-          }
+          // if (redirectUrl) {
+          //   navigate(redirectUrl);
+          // } else {
+          //   navigate('/dashboard');
+          // }
         })
         .catch((error) => {
           // Handle Errors here.

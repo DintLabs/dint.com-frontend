@@ -1,6 +1,8 @@
+// @ts-nocheck
+/* eslint-disable */
 import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
-import { useEffect } from 'react';
+import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { CgProfile } from 'react-icons/cg';
 import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
@@ -12,7 +14,26 @@ import mainlogo from '../../material/white.png';
 
 const MainNavBar = () => {
   // var isLoggedin = props.isloggedin;
-  const { isAuthenticated, logout } = useAuth();
+  const { logout } = useAuth();
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+
+  React.useEffect(() => {
+    window.addEventListener('storage', checkAuth);
+    checkAuth();
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, []);
+
+  const checkAuth = (e) => {
+    // this.setState({ auth: true });
+    const apiToken = localStorage.getItem('apiToken');
+    let userData = localStorage.getItem('userData');
+    userData = JSON.parse(userData ?? '{}');
+    if (apiToken?.length > 0 && userData) {
+      setIsAuthenticated(true);
+    }
+  };
 
   const { pathname } = useLocation();
   const isEventsPage = pathname === '/events';
@@ -47,7 +68,7 @@ const MainNavBar = () => {
     $('#navbar_icon').toggleClass('bi-x');
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     $('#navbar li').on('click', () => {
       if ($('#navbar').hasClass('navbar-mobile')) {
         mobile_nav();

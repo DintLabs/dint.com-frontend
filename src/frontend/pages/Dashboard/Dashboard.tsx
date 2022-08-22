@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable */
 import React, { useLayoutEffect, useEffect, useState, useCallback } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
@@ -16,14 +17,24 @@ import SidebarMobile from './SidebarMobile';
 import AddPost from './AddPost';
 // @ts-ignore
 import { dispatch } from 'frontend/redux/store';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 const NewHome = () => {
-  const { selectedMenu } = useSelector((rootState: RootState) => rootState.newHome);
+  const [selectedMenu, setSelectedMenu] = React.useState([]);
+  // const { selectedMenu } = useSelector((rootState: RootState) => rootState.newHome);
   const [widthScreen, setWidthScreen] = useState<number>(window.screen.width);
   const [contentPost, setContentPost] = useState<string>('');
   const [posts, setPosts] = React.useState([]);
   const [userPosts, setUserPosts] = React.useState([]);
+  const [profileUserPosts, setProfileUserPosts] = React.useState([]);
   const postsLoadingStatus = '';
+  const [mediaPosts, setMediaPosts] = React.useState([]);
+  const [textPosts, setTextPosts] = React.useState([]);
+  const [videoPosts, setVideoPosts] = React.useState([]);
+  const [photoPosts, setPhotoPosts] = React.useState([]);
+  const params = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedMenu == HOME_SIDE_MENU.HOME) {
@@ -34,6 +45,38 @@ const NewHome = () => {
       fetUserPosts();
     }
   }, [selectedMenu]);
+
+  const validPages = [
+    HOME_SIDE_MENU.ADD_POST,
+    HOME_SIDE_MENU.HOME,
+    HOME_SIDE_MENU.MY_PROFILE,
+    HOME_SIDE_MENU.MESSAGES
+  ];
+  React.useEffect(() => {
+    // alert(params.page);
+    if (params.page) {
+      if (!params.username) {
+        if (validPages.includes(params.page)) {
+          setSelectedMenu(params.page);
+        } else {
+          navigate('/404');
+        }
+      } else {
+        setSelectedMenu('userProfile');
+        fetchUserProfilePosts();
+      }
+    } else {
+      if (params.username) {
+        setSelectedMenu(HOME_SIDE_MENU.MY_PROFILE);
+      } else {
+        setSelectedMenu(HOME_SIDE_MENU.HOME);
+      }
+    }
+  }, [location]);
+
+  const fetchUserPorfilePosts = () => {
+    // const
+  };
 
   useLayoutEffect(() => {
     function updateWidth() {
@@ -70,17 +113,35 @@ const NewHome = () => {
     } catch (err) {}
   };
 
-  const createPost = async (data: any) => {
+  const createPost = async (toastId, data: any) => {
     try {
       const { res } = await _axios.post('/api/posts/create/', data);
-      toast.success('Post Created Successful!');
+      setTimeout(() => {
+        toast.update(toastId, {
+          render: 'Post Added Successful!',
+          type: 'success',
+          isLoading: false
+        });
+      }, 1000);
+
+      setTimeout(() => {
+        toast.dismiss();
+      }, 3000);
       fetchPostsList();
+      navigate('/dashboard/home');
       dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.HOME }));
     } catch (err) {
       // @ts-ignore
       toast.error(err.toString());
     }
   };
+
+  const images = ['jpg', 'gif', 'png', 'svg', 'webp', 'ico', 'jpeg'];
+  const videos = ['mp4', '3gp', 'ogg'];
+
+  function get_url_extension(url) {
+    return url.split(/[#?]/)[0].split('.').pop().trim();
+  }
 
   const fetUserPosts = async (data: any) => {
     try {
@@ -91,9 +152,36 @@ const NewHome = () => {
       }
 
       const { data } = await _axios.get(`/api/posts/list_by_user_id/${user.id}`);
-      setUserPosts(data.data.reverse());
+      setUserPosts(data.data);
+      let posts = data.data;
+      let textPosts = posts.filter((item) => !item.media);
+      textPosts = textPosts.reverse();
+      setTextPosts(textPosts);
+      let videoPosts = posts
+        .reverse()
+        .filter((item) => item.media && videos.includes(get_url_extension(item.media)));
+      let photoPosts = posts.filter(
+        (item) => item.media && images.includes(get_url_extension(item.media))
+      );
+      videoPosts = videoPosts;
+      photoPosts = photoPosts;
+      setVideoPosts(videoPosts);
+      setPhotoPosts(photoPosts);
+      // alert(photoPosts.length);
     } catch (err) {}
   };
+
+  function getFileType(file) {
+    if (file.type.match('image.*')) return 'image';
+
+    if (file.type.match('video.*')) return 'video';
+
+    if (file.type.match('audio.*')) return 'audio';
+
+    // etc...
+
+    return 'other';
+  }
 
   const onDelete = () => {};
 
@@ -129,58 +217,47 @@ const NewHome = () => {
             {HOME_SIDE_MENU.HOME === selectedMenu && (
               <Grid container>
                 <Grid item xs={12} md={8}>
-                  <HomeTab posts={posts} widthScreen={widthScreen} createPost={createPost} />
+                  <HomeTab
+                    fetchPosts={fetchPostsList}
+                    posts={posts}
+                    widthScreen={widthScreen}
+                    createPost={createPost}
+                  />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                  <Box sx={styleTerms}>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
-                    >
-                      Privacy Policy
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
-                    >
-                      Cookie Notice
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
-                    >
-                      Terms of Service
-                    </Typography>
-                  </Box>
+                  <RightSidebar styleTerms={styleTerms} widthScreen={widthScreen} />
                 </Grid>
               </Grid>
             )}
             {HOME_SIDE_MENU.MY_PROFILE === selectedMenu && (
               <Grid container>
                 <Grid item xs={12} md={8}>
-                  <MyProfile posts={userPosts} widthScreen={widthScreen} />
+                  <MyProfile
+                    username={params.username}
+                    textPosts={textPosts}
+                    videoPosts={videoPosts}
+                    photoPosts={photoPosts}
+                    fetchPosts={fetchPostsList}
+                    posts={userPosts}
+                    widthScreen={widthScreen}
+                  />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                  <Box sx={styleTerms}>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
-                    >
-                      Privacy Policy
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
-                    >
-                      Cookie Notice
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
-                    >
-                      Terms of Service
-                    </Typography>
-                  </Box>
+                  <RightSidebar styleTerms={styleTerms} widthScreen={widthScreen} />
+                </Grid>
+              </Grid>
+            )}
+            {HOME_SIDE_MENU.MY_PROFILE === 'userProfile' && (
+              <Grid container>
+                <Grid item xs={12} md={8}>
+                  <MyProfile
+                    fetchPosts={fetchPostsList}
+                    posts={userPosts}
+                    widthScreen={widthScreen}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <RightSidebar styleTerms={styleTerms} widthScreen={widthScreen} />
                 </Grid>
               </Grid>
             )}
@@ -190,6 +267,40 @@ const NewHome = () => {
             )}
           </Grid>
         </Grid>
+      </Box>
+    </>
+  );
+};
+
+const RightSidebar = ({ styleTerms, widthScreen }) => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <Box sx={styleTerms}>
+        <Typography
+          variant="body2"
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/privacy')}
+          sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
+        >
+          Privacy Policy
+        </Typography>
+        <Typography
+          variant="body2"
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/cookies')}
+          sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
+        >
+          Cookie Notice
+        </Typography>
+        <Typography
+          variant="body2"
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/terms')}
+          sx={{ color: 'text.secondary', px: widthScreen >= 900 ? 0 : 1 }}
+        >
+          Terms of Service
+        </Typography>
       </Box>
     </>
   );

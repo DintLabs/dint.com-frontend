@@ -1,8 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+// @ts-nocheck
+/* eslint-disable */
 // import useAuth from 'frontend/hooks/useAuth';
 import useAuth from 'frontend/hooks/useAuth';
 import $ from 'jquery';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import blacklogo from '../../material/black.png';
 import homeImage from '../../material/home-miami.jpg';
 import Bgvideo from '../../material/home2.mp4';
@@ -12,7 +15,14 @@ import { isIPhone, isMetamask } from '../../utils';
 const Home = () => {
   const { user } = useAuth();
   console.log(user);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const apiToken = localStorage.getItem('apiToken');
+    if (apiToken) {
+      navigate('/dashboard/home');
+    }
+  }, []);
   const back_to_top = $('#back_to_top');
 
   $(window).scroll(() => {

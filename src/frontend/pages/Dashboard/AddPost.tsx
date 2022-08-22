@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable */
 import React, { useState } from 'react';
 import ImageIcon from '@mui/icons-material/Image';
@@ -8,6 +9,7 @@ import './navbarTab.css';
 import { toast } from 'react-toastify';
 import ReactS3Client from 'react-aws-s3-typescript';
 import { AWS_S3_CONFIG } from '../../config';
+import { MdClose } from 'react-icons/md';
 
 interface Props {
   widthScreen: number;
@@ -33,18 +35,27 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
   const onCreatePost = async () => {
     if (!loading) {
       setLoading(true);
+      const toastId = toast.loading('Uploading File...');
       const user = JSON.parse(localStorage.getItem('userData') ?? '{}');
       if (!user.id) {
-        toast.error("Can't find User");
+        toast.update(toastId, {
+          type: 'error',
+          render: "Can't find User Id"
+        });
+        setTimeout(() => toast.dismiss(), 2000);
         return;
       }
 
       if (isFileUploaded && file) {
         const s3 = new ReactS3Client(s3Config);
-        console.log(s3);
         try {
           const res = await s3.uploadFile(file);
-          createPost({
+          toast.update(toastId, {
+            render: 'File Uploaded Successful',
+            type: 'success',
+            isLoading: false
+          });
+          createPost(toastId, {
             type: 'Social',
             user: user.id,
             media: res.location,
@@ -53,21 +64,28 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
         } catch (exception) {
           console.log(exception);
           console.debug(exception);
+          toast.update({
+            render: exception.toString(),
+            type: 'error'
+          });
+          setTimeout(() => toast.dismiss(), 2000);
         }
       } else {
-        createPost({
+        createPost(toastId, {
           type: 'Social',
           user: user.id,
-          media: res.location,
           content
         });
       }
 
-      setContent('');
-      setFile(null);
-      setIsFileUploaded(false);
-      setImage('');
-      setLoading(false);
+      setTimeout(() => {
+        setContent('');
+        setFile(null);
+        setIsFileUploaded(false);
+        setImage('');
+        setLoading(false);
+        setVideo('');
+      }, 2000);
     }
   };
 
@@ -126,9 +144,29 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
             onChange={(e) => setContent(e.target.value)}
             placeholder="Compose new post..."
           />
-          {image && <img src={image} style={{ width: 300 }} className="mb-3" />}
+          {image && (
+            <div className="position-relative" style={{ width: 300 }}>
+              <img src={image} style={{ width: 300 }} className="mb-3" />
+              {/* <div
+                className="position-absolute top-0 d-flex align-items-center justify-content-center"
+                style={{
+                  right: 0,
+                  background: 'red',
+                  borderRadius: 8,
+                  width: 30,
+                  height: 30,
+                  color: 'white'
+                }}
+              >
+                <MdClose />
+              </div> */}
+            </div>
+          )}
           {video && (
-            <div className="post_video" style={{ width: 300, height: 'auto !important' }}>
+            <div
+              className="post_video"
+              style={{ minWidth: 100, width: 300, height: 'auto !important' }}
+            >
               <video width="300px" controls>
                 <source src={video} id="video_here" />
                 Your browser does not support HTML5 video.
@@ -153,11 +191,28 @@ const AddPost = ({ widthScreen, createPost }: Props) => {
               </IconButton>
             </Stack>
 
-            {video.length > 0 || image.length > 0 ? (
-              <Button onClick={onCreatePost} variant="contained">
-                Publish
-              </Button>
-            ) : null}
+            <div>
+              {video.length > 0 || image.length > 0 || content.length > 0 ? (
+                <>
+                  <Button
+                    onClick={() => {
+                      setVideo('');
+                      setFile({});
+                      setImage('');
+                      setContent('');
+                    }}
+                    variant="contained"
+                    color="secondary"
+                    className="ms-3"
+                  >
+                    Reset Post
+                  </Button>
+                  <Button onClick={onCreatePost} variant="contained">
+                    Publish
+                  </Button>
+                </>
+              ) : null}
+            </div>
           </Stack>
         </Box>
       </Box>

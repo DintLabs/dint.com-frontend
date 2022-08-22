@@ -19,6 +19,9 @@ import Register from 'frontend/pages/Register/Register';
 import TicketCreate from 'frontend/pages/TicketCreate/TicketCreate';
 import ThemeConfig from 'frontend/theme';
 import { useNavigate, useRoutes } from 'react-router-dom';
+import PrivacyPolicy from 'frontend/pages/Privacy/PrivacyPolicy';
+import CookieNotice from 'frontend/pages/Privacy/CookieNotice';
+import TermsOfServices from 'frontend/pages/Privacy/TermsOfServices';
 
 // ----------------------------------------------------------------------
 
@@ -93,7 +96,43 @@ export default function Router() {
       ),
       children: [
         {
+          path: '/:username',
+          element: (
+            <AuthGuard>
+              <NewHome />
+            </AuthGuard>
+          )
+        },
+        {
           path: '/dashboard',
+          element: (
+            <AuthGuard>
+              <NewHome />
+            </AuthGuard>
+          )
+        },
+        {
+          path: '/privacy',
+          element: <PrivacyPolicy />
+        },
+        {
+          path: '/cookies',
+          element: <CookieNotice />
+        },
+        {
+          path: '/terms',
+          element: <TermsOfServices />
+        },
+        {
+          path: '/dashboard/:page',
+          element: (
+            <AuthGuard>
+              <NewHome />
+            </AuthGuard>
+          )
+        },
+        {
+          path: '/dashboard/:page/:username',
           element: (
             <AuthGuard>
               <NewHome />

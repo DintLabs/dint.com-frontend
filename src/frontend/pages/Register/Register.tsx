@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable */
 import useAuth from 'frontend/hooks/useAuth';
 import { useState } from 'react';
@@ -8,6 +9,7 @@ import { generateFromEmail } from 'frontend/utils';
 
 // @ts-ignore
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -58,15 +60,16 @@ const Register = () => {
             .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData2)
             // @ts-ignore
             .then(({ data }) => {
+              console.log(data);
               localStorage.setItem('apiToken', data.data.token);
               localStorage.setItem('userData', JSON.stringify(data.data));
-              window.location.reload();
+              toast.success('User Login Successful!');
+              navigate('/dashboard');
             })
             // @ts-ignore
             .catch((err) => {
               console.log(err);
             });
-          navigate('/auth/login');
         } catch (error: any) {
           switch (error.code) {
             case 'auth/email-already-in-use':

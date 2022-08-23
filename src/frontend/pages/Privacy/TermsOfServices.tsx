@@ -26,9 +26,9 @@ references to "we", "our", "us" are references to Dint Club Inc, the operator of
 "Terms of Service" (also called "your agreement with us") means the legally binding agreement between you and us which consists of: (i) these Terms of Use for all Users, (ii) Terms of Use for Fans, (iii) Terms of Use for Creators, (iv) Privacy Policy, (v) Acceptable Use Policy, (vi) Referral Program Terms, (vii) Complaints Policy, (viii) Platform to Business Regulation Terms; and (ix) Community Guidelines;
 "United Kingdom" means the United Kingdom of Great Britain and Northern Ireland; and<br />
 "User" means any user of Dint Club, whether a Creator or a Fan or both (also referred to as "you" or "your").<br />
-Who we are and how to contact us: Dint Club is operated by Dint Club Inc. We are a limited company registered in England and Wales, with company registration number 10354575 and we have our registered office address at Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS. Our VAT number is 268196365.<br />
+Who we are and how to contact us: Dint Club is operated by Dint Club Inc.<br />
 <br /><br />
-To contact us with any questions about Dint Club, please email our support team at support@dint.com. If you are unable to contact us by email, please write to us at the following address: Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS.
+To contact us with any questions about Dint Club, please email our support team at support@dint.com.
 <br /><br />
 How we may change the Terms of Service: We may change any part of the Terms of Service without telling you beforehand in the following circumstances:
 <br /><br />
@@ -464,7 +464,7 @@ Interpretation: In these Referral Program Terms defined terms have the same mean
 "Referred Creator" means the person who joins Dint Club as a Creator via the Referring User's unique referral link.
 What is the Dint Club Referral Program? Dint Club offers a referral program by which existing Users can introduce people who are interested in becoming Creators to Dint Club and receive referral payments from Dint Club which are calculated and limited as described in these Referral Program Terms.
 <br /><br />
-The Dint Club Referral Program is operated by Dint Club Inc. We are a limited company registered in England and Wales, with company registration number 10354575 and we have our registered office address at Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS.
+The Dint Club Referral Program is operated by Dint Club Inc. 
 <br /><br />
 The rules of the Dint Club Referral Program:
 
@@ -516,12 +516,12 @@ Last updated: December 2021
 <br /><br />
 COMPLAINTS POLICY
 Introduction: This document set out our complaints policy. If you are a User of Dint Club, this Complaints Policy forms part of your agreement with us.
-Who we are and how to contact us: Dint Club is operated by Dint Club Inc. We are a limited company registered in England and Wales, with company registration number 10354575 and we have our registered office address at Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS.
+Who we are and how to contact us: Dint Club is operated by Dint Club Inc. Dint Club Inc registered in England and Wales, with company registration number 10354575 and we have our registered office address at Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS.
 Interpretation: In this Complaints Policy, defined terms have the same meanings given to them in the Terms of Use for all Users. In addition, the term "business days" means any day which is not a Saturday, Sunday or public holiday in England.
 Who can use this Complaints Policy? Whether or not you are a User of Dint Club, you can use this Complaints Policy to alert us to any complaint which you have relating to Dint Club.
 How to make a complaint: If you have a complaint about Dint Club (including any complaint about Content appearing on Dint Club or the conduct of a User), please send your complaint to support@dint.com including your name, address, contact details, a description of your complaint and, if your complaint relates to Content, the URL for the Content to which your complaint relates.
 <br /><br />
-If you are unable to contact us by email, please write to us at the following address: Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS.
+If you are unable to contact us by email, Dint Club Inc
 
 How we will deal with complaints of illegal or non-consensual Content: Following receipt of your complaint of illegal or non-consensual Content under section 5 above:
 <br /><br />
@@ -562,15 +562,6 @@ consider your complaint and the follow-up which we may need to give to your comp
 process your complaints within a reasonable time, taking into account the importance and complexity of the issue raised; and
 communicate to you in plain and intelligible language by email or by message to your Dint Club account the outcome of the internal complaint-handling process.
 Mediation service: If your complaint under section 7 above is not resolved to your satisfaction through our internal complaint-handling process as set out in section 8 above, then you may access the mediation service by contacting:
-<br /><br />
-Centre for Effective Dispute Resolution
-International Dispute Resolution Centre
-P2B Panel of Mediators
-70 Fleet Street
-London
-EC4Y 1EU
-United Kingdom
-https://www.cedr.com/p2bmediation/
 <br /><br />
 You and we will act in good faith throughout any mediation. However, any attempt to reach agreement through mediation on the settlement of a dispute between us will not affect our or your rights to commence legal proceedings at any time before, during or after the mediation process, as such rights are set out in our Terms of Use for all Users.
 <br /><br />

@@ -14,7 +14,7 @@ Introduction: These Terms of Use for all Users govern your use of Dint Club and 
 Interpretation: In the Terms of Service:<br />
 
 we refer to our website as "Dint Club", including when accessed via the URL www.dint.com;<br />
-references to "we", "our", "us" are references to Fenix International Limited, the operator of Dint Club;<br />
+references to "we", "our", "us" are references to Dint Club Inc, the operator of Dint Club;<br />
 "Content" means any material uploaded to Dint Club by any User (whether a Creator or a Fan), including any photos, videos, audio (for example music and other sounds), livestream material, data, text (such as comments and hashtags), metadata, images, interactive features, emojis, GIFs, memes, and any other material whatsoever;<br />
 "Creator" means a User who has set up their Dint Club account as a Creator account to post Content on Dint Club to be viewed by other Users;<br />
 "Fan" means a User who follows a Creator and is able to view the Creator's Content;<br />
@@ -26,7 +26,7 @@ references to "we", "our", "us" are references to Fenix International Limited, t
 "Terms of Service" (also called "your agreement with us") means the legally binding agreement between you and us which consists of: (i) these Terms of Use for all Users, (ii) Terms of Use for Fans, (iii) Terms of Use for Creators, (iv) Privacy Policy, (v) Acceptable Use Policy, (vi) Referral Program Terms, (vii) Complaints Policy, (viii) Platform to Business Regulation Terms; and (ix) Community Guidelines;
 "United Kingdom" means the United Kingdom of Great Britain and Northern Ireland; and<br />
 "User" means any user of Dint Club, whether a Creator or a Fan or both (also referred to as "you" or "your").<br />
-Who we are and how to contact us: Dint Club is operated by Fenix International Limited. We are a limited company registered in England and Wales, with company registration number 10354575 and we have our registered office address at Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS. Our VAT number is 268196365.<br />
+Who we are and how to contact us: Dint Club is operated by Dint Club Inc. We are a limited company registered in England and Wales, with company registration number 10354575 and we have our registered office address at Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS. Our VAT number is 268196365.<br />
 <br /><br />
 To contact us with any questions about Dint Club, please email our support team at support@dint.com. If you are unable to contact us by email, please write to us at the following address: Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS.
 <br /><br />
@@ -377,7 +377,7 @@ If you are a Creator registered for UK VAT:
 <br /><br />
 You will be treated, for VAT purposes, as charging Dint Club your Creator Earnings (80% of all and any Fan Payments), together with UK VAT at the prevailing rate in force at the time of the Fan Payment;
 Dint Club also agrees that, subject to the terms set out in this section of these Terms of Use for Creators, you can add UK VAT at the prevailing rate in force at the time of the referral payment to the amount of any referral payments payable to you under the Referral Program Terms (" Referral Payments").
-You agree to use the Dint Club VAT invoice generator tool which can be found at: https://dint.com/my/banking/vat/create-document to generate monthly VAT invoices, addressed to Fenix International Limited, in respect of your Creator Earnings (and Referral Payments, if any) for the relevant period together with the VAT on such Creator Earnings (and Referral Payments, if any);
+You agree to use the Dint Club VAT invoice generator tool which can be found at: https://dint.com/my/banking/vat/create-document to generate monthly VAT invoices, addressed to Dint Club Inc, in respect of your Creator Earnings (and Referral Payments, if any) for the relevant period together with the VAT on such Creator Earnings (and Referral Payments, if any);
 The VAT element added to your Creator Earnings (and Referral Payments, if any) (the "VAT Amount") will be paid to you by way of a separate payment outside of your regular Creator Earnings, provided that you must have submitted to us copies of the following before payment of the VAT Amount will be made to you:
 <br /><br />
 your VAT registration number by completing this form https://dint.com/my/banking/vat;
@@ -464,7 +464,7 @@ Interpretation: In these Referral Program Terms defined terms have the same mean
 "Referred Creator" means the person who joins Dint Club as a Creator via the Referring User's unique referral link.
 What is the Dint Club Referral Program? Dint Club offers a referral program by which existing Users can introduce people who are interested in becoming Creators to Dint Club and receive referral payments from Dint Club which are calculated and limited as described in these Referral Program Terms.
 <br /><br />
-The Dint Club Referral Program is operated by Fenix International Limited. We are a limited company registered in England and Wales, with company registration number 10354575 and we have our registered office address at Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS.
+The Dint Club Referral Program is operated by Dint Club Inc. We are a limited company registered in England and Wales, with company registration number 10354575 and we have our registered office address at Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS.
 <br /><br />
 The rules of the Dint Club Referral Program:
 
@@ -516,7 +516,7 @@ Last updated: December 2021
 <br /><br />
 COMPLAINTS POLICY
 Introduction: This document set out our complaints policy. If you are a User of Dint Club, this Complaints Policy forms part of your agreement with us.
-Who we are and how to contact us: Dint Club is operated by Fenix International Limited. We are a limited company registered in England and Wales, with company registration number 10354575 and we have our registered office address at Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS.
+Who we are and how to contact us: Dint Club is operated by Dint Club Inc. We are a limited company registered in England and Wales, with company registration number 10354575 and we have our registered office address at Fourth Floor, Imperial House, 8 Kean Street, London, WC2B 4AS.
 Interpretation: In this Complaints Policy, defined terms have the same meanings given to them in the Terms of Use for all Users. In addition, the term "business days" means any day which is not a Saturday, Sunday or public holiday in England.
 Who can use this Complaints Policy? Whether or not you are a User of Dint Club, you can use this Complaints Policy to alert us to any complaint which you have relating to Dint Club.
 How to make a complaint: If you have a complaint about Dint Club (including any complaint about Content appearing on Dint Club or the conduct of a User), please send your complaint to support@dint.com including your name, address, contact details, a description of your complaint and, if your complaint relates to Content, the URL for the Content to which your complaint relates.

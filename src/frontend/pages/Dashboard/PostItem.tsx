@@ -46,7 +46,7 @@ const PostItem = ({
   const [canHeDeletePost, setCanHeDeletePost] = React.useState(false);
   const theme = useTheme();
   const images = ['jpg', 'gif', 'png', 'svg', 'webp', 'ico', 'jpeg'];
-  const videos = ['mp4', '3gp', 'ogg'];
+  const videos = ['mp4', '3gp', 'ogg', 'quicktime'];
 
   const url = new URL(image ?? 'https://google.com');
   const extension = url.pathname.split('.')[1];
@@ -122,17 +122,19 @@ const PostItem = ({
       user: user.id,
       post: post.id
     };
-    const res = await _axios.post('/api/posts/like/', data);
-    console.log(res.data.data);
-    console.log(data);
+
     setAlreadyLike(true);
-    const mypost = post;
+
+    const likedPost = { ...post };
+
+    likedPost.like_post.push({});
+
     fetchPosts();
-    mypost.like_post.push({});
-    // alert(mypost.like_post.length);
-    setPost(mypost);
-    // alert(post.like_post.filter((item) => item.user.id == user.id));
-    // toast.success('Like Added Successful!');
+
+    setPost((prevState) => prevState, { like_post: likedPost.like_post });
+    console.log('like post ', post.like_post);
+
+    const res = await _axios.post('/api/posts/like/', data);
   };
   return (
     <>

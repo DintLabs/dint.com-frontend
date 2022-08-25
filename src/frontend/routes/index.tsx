@@ -96,14 +96,6 @@ export default function Router() {
       ),
       children: [
         {
-          path: '/:username',
-          element: (
-            <AuthGuard>
-              <NewHome />
-            </AuthGuard>
-          )
-        },
-        {
           path: '/dashboard',
           element: (
             <AuthGuard>
@@ -137,6 +129,14 @@ export default function Router() {
             <AuthGuard>
               <NewHome />
             </AuthGuard>
+          )
+        },
+        {
+          path: '/:username',
+          element: (
+            // <AuthGuard>
+            <NewHome />
+            // </AuthGuard>
           )
         }
       ]

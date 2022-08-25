@@ -129,7 +129,11 @@ const Profile = () => {
   };
 
   const saveData = async (id, data) => {
-    await _axios.put('api/user/update-profile-by-token/', data);
+    let result = await _axios.put('api/user/update-profile-by-token/', data);
+    if (result.data.data) {
+      const savedUser = JSON.parse(localStorage.getItem('userData') ?? '{}');
+      localStorage.setItem('userData', JSON.stringify({ ...savedUser, ...result.data.data }));
+    }
     setTimeout(() => {
       toast.update(id, {
         render: 'Profile Updated Successful!',

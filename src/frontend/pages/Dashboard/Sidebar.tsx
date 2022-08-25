@@ -12,13 +12,14 @@ import { useNavigate } from 'react-router';
 const Sidebar = () => {
   const { selectedMenu } = useSelector((rootState: RootState) => rootState.newHome);
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('userData') ?? '{}');
 
   return (
     <>
       <List>
         <ListItem
           sx={{
-            color: HOME_SIDE_MENU.HOME === selectedMenu ? 'text.primary' : 'text.secondary',
+            color: (HOME_SIDE_MENU.HOME === selectedMenu || HOME_SIDE_MENU.DASHBOARD === selectedMenu) ? 'text.primary' : 'text.secondary',
             cursor: 'pointer'
           }}
           onClick={() => {
@@ -53,7 +54,7 @@ const Sidebar = () => {
           }}
           onClick={() => {
             dispatch(setNewHomeSliceChanges({ selectedMenu: HOME_SIDE_MENU.MY_PROFILE }));
-            navigate('/dashboard/' + HOME_SIDE_MENU.MY_PROFILE);
+            navigate('/' + user?.custom_username);
           }}
         >
           <ListItemAvatar>

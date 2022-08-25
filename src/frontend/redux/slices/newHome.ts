@@ -6,6 +6,7 @@ type NewHomeState = {
 };
 
 export enum HOME_SIDE_MENU {
+  DASHBOARD = 'dashboard',
   HOME = 'home',
   MESSAGES = 'messages',
   MY_PROFILE = 'profile',

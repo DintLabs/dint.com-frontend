@@ -3,14 +3,11 @@
 
 import LaunchRoundedIcon from '@mui/icons-material/LaunchRounded';
 import {
-  Select,
   Avatar,
   Badge,
   Box,
-  FormControl,
+  Button as MUIButton,
   IconButton,
-  InputLabel,
-  MenuItem,
   Stack,
   Tabs,
   Typography,
@@ -19,10 +16,14 @@ import {
 import Tab from '@mui/material/Tab';
 import _axios from 'frontend/api/axios';
 import useAuth from 'frontend/hooks/useAuth';
+import { uploadCoverPhoto } from 'frontend/services/profileService';
 import React from 'react';
+import { toast } from 'react-toastify';
+import DiscordIcon from '../../assets/img/web3/discord.png';
 import userCoverImg from '../../assets/img/web3/images.jpeg';
+import InstagramIcon from '../../assets/img/web3/instagram.png';
+import TwitterIcon from '../../assets/img/web3/twitter.png';
 import PostItem from './PostItem';
-import MediaItem from './MediaItem';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -73,25 +74,27 @@ const MyProfile = ({
   const [userDetails, setUserDetails] = React.useState([]);
   const [filter, setFilter] = React.useState('posts');
 
+  const savedUser = JSON.parse(localStorage.getItem('userData') ?? '{}');
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   React.useEffect(async () => {
-    const { data } = await _axios.get('/api/user/get-profile-by-token/');
+    const { data } = await _axios.post('/api/user/get-profile-by-username/', {
+      custom_username: username
+    });
     setUserDetails(data.data);
 
     if (username) {
-      // alert(username);
-
-      try {
-        const { data } = await _axios.get('/api/user/get-profile-by-username/' + username);
-        console.log(data);
-        toast.success('Data Fetched');
-      } catch (err) {
-        console.log(err);
-        toast.error('Unable to Get User Profile Data');
-      }
+      // try {
+      //   const { data } = await _axios.get('/api/user/get-profile-by-username/' + username);
+      //   console.log(data);
+      //   toast.success('Data Fetched');
+      // } catch (err) {
+      //   console.log(err);
+      //   toast.error('Unable to Get User Profile Data');
+      // }
     }
   }, []);
 
@@ -100,7 +103,26 @@ const MyProfile = ({
     setFilter(type);
   };
 
-  console.log(user);
+  const copyToClipBoard = () => {
+    const profileUrl = `${window.location.origin}/${username}`;
+    navigator.clipboard.writeText(profileUrl);
+  };
+
+  const handleSocialIconClick = (url) => {
+    window.open(url, '_blank');
+  };
+
+  const handleFileChange = async (e) => {
+    if (e.target.files && e.target.files.length) {
+      let result = await uploadCoverPhoto(e.target.files[0]);
+      console.log('result ===>', result);
+      if (result.success) {
+        setUserDetails({ ...userDetails, banner_image: result?.data?.banner_image || '' });
+      }
+      toast.dismiss();
+    }
+  };
+
   if (!user)
     return (
       <Typography variant="h2" sx={{ textAlign: 'center' }}>
@@ -122,7 +144,26 @@ const MyProfile = ({
           sx={{ pb: 2 }}
         >
           <Box sx={{ position: 'relative' }}>
-            <img src={userCoverImg} alt="user-conver" style={{ width: '100%', height: 250 }} />
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                width: '100%',
+                height: 250,
+                backgroundImage: `url(${
+                  userDetails?.banner_image ? userDetails?.banner_image : userCoverImg
+                })`
+              }}
+            >
+              {username == savedUser?.custom_username && (
+                <MUIButton variant="contained" component="label" sx={{ m: 1 }}>
+                  <input hidden accept="image/*" type="file" onChange={handleFileChange} />
+                  Edit cover photo
+                </MUIButton>
+              )}
+            </div>
+            {/* <img src={userCoverImg} alt="user-conver" style={{ width: '100%', height: 250 }} /> */}
             <Stack direction="row" justifyContent="space-between">
               <Box sx={{ position: 'relative', bottom: 15, left: 20, right: 30 }}>
                 <Badge
@@ -138,7 +179,7 @@ const MyProfile = ({
                   <Avatar src={userDetails.profile_image} sx={{ width: 75, height: 75 }} />
                 </Badge>
               </Box>
-              <IconButton>
+              <IconButton onClick={copyToClipBoard}>
                 <LaunchRoundedIcon />
               </IconButton>
             </Stack>
@@ -147,9 +188,70 @@ const MyProfile = ({
             <Typography variant="h3" sx={{ color: 'text.primary' }}>
               {userDetails.display_name}
             </Typography>
+            <input type="hidden" id="dummy" />
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
               @{userDetails.custom_username} &#8226; Avaliable Now
             </Typography>
+          </Box>
+          {userDetails?.bio && (
+            <Box sx={{ px: 2, pt: 1 }}>
+              <Typography variant="body1" sx={{ color: 'text.primary', fontSize: '12px' }}>
+                {userDetails.bio}
+              </Typography>
+            </Box>
+          )}
+          <Box display={'flex'} gap={1} sx={{ p: 2 }}>
+            {!!userDetails?.instagram && (
+              <Box
+                display={'flex'}
+                justifyContent="center"
+                alignItems={'center'}
+                py={'4px'}
+                px={'8px'}
+                bgcolor={'#3a3d3a'}
+                borderRadius={'12px'}
+                gap={'4px'}
+                sx={{ cursor: 'pointer' }}
+                onClick={() => handleSocialIconClick(userDetails.instagram)}
+              >
+                <img src={InstagramIcon} height="20" width="20" />
+                <Typography sx={{ color: 'white', fontSize: '14px' }}>Instagram</Typography>
+              </Box>
+            )}
+            {!!userDetails?.twitter && (
+              <Box
+                display={'flex'}
+                justifyContent="center"
+                alignItems={'center'}
+                py={'4px'}
+                px={'8px'}
+                bgcolor={'#3a3d3a'}
+                borderRadius={'12px'}
+                gap={'4px'}
+                sx={{ cursor: 'pointer' }}
+                onClick={() => handleSocialIconClick(userDetails.twitter)}
+              >
+                <img src={TwitterIcon} height="20" width="20" style={{ borderRadius: 10 }} />
+                <Typography sx={{ color: 'white', fontSize: '14px' }}>Twitter</Typography>
+              </Box>
+            )}
+            {!!userDetails?.discord && (
+              <Box
+                display={'flex'}
+                justifyContent="center"
+                alignItems={'center'}
+                py={'4px'}
+                px={'8px'}
+                bgcolor={'#3a3d3a'}
+                borderRadius={'12px'}
+                gap={'4px'}
+                sx={{ cursor: 'pointer' }}
+                onClick={() => handleSocialIconClick(userDetails.discord)}
+              >
+                <img src={DiscordIcon} height="20" width="20" style={{ borderRadius: 10 }} />
+                <Typography sx={{ color: 'white', fontSize: '14px' }}>Discord</Typography>
+              </Box>
+            )}
           </Box>
         </Box>
         <Box>

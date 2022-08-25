@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* eslint-disable */
-import React, { useLayoutEffect, useEffect, useState, useCallback } from 'react';
+import React, { useLayoutEffect, useEffect, useState, useCallback, useMemo } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { HOME_SIDE_MENU, setNewHomeSliceChanges } from 'frontend/redux/slices/newHome';
 import { RootState, useSelector, useDispatch } from 'frontend/redux/store';
@@ -35,6 +35,7 @@ const NewHome = () => {
   const params = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('userData') ?? '{}');
 
   useEffect(() => {
     if (selectedMenu == HOME_SIDE_MENU.HOME) {
@@ -49,6 +50,7 @@ const NewHome = () => {
   const validPages = [
     HOME_SIDE_MENU.ADD_POST,
     HOME_SIDE_MENU.HOME,
+    HOME_SIDE_MENU.DASHBOARD,
     HOME_SIDE_MENU.MY_PROFILE,
     HOME_SIDE_MENU.MESSAGES
   ];
@@ -147,7 +149,7 @@ const NewHome = () => {
     try {
       const user = JSON.parse(localStorage.getItem('userData') ?? '{}');
       if (!user.id) {
-        toast.error("Can't find User");
+        // toast.error("Can't find User");
         return;
       }
 
@@ -196,6 +198,65 @@ const NewHome = () => {
     return <h5>Error</h5>;
   }
 
+  const renderComponent = useMemo(() => {
+    if (
+      location.pathname.includes(HOME_SIDE_MENU.HOME) ||
+      location.pathname === `/${HOME_SIDE_MENU.DASHBOARD}`
+    )
+      return (
+        <Grid container>
+          <Grid item xs={12} md={8}>
+            <HomeTab
+              fetchPosts={fetchPostsList}
+              posts={posts}
+              widthScreen={widthScreen}
+              createPost={createPost}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <RightSidebar styleTerms={styleTerms} widthScreen={widthScreen} />
+          </Grid>
+        </Grid>
+      );
+    else if (location.pathname.includes(HOME_SIDE_MENU.MESSAGES))
+      return <Messages widthScreen={widthScreen} />;
+    else if (location.pathname.includes(HOME_SIDE_MENU.ADD_POST))
+      return <AddPost widthScreen={widthScreen} createPost={createPost} />;
+    else
+      return (
+        <>
+          <Grid container>
+            <Grid item xs={12} md={8}>
+              <MyProfile
+                username={params.username}
+                textPosts={textPosts}
+                videoPosts={videoPosts}
+                photoPosts={photoPosts}
+                fetchPosts={fetchPostsList}
+                posts={userPosts}
+                widthScreen={widthScreen}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <RightSidebar styleTerms={styleTerms} widthScreen={widthScreen} />
+            </Grid>
+          </Grid>
+          {/* <Grid container>
+              <Grid item xs={12} md={8}>
+                <MyProfile
+                  fetchPosts={fetchPostsList}
+                  posts={userPosts}
+                  widthScreen={widthScreen}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <RightSidebar styleTerms={styleTerms} widthScreen={widthScreen} />
+              </Grid>
+            </Grid> */}
+        </>
+      );
+  }, [location, posts, textPosts, videoPosts, photoPosts, userPosts]);
+
   return (
     <>
       <Helmet>
@@ -208,46 +269,14 @@ const NewHome = () => {
       <Box>
         <Grid container>
           <Grid item xs={0} md={3} sx={{ display: widthScreen >= 900 ? '' : 'none' }}>
-            <Sidebar />
+            {!!user.id && <Sidebar />}
           </Grid>
           <Grid item sx={styleSidebarMobile}>
-            <SidebarMobile widthScreen={widthScreen} />
+            {!!user.id && <SidebarMobile widthScreen={widthScreen} />}
           </Grid>
           <Grid item xs={12} md={9}>
-            {HOME_SIDE_MENU.HOME === selectedMenu && (
-              <Grid container>
-                <Grid item xs={12} md={8}>
-                  <HomeTab
-                    fetchPosts={fetchPostsList}
-                    posts={posts}
-                    widthScreen={widthScreen}
-                    createPost={createPost}
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <RightSidebar styleTerms={styleTerms} widthScreen={widthScreen} />
-                </Grid>
-              </Grid>
-            )}
-            {HOME_SIDE_MENU.MY_PROFILE === selectedMenu && (
-              <Grid container>
-                <Grid item xs={12} md={8}>
-                  <MyProfile
-                    username={params.username}
-                    textPosts={textPosts}
-                    videoPosts={videoPosts}
-                    photoPosts={photoPosts}
-                    fetchPosts={fetchPostsList}
-                    posts={userPosts}
-                    widthScreen={widthScreen}
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <RightSidebar styleTerms={styleTerms} widthScreen={widthScreen} />
-                </Grid>
-              </Grid>
-            )}
-            {HOME_SIDE_MENU.MY_PROFILE === 'userProfile' && (
+            {renderComponent}
+            {/* {HOME_SIDE_MENU.MY_PROFILE === 'userProfile' && (
               <Grid container>
                 <Grid item xs={12} md={8}>
                   <MyProfile
@@ -260,11 +289,7 @@ const NewHome = () => {
                   <RightSidebar styleTerms={styleTerms} widthScreen={widthScreen} />
                 </Grid>
               </Grid>
-            )}
-            {HOME_SIDE_MENU.MESSAGES === selectedMenu && <Messages widthScreen={widthScreen} />}
-            {HOME_SIDE_MENU.ADD_POST === selectedMenu && (
-              <AddPost widthScreen={widthScreen} createPost={createPost} />
-            )}
+            )} */}
           </Grid>
         </Grid>
       </Box>

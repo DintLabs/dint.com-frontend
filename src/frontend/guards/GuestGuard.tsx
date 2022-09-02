@@ -14,7 +14,7 @@ export default function GuestGuard({ children }: GuestGuardProps) {
   const userData = localStorage.getItem('userData');
 
   if (userData) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/lounge" />;
   }
 
   return <>{children}</>;

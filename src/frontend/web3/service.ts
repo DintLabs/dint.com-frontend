@@ -84,11 +84,11 @@ export const fetchTokenBalance = async ({
 }: IFetchNetworkToken) => {
   const res = {};
   const req = {
-    Token_Address: '',
+    Token_Address: '' as any,
     walletAddress: '',
     method: '',
     rpcURL: '',
-    abi: '',
+    abi: '' as any,
     params: {} as any
   };
   req.Token_Address = Token_Address;

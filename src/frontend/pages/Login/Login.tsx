@@ -63,7 +63,7 @@ const Login = () => {
             localStorage.setItem('apiToken', data.data.token);
             localStorage.setItem('userData', JSON.stringify(data.data));
             toast.success('User Login Successful!');
-            navigate('/dashboard');
+            navigate('/lounge');
           } else {
             await axios
               .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
@@ -72,7 +72,7 @@ const Login = () => {
                   localStorage.setItem('apiToken', data.data.token);
                   localStorage.setItem('userData', JSON.stringify(data.data));
                   toast.success('User Login Successful!');
-                  navigate('/dashboard');
+                  navigate('/lounge');
                 } else {
                   toast.error('User Not Found');
                 }
@@ -105,7 +105,7 @@ const Login = () => {
             localStorage.setItem('apiToken', data.data.token);
             localStorage.setItem('userData', JSON.stringify(data.data));
             toast.success('User Login Successful!');
-            navigate('/dashboard');
+            navigate('/lounge');
           }
         })
         .catch((err: any) => {
@@ -183,7 +183,7 @@ const Login = () => {
                 localStorage.setItem('apiToken', data.data.token);
                 localStorage.setItem('userData', JSON.stringify(data.data));
                 toast.success('User Login Successful!');
-                navigate('/dashboard');
+                navigate('/lounge');
               } else {
                 await axios
                   .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData)
@@ -192,7 +192,7 @@ const Login = () => {
                       localStorage.setItem('apiToken', data.data.token);
                       localStorage.setItem('userData', JSON.stringify(data.data));
                       toast.success('User Login Successful!');
-                      navigate('/dashboard');
+                      navigate('/lounge');
                     }
                   });
               }
@@ -203,7 +203,7 @@ const Login = () => {
           // if (redirectUrl) {
           //   navigate(redirectUrl);
           // } else {
-          //   navigate('/dashboard');
+          //   navigate('/lounge');
           // }
         })
         .catch((error) => {

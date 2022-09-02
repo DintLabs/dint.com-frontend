@@ -1,9 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.css';
 // eslint-disable-next-line import/no-named-as-default
 import AuthProvider from 'frontend/contexts/FirebaseContext';
+import { LoungeProvider } from 'frontend/contexts/LoungeContext';
 import 'react-toastify/dist/ReactToastify.css';
 // @ts-ignore
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 import { render } from 'react-dom';
 import { HelmetProvider } from 'react-helmet-async';
@@ -26,7 +27,9 @@ render(
       pauseOnHover
     />
     <AuthProvider>
-      <App />
+      <LoungeProvider>
+        <App />
+      </LoungeProvider>
     </AuthProvider>
   </HelmetProvider>,
   rootElement

@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import { ENV } from 'frontend/config';
@@ -37,15 +38,17 @@ const EventList = () => {
   }
 
   const getMetamaskBalance = async (selectedEvent: IEvent) => {
-    const netWork: any = getNetworkByUniqueId(selectedEvent?.network || 0);
-    // console.log(netWork);
+    const n = selectedEvent?.network ? parseInt(selectedEvent?.network.toString(), 10) : 0;
+    const netWork: any = getNetworkByUniqueId(n);
+    console.log('netWork ===>', netWork);
+    console.log('SOLANA_MAINNET ====>', SOLANA_MAINNET);
 
     const getBalance = async (walletAddress: string) =>
       fetchTokenBalance({
         Network: netWork.uniqueId,
-        Network_Standard: selectedEvent.tokenType,
-        Token_Address: selectedEvent.tokenaddress,
-        tokenDecimal: selectedEvent.tokenDecimal,
+        Network_Standard: selectedEvent?.tokenType || '',
+        Token_Address: selectedEvent?.tokenAddress || '',
+        tokenDecimal: selectedEvent?.tokenDecimal || 0,
         walletAddress
       });
     // check which is network
@@ -66,6 +69,7 @@ const EventList = () => {
           state: { eventid: selectedEvent.eventId, userid: authInstance?.currentUser?.uid || '' }
         });
       }
+      return;
       // console.log('Accounts', balanceOf);
     }
     if (netWork.uniqueId === SOLANA_MAINNET.uniqueId) {
@@ -110,7 +114,7 @@ const EventList = () => {
         }
       }
       const chainId = await metamask.getChainId();
-      // console.log(chainId, 'chainId', toHex(netWork.chainId));
+      console.log('chainId ===>', chainId, toHex(netWork.chainId));
       if (chainId == null) {
         // Alert metamask does not availible
         const config = Alert.configErrorAlert({
@@ -173,6 +177,13 @@ const EventList = () => {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <CircularProgress />
+      </Box>
+    );
+
+  if (!lstEvent.length)
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Typography>No Events Found. </Typography>
       </Box>
     );
 

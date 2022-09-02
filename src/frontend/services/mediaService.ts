@@ -1,25 +1,27 @@
+import _axios from 'frontend/api/axios';
 import { AWS_S3_CONFIG } from 'frontend/config';
 import ReactS3Client from 'react-aws-s3-typescript';
-import { toast } from 'react-toastify';
 
 const s3Config = {
-  bucketName: 'dint',
-  region: 'us-east-2',
+  bucketName: AWS_S3_CONFIG.bucketName,
+  region: AWS_S3_CONFIG.region,
   accessKeyId: AWS_S3_CONFIG.accessKeyId,
   secretAccessKey: AWS_S3_CONFIG.secretAccessKey
 };
 
 export const uploadMedia = async (file: any) => {
-  const s3 = new ReactS3Client(s3Config);
+  const formData = new FormData();
+  formData.append('media', file);
   try {
-    const res = await s3.uploadFile(file);
+    const res = await _axios.post('api/upload/media/', formData);
     return {
       success: true,
-      uploadedUrl: res.location
+      data: res
     };
-  } catch (e) {
+  } catch (e: any) {
     return {
-      success: false
+      success: false,
+      message: e.message
     };
   }
 };

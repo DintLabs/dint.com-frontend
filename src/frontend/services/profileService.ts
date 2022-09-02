@@ -12,18 +12,18 @@ export const uploadCoverPhoto = async (file: any) => {
   if (uploadResult.success) {
     try {
       const result = await _axios.put('api/user/update-profile-by-token/', {
-        banner_image: uploadResult.uploadedUrl
+        banner_image: uploadResult?.data?.data?.data[0]?.media_file_url || ''
       });
       toast.update(id, {
         render: 'Cover photo updated',
         type: 'success',
         isLoading: false
       });
-      if (result.data.data) {
+      if (result.data?.data) {
         const savedUser = JSON.parse(localStorage.getItem('userData') ?? '{}');
         localStorage.setItem('userData', JSON.stringify({ ...savedUser, ...result.data.data }));
       }
-      
+
       return {
         success: true,
         data: result.data.data

@@ -15,6 +15,8 @@ const Register = () => {
   const navigate = useNavigate();
   const { register } = useAuth();
 
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,6 +27,14 @@ const Register = () => {
   // Initialize Firebase
 
   const signup_sub = async () => {
+    if (!name) {
+      setSignErr('Name is required!');
+      return;
+    }
+    if (!username) {
+      setSignErr('Username is required!');
+      return;
+    }
     if (email === confirmEmail) {
       if (password === confirmPassword) {
         try {
@@ -44,17 +54,17 @@ const Register = () => {
 
           await register(email, password, userData);
           const user = window.userData;
-          const username = generateFromEmail(user.email);
+          const generatedUserName = generateFromEmail(user.email);
           const userData2 = {
             ...user,
             fire_base_auth_key: user?.uid,
             role: 'simple',
             biography: 'no biography yet',
-            custom_username: username ?? '',
+            custom_username: username || generatedUserName || '',
             profile_image:
               user?.photoURL ??
               'https://w1.pngwing.com/pngs/386/684/png-transparent-face-icon-user-icon-design-user-profile-share-icon-avatar-black-and-white-silhouette.png',
-            display_name: user?.displayName ?? ''
+            display_name: name || user?.displayName || ''
           };
           await axios
             .post(`${process.env.REACT_APP_API_URL}/api/auth/sign-up/`, userData2)
@@ -64,7 +74,7 @@ const Register = () => {
               localStorage.setItem('apiToken', data.data.token);
               localStorage.setItem('userData', JSON.stringify(data.data));
               toast.success('User Login Successful!');
-              navigate('/dashboard');
+              navigate('/lounge');
             })
             // @ts-ignore
             .catch((err) => {
@@ -118,10 +128,27 @@ const Register = () => {
         <div className="container">
           <div className="header">
             <br />
-            <br />
             <h1>Sign Up</h1>
+            <br />
           </div>
-
+          <div className="form-control">
+            <label htmlFor="username">Full Name</label>
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e: any) => setName(e.target.value)}
+            />
+          </div>
+          <div className="form-control">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e: any) => setUsername(e.target.value)}
+            />
+          </div>
           <div className="form-control">
             <label htmlFor="username">Email</label>
             <input

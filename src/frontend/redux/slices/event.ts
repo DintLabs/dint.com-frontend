@@ -1,16 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { child, get, getDatabase, ref } from 'firebase/database';
-import { IEvent } from 'frontend/types/event';
+import { getEvents, getUserEvents } from 'frontend/services/eventService';
+import { getUserVenues } from 'frontend/services/venueService';
+import { IEvent, IVenue } from 'frontend/types/event';
 
 type IEventState = {
   isLoading: boolean;
   lstEvent: IEvent[];
+  userEvents: IEvent[];
+  userVenues: IVenue[],
   error: any;
 };
 
 const initialState: IEventState = {
   isLoading: false,
   lstEvent: [],
+  userEvents: [],
+  userVenues: [],
   error: false
 };
 
@@ -34,20 +39,41 @@ const slice = createSlice({
 // Reducer
 export default slice.reducer;
 
+export function fetchUserEvents(userId: string | number) {
+  return async (dispatch: any) => {
+    try {
+      dispatch(slice.actions.startLoading());
+      const result = await getUserEvents(userId);
+      if (result.success)
+        dispatch(slice.actions.setSliceChanges({ userEvents: result.data, isLoading: false }));
+    } catch (error) {
+      console.log(error);
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
 export function fetchEvents() {
   return async (dispatch: any) => {
     try {
       dispatch(slice.actions.startLoading());
-      const dbRef = ref(getDatabase());
-      const snapshot = await get(child(dbRef, `events/`));
-      if (snapshot.exists()) {
-        const events = Object.keys(snapshot.val());
-        const eventarray: any = [];
-        for (let i = 0; i < events.length; i++) {
-          eventarray.push(snapshot.val()[events[i]]);
-        }
-        dispatch(slice.actions.setSliceChanges({ lstEvent: eventarray, isLoading: false }));
-      }
+      const result = await getEvents();
+      if (result.success)
+        dispatch(slice.actions.setSliceChanges({ lstEvent: result.data, isLoading: false }));
+    } catch (error) {
+      console.log(error);
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function fetchUserVenues(userId: string | number) {
+  return async (dispatch: any) => {
+    try {
+      dispatch(slice.actions.startLoading());
+      const result = await getUserVenues(userId);
+      if (result.success)
+        dispatch(slice.actions.setSliceChanges({ userVenues: result.data, isLoading: false }));
     } catch (error) {
       console.log(error);
       dispatch(slice.actions.hasError(error));

@@ -5,7 +5,7 @@ type UserProfileState = {
 };
 
 const initialState: UserProfileState = {
-  isLoading: false
+  isLoading: false,
 };
 
 const slice = createSlice({
@@ -14,9 +14,10 @@ const slice = createSlice({
   reducers: {
     startLoading(state) {
       state.isLoading = true;
-    }
+    },
   }
 });
 
 // Reducer
 export default slice.reducer;
+

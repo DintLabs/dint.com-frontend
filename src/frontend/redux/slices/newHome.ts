@@ -6,11 +6,13 @@ type NewHomeState = {
 };
 
 export enum HOME_SIDE_MENU {
-  DASHBOARD = 'dashboard',
+  LOUNGE = 'lounge',
   HOME = 'home',
   MESSAGES = 'messages',
   MY_PROFILE = 'profile',
-  ADD_POST = 'add-post'
+  MY_EVENT = 'event',
+  ADD_POST = 'add-post',
+  SUBSCRIPTIONS = 'subscriptions'
 }
 
 const initialState: NewHomeState = {

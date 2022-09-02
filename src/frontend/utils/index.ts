@@ -1,5 +1,7 @@
 /* eslint-disable no-useless-escape */
 import * as _ from 'lodash';
+import moment from 'moment';
+import { moveMessagePortToContext } from 'worker_threads';
 import { ETHERIUM, POLYGON_MAINNET, SOLANA_MAINNET } from '../web3/model';
 
 export const OPTIONS_NETWORK_STAD = {
@@ -30,7 +32,7 @@ export const OPTIONS_NETWORK_STAD = {
   }
 };
 
-export const IS_TOKEN = (networkStandard: string) => ['ERC_20', 'SPL'].includes(networkStandard);
+export const IS_TOKEN = (networkStandard: any) => ['ERC_20', 'SPL'].includes(networkStandard);
 
 export const IS_NFT = (networkStandard: string) =>
   ['NFT', 'ERC_721', 'ERC_1155'].includes(networkStandard);
@@ -101,3 +103,7 @@ export const isMobile = () => {
 };
 
 export const generateFromEmail = (email: string) => `user${Math.floor(Math.random() * 100000)}`;
+
+export const getLocalTime = (UTCTime: string) => {
+  return moment.utc(UTCTime).local();
+};

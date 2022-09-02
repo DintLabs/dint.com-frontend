@@ -9,7 +9,7 @@ import MainNavbar from './MainNavBar';
 export default function SecondaryMainNavBar() {
   const { pathname } = useLocation();
 
-  const shouldHideFooter = !pathname.includes('/dashboard');
+  const shouldHideFooter = !pathname.includes('/lounge');
   return (
     <div
       style={{
@@ -21,16 +21,16 @@ export default function SecondaryMainNavBar() {
       <div>
         <MainNavbar />
       </div>
-      <div id="page-body">
+      <div id="page-body" style={{ minHeight: '100vh' }}>
         <Box
           sx={{
-            minHeight: '95vh',
             width: '100%',
+            minHeight: '100vh',
             bgcolor: 'background.default'
           }}
         >
           <Container>
-            <Box sx={{ pt: 3 }} />
+            {/* <Box sx={{ pt: 3 }} /> */}
             <Outlet />
           </Container>
           {shouldHideFooter && <MainFooter />}

@@ -1,11 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { child, get, getDatabase, ref, set, update } from 'firebase/database';
 import { databaseInstance } from 'frontend/contexts/FirebaseInstance';
+import { addEvent, getEvents } from 'frontend/services/eventService';
+import { addVenue } from 'frontend/services/venueService';
 import { IEvent, IVenue } from 'frontend/types/event';
 import { dispatch } from '../store';
 
 type IAdminState = {
   isLoading: boolean;
+  isLoadingEvents: boolean;
   isVenueLoading: boolean;
   lstEvent: IEvent[];
   lstVanue: IVenue[];
@@ -14,6 +17,7 @@ type IAdminState = {
 
 const initialState: IAdminState = {
   isLoading: false,
+  isLoadingEvents: false,
   isVenueLoading: false,
   lstEvent: [],
   lstVanue: [],
@@ -26,6 +30,9 @@ const slice = createSlice({
   reducers: {
     startLoading(state) {
       state.isLoading = true;
+    },
+    handleEventsLoading(state, action) {
+      state.isLoadingEvents = action.payload;
     },
     startVanueLoading(state) {
       state.isVenueLoading = true;
@@ -52,19 +59,25 @@ export const { setAdminSliceChanges } = slice.actions;
 export function fetchAdminEvents() {
   return async (dispatch: any) => {
     try {
-      dispatch(slice.actions.startLoading());
-      const dbRef = ref(getDatabase());
-      const snapshot = await get(child(dbRef, `events/`));
-      if (snapshot.exists()) {
-        const events = Object.keys(snapshot.val());
-        const eventarray: any = [];
-        for (let i = 0; i < events.length; i++) {
-          eventarray.push(snapshot.val()[events[i]]);
-        }
-        dispatch(slice.actions.setAdminSliceChanges({ lstEvent: eventarray, isLoading: false }));
+      dispatch(slice.actions.handleEventsLoading(true));
+      const result = await getEvents();
+      dispatch(slice.actions.handleEventsLoading(false));
+      if (result.success) {
+        dispatch(slice.actions.setAdminSliceChanges({ lstEvent: result.data }));
       }
+
+      // const dbRef = ref(getDatabase());
+      // const snapshot = await get(child(dbRef, `events/`));
+      // if (snapshot.exists()) {
+      //   const events = Object.keys(snapshot.val());
+      //   const eventarray: any = [];
+      //   for (let i = 0; i < events.length; i++) {
+      //     eventarray.push(snapshot.val()[events[i]]);
+      //   }
+      // }
     } catch (error) {
       console.log(error);
+      dispatch(slice.actions.handleEventsLoading(false));
       dispatch(slice.actions.hasError(error));
     }
   };
@@ -109,22 +122,9 @@ export async function updateAdminEvent(IO: IEvent, selectedEventName: string) {
 export async function crateEvent(IO: IEvent) {
   try {
     dispatch(slice.actions.startLoading());
-    console.log(IO);
-    await set(ref(databaseInstance, `events/${IO.eventName}`), { ...IO });
+    await addEvent(IO);
   } catch (error) {
     console.log(error);
-    alert(`error in event save ${error}`);
-    dispatch(slice.actions.hasError(error));
-  }
-}
-
-export async function createVenue(IO: IVenue) {
-  try {
-    dispatch(slice.actions.startVanueLoading());
-    await set(ref(databaseInstance, `venues/${IO.venueName}`), IO);
-  } catch (error) {
-    console.log(error);
-    alert('Error in Vanue Save');
     dispatch(slice.actions.hasError(error));
   }
 }

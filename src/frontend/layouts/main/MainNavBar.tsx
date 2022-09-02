@@ -6,6 +6,7 @@ import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { CgProfile } from 'react-icons/cg';
 import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import MetamaskLogin from '../../components/MetamaskLogin';
 import blacklogo from '../../material/black.png';
@@ -37,21 +38,30 @@ const MainNavBar = () => {
 
   const { pathname } = useLocation();
   const isEventsPage = pathname === '/events';
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onLogout = async () => {
     try {
       await logout();
-      window.location.reload();
+      setIsAuthenticated(false);
       navigate('/');
-    } catch (ex) {
-      console.log(ex, 'Error occurred in onLogout');
+      dispatch({ type: 'RESET_STORE' });
+    } catch (e) {
+      console.log('Error occurred in onLogout', e.message);
     }
   };
 
   const EditProfile = () => {
     navigate('/profile');
+  };
+
+  const navigateOnCreatePage = () => {
+    navigate('/page/creation');
+  };
+
+  const navigateOnViewPage = () => {
+    navigate('/page/Test-page');
   };
 
   const select = (el: string, all = false): any => {
@@ -79,7 +89,7 @@ const MainNavBar = () => {
 
   return (
     <>
-      <div id="event_nav" style={{ marginTop: '60px' }}>
+      <div id="event_nav" style={{ marginTop: '80px' }}>
         <header
           id="header"
           className="fixed-top d-flex align-items-center "
@@ -88,7 +98,7 @@ const MainNavBar = () => {
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <div className="logo me-auto" style={{ display: 'flex' }}>
               {/* <Link to={'/'}><h1 ><img src={mainlogo}  height="50px" className="" alt="" />  </h1></Link> */}
-              <Link to={isAuthenticated ? '/dashboard' : '/'}>
+              <Link to={isAuthenticated ? '/lounge' : '/'}>
                 <h1>
                   <img src={mainlogo} alt="logo" id="logo_homepage" />{' '}
                 </h1>
@@ -120,8 +130,8 @@ const MainNavBar = () => {
                 )} */}
                 {isAuthenticated && (
                   <li className="no_effect_li">
-                    <Link to="/dashboard" style={{ padding: 0 }}>
-                      Dashboard
+                    <Link to="/lounge" style={{ padding: 0 }}>
+                      Lounge
                     </Link>
                   </li>
                 )}
@@ -155,7 +165,13 @@ const MainNavBar = () => {
                           <Dropdown.Item style={{ color: 'black' }} onClick={EditProfile}>
                             Edit Profile
                           </Dropdown.Item>
-                          <Dropdown.Item style={{ color: 'black' }} onClick={logout}>
+                          <Dropdown.Item style={{ color: 'black' }} onClick={navigateOnCreatePage}>
+                            Create Page
+                          </Dropdown.Item>
+                          <Dropdown.Item style={{ color: 'black' }} onClick={navigateOnViewPage}>
+                            View Page
+                          </Dropdown.Item>
+                          <Dropdown.Item style={{ color: 'black' }} onClick={onLogout}>
                             Logout
                           </Dropdown.Item>
                         </Dropdown.Menu>
@@ -177,9 +193,9 @@ const MainNavBar = () => {
 
                     <div className="profile_hide_pc">
                       <li className="no_effect_li">
-                        <Link id="no_effect" to="/auth/login/" onClick={onLogout}>
+                        <a id="no_effect" onClick={onLogout}>
                           Logout
-                        </Link>
+                        </a>
                       </li>
                     </div>
                   </>

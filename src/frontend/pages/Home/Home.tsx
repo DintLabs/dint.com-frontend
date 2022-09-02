@@ -20,7 +20,7 @@ const Home = () => {
   React.useEffect(() => {
     const apiToken = localStorage.getItem('apiToken');
     if (apiToken) {
-      navigate('/dashboard/home');
+      navigate('/lounge/home');
     }
   }, []);
   const back_to_top = $('#back_to_top');

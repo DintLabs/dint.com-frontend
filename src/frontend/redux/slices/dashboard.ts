@@ -2,17 +2,20 @@
 /* eslint-disable */
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { useHttp } from '../../hooks/httpReqHook';
-import IPost from '../../types/dashboard';
+import IPost from '../../types/lounge';
 import { RequestMethods } from '../../types/request';
 import IGetPost from '../../types/getPost';
 
-interface IDashboardState {
+interface ILoungeState {
   posts: IGetPost[];
   postsLoadingStatus: string;
 }
 
-const initialState: IDashboardState = {
+const initialState: ILoungeState = {
   posts: [],
+  textPosts: [],
+  photoPosts: [],
+  videoPosts: [],
   postsLoadingStatus: 'idle'
 };
 
@@ -53,6 +56,23 @@ const postsSlice = createSlice({
     },
     postsDeleted: (state, action: PayloadAction<number>) => {
       state.posts = state.posts.filter((item: IGetPost) => item.id !== action.payload);
+    },
+    addNewPost: (state, action) => {
+      if (action.payload.type === 'text' && state.textPosts.length) {
+        state.textPosts = [action.payload, ...state.textPosts];
+      }
+      if (action.payload.type === 'image' && state.photoPosts.length) {
+        state.textPosts = [action.payload, ...state.textPosts];
+      }
+      if (action.payload.type === 'video' && state.videoPosts.length) {
+        state.textPosts = [action.payload, ...state.videoPosts];
+      }
+      if (state.posts.length) {
+        state.posts = [action.payload, ...state.posts];
+      }
+    },
+    setLoungeSliceChanges: (state, action) => {
+      return { ...state, ...action.payload };
     }
   }
 });

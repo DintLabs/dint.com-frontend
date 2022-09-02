@@ -1,16 +1,15 @@
 // @ts-nocheck
 /* eslint-disable */
-import * as React from 'react';
+import { Button as MUIButton } from '@mui/material';
 import _axios from 'frontend/api/axios';
 import useAuth from 'frontend/hooks/useAuth';
+import { uploadMedia } from 'frontend/services/mediaService';
 import { AuthUser } from 'frontend/types/authentication';
-import { Button, Form, Tab, Tabs, InputGroup } from 'react-bootstrap';
+import * as React from 'react';
+import { Button, Form, InputGroup, Tab, Tabs } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import '../../material/Profile.css';
-import { toast } from 'react-toastify';
-import { Button as MUIButton } from '@mui/material';
-import { AWS_S3_CONFIG } from '../../config';
-import ReactS3Client from 'react-aws-s3-typescript';
 
 const Profile = () => {
   const { updateProfile, changePassword } = useAuth();
@@ -88,13 +87,6 @@ const Profile = () => {
     return null;
   };
 
-  const s3Config = {
-    bucketName: 'dint',
-    region: 'us-east-2',
-    accessKeyId: AWS_S3_CONFIG.accessKeyId,
-    secretAccessKey: AWS_S3_CONFIG.secretAccessKey
-  };
-
   // function of updating user's profile information
   const informationUpdate = async () => {
     try {
@@ -102,10 +94,9 @@ const Profile = () => {
       let id = toast.loading('Loading...', {
         autoClose: 6000
       });
-      const s3 = new ReactS3Client(s3Config);
       try {
         if (image.length > 0 && file) {
-          const res = await s3.uploadFile(file);
+          const uploadResult = await uploadMedia(file);
           toast.update(id, {
             render: 'Image Uploaded',
             type: 'success',
@@ -113,7 +104,7 @@ const Profile = () => {
           });
           saveData(id, {
             ...objUser,
-            profile_image: res.location
+            profile_image: uploadResult?.data?.data?.data[0]?.media_file_url || ''
           });
         } else {
           saveData(id, objUser);

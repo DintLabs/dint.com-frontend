@@ -6,6 +6,7 @@ import marketplaceReducer from './slices/marketplace';
 import adminReducer from './slices/admin';
 import newHomeReducer from './slices/newHome';
 import metamaskReducer from './slices/metamask';
+import messagesReducer from './slices/messages';
 
 // ----------------------------------------------------------------------
 
@@ -16,13 +17,20 @@ const rootPersistConfig = {
   whitelist: []
 };
 
-const rootReducer = combineReducers({
+const reducers = combineReducers({
   event: eventReducer,
   userProfile: userProfileReducer,
   marketplace: marketplaceReducer,
   admin: adminReducer,
   newHome: newHomeReducer,
-  metamask: metamaskReducer
+  metamask: metamaskReducer,
+  messages: messagesReducer
 });
+
+const rootReducer = (state: any, action: any) => {
+  if (action.type === 'RESET_STORE') state = { ...state, messages: undefined };
+
+  return reducers(state, action);
+};
 
 export { rootPersistConfig, rootReducer };

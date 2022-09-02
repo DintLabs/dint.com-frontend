@@ -3,7 +3,7 @@ import Router from 'frontend/routes';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 // import AdminProtaction from './AdminProtaction';
-import './App.css';
+import './App.scss';
 // import EventForAll from './EventForAll.js';
 // import Events from './Events.js';
 // import Login from './Login.js';
